@@ -1,0 +1,446 @@
+﻿@model IndiaEntertainers.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Book Your Favourite Singers, Bands, Dancers, DJs & Anchors | IndiaEntertainers";
+    ViewBag.Description = "Welcome to India’s #1 Artist Booking platform where you can book online your favourite & best entertainers for events, wedding, party, corporate & concerts.";
+    ViewBag.Keywords = "Book celebrities, book singers, book anchors, book DJs, book bands, hire online singers, hire bollywood celebrities";
+}
+<div class="homepage" ng-app="IndEntnApp">
+    <div ng-controller="TypeaheadCtrl" ng-cloak>
+        <div class="headerWrap">
+            <section id="home-banner" class="home-banner">
+                <div class="home_box bounce_fade animated bounceIn">
+                    <span class="slider_text1">Connecting Entertainers & Talent Seekers</span>
+                    <span class="slider_text2">DIRECTLY, INSTANTLY, GLOBALLY</span>
+                    <img src="~/images/banner-inside-img.png" class="services-banner hidden-xs">
+                </div>
+                <form id="search-form" class="search_form" action="" method="post">
+                    <div class="srchbox col-xs-12">
+                        <input id="search-query" type="text" name="search" autocomplete="off" ng-model="asyncSelected" uib-typeahead="item as item.Name for item in getResults($viewValue)" placeholder="Type Entertainer Name or Category" typeahead-on-select="Redirect(asyncSelected)" typeahead-min-length="2" required />
+                        <span class="srchico"><i class="fa fa-search" aria-hidden="true"></i></span>
+                    </div>
+                    <input type="submit" value="Search" id="submit-search" data-ng-click="Search(Qury)" class="submit-search">
+                </form>
+
+            </section>
+        </div>
+    </div>
+    <div ng-controller="IndEntnJSController">
+        <section id="trending">
+            <div class="container">
+                <div class="center fadeInDown">
+                    <h2 class="sub-title">TRENDING ENTERTAINERS</h2>
+                </div>
+                <div class="row">
+                    <div class="trending">
+                        <div class="swiper-container trending_slider" data-ng-init="GetEntertaines()">
+                            <div class="swiper-wrapper" ng-cloak>
+                                @foreach (var item in ViewBag.Entertainer as List<IndiaEntertainers.ViewModel.TrendingViewModel>)
+                                {
+                                    string catname = IndiaEntertainers.HTMLHelper.CustomHelper.GetEntCatName(item.EntrId);
+                                    <div class="swiper-slide">
+                                        <div class="trending-wrap">
+                                            <div class="trend_img">
+                                                <a target="_blank" href="@Url.Action("ProfileDetail", "Entertainers" , new {cat=catname, id=item.Slug})">
+                                                    <div class="trend_image">
+                                                        <img src="~/images/UserImages/@item.ProfilePhoto" alt="@item.FullName" class="img-responsive profile-image" />
+                                                    </div>
+                                                    <h3 class="trend_name">@item.FullName</h3>
+                                                    <span class="overlay"></span>
+                                                </a>
+                                            </div>
+
+                                            <div class="trend_dtl">
+                                                <div class="dtl">
+                                                    <span class="trend_singer"><img src="/images/mic.png" /> @catname </span>
+                                                    <span class="trend_address"><img src="/images/address.png" /> @item.CityName</span>
+                                                    @*@if (item.Showfee)
+                                                        {
+                                                        <div><p class="trend_price">@Math.Abs(td).ToString("c0", System.Globalization.CultureInfo.GetCultureInfo("en-in")) </p></div>
+                                                        }
+                                                        else
+                                                        {
+                                                        <div><p class="trend_price">Contact for Price</p></div>
+                                                        }*@
+                                                </div>
+                                                <div class="trend_cnt"><a href="javascript:;" data-toggle="modal" ng-click='GetEntrnId(@item.EntrId)' data-target="#contactdialogEntertainer" data-backdrop="static" data-keyboard="false">CONTACT</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    //swiper - slide
+                                }
+                            </div>
+                        </div>
+                        <!-- Add Arrows -->
+                        <div class="swiper-button-next swiper-button-next1"></div>
+                        <div class="swiper-button-prev swiper-button-prev1"></div>
+                    </div>
+
+                    @*<div class="trend_all"><a href="javascript:;">View All Entertainers</a></div>*@
+                </div>
+
+            </div>
+        </section>
+
+        <section id="trending_perf">
+            <div class="container">
+
+                <div class="center">
+                    <h2 class="sub-title">TRENDING PERFORMANCES</h2>
+                </div>
+
+                <div class="row">
+                    <div class="trending_perf_wrp">
+                        <div class="swiper-container trending_perf swiper-container-horizontal swiper-container-free-mode">
+
+                            <div class="swiper-wrapper lightbox" style="transform: translate3d(0px, 0px, 0px);">
+                                @foreach (var item in @ViewBag.TrendingVideos as List<IndiaEntertainers.Models.tbl_EntrVideos>)
+                                {
+                                    string catname = IndiaEntertainers.HTMLHelper.CustomHelper.GetEntCatName(item.EntrId);
+                                    <div class="swiper-slide swiper-slide-active" style="width: 270px; margin-right: 30px;">
+                                        <div class="trending-wrap" style="background-color:#d9293b;">
+                                            <div class="trend_img">
+                                                <a class="video-pop-link vidlink" rel="media-gallery" href="@IndiaEntertainers.HTMLHelper.CustomHelper.ConvertYTLink(item.Videolink)" data-ytid="vh8o5iULqEk">
+                                                    <span class="video-icon"></span>
+                                                    <img src="@IndiaEntertainers.HTMLHelper.CustomHelper.GetYouTubeVideoImage(item.Videolink)" class="img-responsive video-cover-img">
+                                                </a>
+                                                <a href="javascript:;"><h3 class="trend_name">@item.tbl_Entertainer.FName</h3></a>
+                                            </div>
+
+                                            <div class="trend_dtl">
+                                                <div class="dtl">
+                                                    <a href="@Url.Action("ProfileDetail", "Entertainers" , new {cat=catname, id=item.tbl_Entertainer.Slug})"><img src="@IndiaEntertainers.HTMLHelper.CustomHelper.GetYouTubeVideoImage(item.Videolink)"><img src="@IndiaEntertainers.HTMLHelper.CustomHelper.GetYouTubeVideoImage(item.Videolink)" alt=""></a>
+                                                    <div class="trend_state">&nbsp; @*@item.Title*@</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <!-- Add Arrows -->
+                        <div class="swiper-button-next3 swiper-button-next swiper-button-disabled"></div>
+                        <div class="swiper-button-prev3 swiper-button-prev swiper-button-disabled"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="recent-works">
+            <div class="center">
+                <h2></h2>
+                <h2 class="sub-title">BROWSE CATEGORIES</h2>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-md-15 col-sm-3 animated cat_list">
+                    <div class="cat-list-wrap">
+                        <a href="@Url.Action("Index", "Entertainers", new { area = "", id="Singers"}, null)">
+                            <img class="img-responsive" src="~/images/categories/singer-thumb.jpg" alt="">
+                            <span class="overlay-cat-img">
+                                <img src="~/images/categories/singer-sphere.png" alt="">
+                                <div class="cat-name act">Singers</div>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-md-15 col-sm-3 animated cat_list">
+                    <div class="cat-list-wrap">
+                        <a href="@Url.Action("Index", "Entertainers", new { area = "", id="Bands"}, null)">
+                            <img class="img-responsive" src="~/images/categories/bands-thumb.jpg" alt="">
+                            <span class="overlay-cat-img">
+                                <img src="~/images/categories/bands-sphere.png" alt="">
+                                <div class="cat-name act">bands</div>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-md-15 col-sm-3 animated cat_list">
+                    <div class="cat-list-wrap">
+                        <a href="@Url.Action("Index", "Entertainers", new { area = "", id="Dancers"}, null)">
+                            <img class="img-responsive" src="~/images/categories/dancers-thumb.jpg" alt="">
+                            <span class="overlay-cat-img">
+                                <img src="~/images/categories/dance-sphere.png" alt="">
+                                <div class="cat-name act">dancers</div>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-md-15 col-sm-3 animated cat_list">
+                    <div class="cat-list-wrap">
+                        <a href="@Url.Action("Index", "Entertainers", new { area = "", id="DJS"}, null)">
+                            <img class="img-responsive" src="~/images/categories/dj-thumb.jpg" alt="">
+                            <span class="overlay-cat-img">
+                                <img src="~/images/categories/dj-sphere.png" alt="">
+                                <div class="cat-name act">Disc Jockeys</div>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-md-15 col-sm-3 animated cat_list">
+                    <div class="cat-list-wrap">
+                        <a href="@Url.Action("Index", "Entertainers", new { area = "", id="Anchors"}, null)">
+                            <img class="img-responsive" src="~/images/categories/showanchor-thumb.jpg" alt="">
+                            <span class="overlay-cat-img">
+                                <img src="~/images/categories/anchor-sphere.png" alt="">
+                                <div class="cat-name act">Anchors</div>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-xs-6 col-md-15 col-sm-3 animated cat_list">
+                    <div class="cat-list-wrap">
+                        <a href="@Url.Action("Index", "Entertainers", new { area = "", id="Stand-up Comedians"}, null)">
+                            <img class="img-responsive" src="~/images/categories/comedians-thumb.jpg" alt="">
+                            <span class="overlay-cat-img">
+                                <img src="~/images/categories/comedians-sphere.png" alt="">
+                                <div class="cat-name">Stand-up Comedians</div>                                
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-xs-6 col-md-15 col-sm-3 animated cat_list">
+                    <div class="cat-list-wrap">
+                        <a href="@Url.Action("Index", "Entertainers", new { area = "", id="Uncut (Aspiring Singers)"}, null)">
+                            <img class="img-responsive" src="~/images/categories/singer-thumb.jpg" alt="">
+                            <span class="overlay-cat-img">
+                                <img src="~/images/categories/singer-sphere.png" alt="">
+                                <div class="cat-name act">Uncut (Aspiring Singers)</div>
+                                <div class="cat-name sml">(Coming Soon)</div>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-xs-6 col-md-15 col-sm-3 animated cat_list">
+                    <div class="cat-list-wrap">
+                        <a href="javascript:;">
+                            <img class="img-responsive" src="~/images/categories/instrumentalist-thumb.jpg" alt="">
+                            <span class="overlay-cat-img">
+                                <img src="~/images/categories/instrumentalist-sphere.png" alt="">
+                                <div class="cat-name">instrumentalists</div>
+                                <div class="cat-name sml">(Coming Soon)</div>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-xs-6 col-md-15 col-sm-3 animated cat_list">
+                    <div class="cat-list-wrap">
+                        <a href="javascript:;">
+                            <img class="img-responsive" src="~/images/categories/art-thumb.jpg" alt="">
+                            <span class="overlay-cat-img">
+                                <img src="~/images/categories/art-sphere.png" alt="">
+                                <div class="cat-name">art & technology based</div>
+                                <div class="cat-name sml">(Coming Soon)</div>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-xs-6 col-md-15 col-sm-3 animated cat_list hidden-sm">
+                    <div class="cat-list-wrap">
+                        <a href="javascript:;">
+                            <img class="img-responsive" src="~/images/categories/variety-thumb.jpg" alt="">
+                            <span class="overlay-cat-img">
+                                <img src="~/images/categories/variety-sphere.png" alt="">
+                                <div class="cat-name">variety</div>
+                                <div class="cat-name sml">(Coming Soon)</div>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="trend_all visible-sm-block"><br /><a class="viewmore" href="javascript:;">View More Categories</a></div>
+
+            </div>
+        </section>
+
+        <section id="aboutus">
+            <div class="container">
+
+                <div class="center">
+                    <h2 class="sub-title">ABOUT US</h2>
+                </div>
+
+                <div class="row">
+                    <div class="aboutus animated">
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <div class="about-wrap">
+                                <div class="about_img">
+                                    <img src="~/images/about-img-1.png" alt="" class="img-responsive" />
+                                </div>
+
+                                <div class="about_dtl">
+                                    <p class="abttop">Seamlessly Connecting the Entertainment Industry</p>
+                                    <p class="abtbtm">India's first and exclusive platform connecting verified Entertainers  with thousands of Talent-Seekers.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <div class="about-wrap">
+                                <div class="about_img">
+                                    <img src="~/images/about-img-2.png" alt="" class="img-responsive" />
+                                </div>
+
+                                <div class="about_dtl">
+                                    <p class="abttop">Helps Entertainers raise their exposure Globally</p>
+                                    <p class="abtbtm">We help Entertainers raise their exposure (and with time, their price); publicize gigs, get noticed and get assignments from anywhere in the world!! </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <div class="about-wrap">
+                                <div class="about_img">
+                                    <img src="~/images/about-img-3.png" alt="" class="img-responsive" />
+                                </div>
+
+                                <div class="about_dtl">
+                                    <p class="abttop">No Intermediaries between Entertainers & Talent-Seekers</p>
+                                    <p class="abtbtm">We enable the fastest & the widest reach for both communities; with absolutely no unnecessary agencies in between!!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="services_bottom" class="services_bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-sm-3 col-xs-12 serv_list_btm">
+                        <div class="service-bottom-wrap">
+                            <div class="service-bottom-img">
+                                <img src="~/images/stat_1.png" alt="" class="img-responsive">
+                            </div>
+
+                            <div class="service-bottom_dtl">
+                                <p>GLOBAL<span>TALENT SEEKERS</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3 col-xs-12 serv_list_btm">
+                        <div class="service-bottom-wrap">
+                            <div class="service-bottom-img">
+                                <img src="~/images/stat_2.png" alt="" class="img-responsive">
+                            </div>
+
+                            <div class="service-bottom_dtl">
+                                <p>PROFESSIONAL<span> ENTERTAINERS</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3 col-xs-12 serv_list_btm">
+                        <div class="service-bottom-wrap">
+                            <div class="service-bottom-img">
+                                <img src="~/images/stat_3.png" alt="" class="img-responsive">
+                            </div>
+
+                            <div class="service-bottom_dtl">
+                                <p>FAST, EASY, DIRECT<span>SEARCH</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3 col-xs-12 serv_list_btm">
+                        <div class="service-bottom-wrap">
+                            <div class="service-bottom-img">
+                                <img src="~/images/stat_4.png" alt="" class="img-responsive">
+                            </div>
+
+                            <div class="service-bottom_dtl">
+                                <p>SAFE & SECURED<span>ACCESS</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- services we have ends -->
+        <!-- subscribe we have starts -->
+
+        <section id="subscribe" class="subscribe">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <span class="subs_img"><img src="~/images/subscribe-letter-img.png" alt="" /></span>
+                        <span class="subs_txt">SUBSCRIBE:</span>
+                    </div>
+                    <form ng-submit="SubscribeUser(SubEmail)" name="Subscribeform" id="Subscribeform">
+                        <div class="col-sm-8">
+                            <br class="visible-xs-block" />
+                            <span class="srchbox">
+                                <input type="email" id="search-query" data-ng-disabled="SubTextDisable" data-ng-model="SubEmail" name="SubEmail" placeholder="Enter your Email ID" required>
+                            </span>
+                            <input type="submit" value="Subscribe" data-ng-disabled="!Subscribeform.$valid" id="submit-search" class="submit-search">
+                        </div>
+                        <img src="~/images/Loader/loader.gif" style="display:none;height:50px;margin-left: 25%;" class="imgLoaderSubscribe">
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- subscribe we have ends -->
+
+        <div id="contactdialogEntertainer" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" id="closebtn" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div data-ng-show="ShowCntFrm">
+                            <h3 style="font-size: 20px;color: white;margin: 0;text-align:center;">Contact Entertainer</h3>
+                        </div>
+                        <div data-ng-hide="ShowCntFrm">
+                            <h3 style="font-size: 20px;color: white;margin: 0;text-align:center;">Success</h3>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form log-reg">
+                            <div id="logindiv">
+                                <div data-ng-show="ShowCntFrm">
+
+                                    <ng-form name="contactform">
+                                        <fieldset>
+                                            <div data-ng-hide="UserLoggedIn" style="text-align:center;">                                               
+                                                <p>To contact this entertainer, You must be logged in</p>                                                
+                                                <p>
+                                                     <a href="javascript:;" id="loginLink" style="color:blue;"> Click here to login</a>
+                                                </p>
+                                                <a href="javascript:;" id="loginPop" data-toggle="modal" data-name="Login" data-target="#myModal" data-backdrop="static" data-keyboard="false" style="display:none;"></a>
+                                            </div>
+                                            <div data-ng-show="UserLoggedIn" class="field-wrap">
+                                                <label>
+                                                    Message
+                                                </label>
+                                                <textarea class="form-control" data-ng-model="EntnMessage.Message" placeholder="Max 150 Characters" rows="3" id="Message" ng-maxlength="150" ng-minlength="1" ng-required="cntfrmrqured"></textarea>
+                                            </div>
+                                            <div data-ng-show="UserLoggedIn">
+                                                <p class="text-info text-center" style="white-space:pre-wrap;">{{cntfrmMessage}}</p>
+                                                <button class="btnPopUp" type="submit" data-ng-disabled="!contactform.$valid" data-ng-click="SendMessagetoEntrn(EntnMessage)">Submit</button>
+                                            </div>
+                                        </fieldset>
+                                    </ng-form>
+                                </div>
+                                <div data-ng-hide="ShowCntFrm" class="text-center" style="white-space:pre-wrap;">
+                                    <p class="text-info">{{cntfrmMessage}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

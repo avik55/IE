@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<body class="detail-page page" ng-app="IndEntnApp">
+    <div class="headerWrap registerfrm abtus">
+
+        <section id="breadcrumbs">
+            <div class="container">
+                <div class="row">
+                    <span class="url_lnk hme"><a href="javascript:;" title="Home" class="home_icon">Home</a></span> <b>&gt;</b> <span class="url_lnk">About us</span>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="home-banner" class="home-banner register-frm-wrp">
+            <div class="container text-left">
+                <p class="sub-title text-center">ABOUT US</p>
+                <br />
+                <p>We are India's 'first, exclusive, interactive platform' that connects 'professional Entertainers' and 'Talent-Seekers' ……. seamlessly, directly, instantly, globally!</p>
+                <p>If you are a professional entertainer looking for more assignments, or if you are a Talent-Seeker looking to hire Entertainers, there is no better place to be in.</p>
+
+                <br />
+                <p class="abt_head"><b>Benefits to Talent-Seekers</b></p>
+
+                <ul>
+                    <li>Direct & Instant Connections with Entertainers</li>
+                    <li>Wide options; Take your pick, at your will</li>
+                    <li>No Agents; No Commissions</li>
+                    <li>Savings of over 20% on an average</li>
+                </ul>
+
+
+                <p class="abt_head"><br /> <b>Benefits to Entertainers</b></p>
+
+                <ul>
+                    <li>Reach hundreds of Talent-Seekers, at one go, at no cost</li>
+                    <li>Publicize your gigs, Raise your exposure</li>
+                    <li>Get 'more' assignments from anywhere in the world</li>
+                </ul>
+
+                <br />
+                <p>From 'ultra-intelligent search' to connecting the communities on-the-go to 'video-conference auditions' to 'electronic billing' with just a few clicks; we have some great, well-defined plans for the industry. Our mission is to exploit the technological advancements to enable better connectivity & interactivity for both, artists and talent-seekers. We will soon incorporate many more, powerful features to make your work-lives more efficient and more entertaining</p>
+
+
+            </div>
+        </section>
+
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog"  ng-controller="IndEntnJSController">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form log-reg">
+                            <ul class="tab-group">
+                                <li class="tab active current" data-tab="login"><a href="javascript:;" class="">Log In</a></li>
+                                <li class="tab" data-tab="signup"><a href="javascript:;">Sign Up</a></li>
+                            </ul>
+                            <div class="tab-content">
+
+                                <div id="login" class="tab-content_div current">
+                                    <ng-form name="logform">
+                                        <fieldset>
+                                            <h1>Welcome Back!</h1>
+                                            <div class="field-wrap">
+                                                <label>
+                                                    User Name<span class="req">*</span>
+                                                </label>
+                                                <input type="text" ng-disabled="fielddisablel" class="form-control" ng-model="loginModel.UserName" required>
+                                            </div>
+
+                                            <div class="field-wrap">
+                                                <label>
+                                                    Password<span class="req">*</span>
+                                                </label>
+                                                <input id="pass_usr" ng-disabled="fielddisablel" class="form-control" type="password" ng-model="loginModel.password" required />
+                                            </div>
+                                            <p class="text-danger"> {{loginMessage}}</p>
+                                            <p class="forgot"><a href="#">Forgot Password?</a></p>
+
+                                            <button class="button button-block" id="login_frm" type="submit" data-ng-disabled="!logform.$valid" data-ng-click="loginform(loginModel)" value="login" name="login">Log In</button>
+                                        </fieldset>
+                                    </ng-form>
+                                </div>
+
+                                <div id="signup" class="tab-content_div">
+                                    <ng-form name="Reggform">
+                                        <fieldset>
+                                            <h1>Sign Up for Free</h1>
+                                            <div class="top-row">
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        Email<span class="req">*</span>
+                                                    </label>
+                                                    <input type="email" ng-disabled="fielddisabler" class="form-control" ng-model="RegModel.Email" required>
+                                                </div>
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        Register As
+                                                    </label>
+                                                    @IndiaEntertainers.HTMLHelper.CustomHelper.ReqAsDropDownList("RegModel.UserType", "form-control", "UserType", null, "required")
+                                                </div>
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        UserName<span class="req">*</span>
+                                                    </label>
+                                                    <input type="text" ng-disabled="fielddisabler" class="form-control" ng-model="RegModel.UserName" required>
+                                                </div>
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        Set A Password<span class="req">*</span>
+                                                    </label>
+                                                    <input type="password" ng-disabled="fielddisabler" class="form-control" ng-model="RegModel.password" id="password1" required>
+                                                </div>
+                                                @*<div class="field-wrap">
+                            <label>
+                                Confirm Password<span class="req">*</span>
+                            </label>
+                            <input type="password" class="form-control" ng-model="RegModel.ConfirmPassword" id="password2" required="" autocomplete="off" value="">
+                        </div>*@
+                                            </div>
+                                            <br />
+                                            <p class="text-info">{{Reqmessage}}</p>
+                                            <button type="submit" class="button button-block" id="register_frm" data-ng-disabled="!Reggform.$valid" data-ng-click="SubmitReqForm(RegModel)" value="register" name="register">Register</button>
+                                        </fieldset>
+                                    </ng-form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="contactdialog" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form log-reg">
+
+                            <div id="logindiv">
+                                <h1>Contact Us</h1>
+
+                                <form action="" role="form" method="post" autocomplete="false">
+
+
+                                    <div class="field-wrap">
+                                        <label>
+                                            Name<span class="req">*</span>
+                                        </label>
+                                        <input class="form-control" id="login_usr" type="text" autocomplete="false" name="name" required="" value="">
+                                    </div>
+
+                                    <div class="field-wrap">
+                                        <label>
+                                            Email ID<span class="req">*</span>
+                                        </label>
+                                        <input class="form-control" id="login_usr" type="email" autocomplete="false" name="email" required="" value="">
+                                    </div>
+
+
+                                    <div class="field-wrap">
+                                        <label>
+                                            Message<span class="req">*</span>
+                                        </label>
+                                        <textarea class="form-control" placeholder="Max 100 Characters" rows="3" id="comment"></textarea>
+                                    </div>
+
+                                    <button class="button button-block" id="login_frm" type="submit" value="login" name="login">Submit</button>
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

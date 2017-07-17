@@ -1,0 +1,805 @@
+﻿@model IndiaEntertainers.Models.tbl_Entertainer
+
+@{
+    ViewBag.Title = Model.FName;
+    var photos = ViewBag.photos as List<IndiaEntertainers.Models.tbl_EntrImages>
+    ;
+    var videos = ViewBag.videos as List<IndiaEntertainers.Models.tbl_EntrVideos>
+        ;
+
+        var coverPhoto = photos.FirstOrDefault(d => d.IsCurCoverImg == true);
+        var profilePhoto = photos.FirstOrDefault(d => d.IsCurProfileImg == true);
+        var UsrPhotos = photos.Where(d => d.IsCurCoverImg != true && d.IsCurProfileImg != true).ToList();
+        var catname = @IndiaEntertainers.HTMLHelper.CustomHelper.GetEntCatName(Model.EntrId);
+        }
+        <style>
+            .radio label::before {
+                content: "";
+                display: inline-block;
+                position: absolute;
+                width: 17px;
+                height: 17px;
+                left: 0;
+                margin-top: 5px;
+                margin-left: -20px;
+                border: 1px solid #cccccc;
+                border-radius: 50%;
+                background-color: #fff;
+                -webkit-transition: border 0.15s ease-in-out;
+                -o-transition: border 0.15s ease-in-out;
+                transition: border 0.15s ease-in-out;
+            }
+        </style>
+        <div ng-app="IndEntnApp">
+            <div ng-controller="IndEntnJSController">
+                <!-- breadcrumbs starts -->
+                <section id="breadcrumbs">
+                    <div class="container">
+                        <div class="row">
+                            <span class="url_lnk hme"><a href="@Url.Action(" Index","Home",new { area="" })" class="hme" title="Home"><img src="~/images/home_brd.png" alt="home" /></a></span> <b>></b> <span class="url_lnk"><a href="javascript:;" title="Entertainers">Entertainers</a></span> <b>></b> <span class="url_lnk"><a href="@Url.Action(" Index","Entertainers",new { area="" , q=catname })" title="@catname">@catname</a></span> <b>></b> <span class="url_lnk">@Model.FName &nbsp; @Model.LName</span>
+                        </div>
+                    </div>
+                </section>
+                <!-- breadcrumbs ends -->
+                <!-- Profile starts -->
+                <section id="Profile">
+                    <div class="container">
+                        <div class="row">
+                            <section class="left_side col-xs-12 col-sm-5 col-md-4">
+                                <div class="trending_perf">
+                                    <div class="trending-wrap">
+                                        <div class="trend_img">
+                                            <a href="javascript:;" title="Change Cover Image" data-toggle="modal" data-target="#changecoverimage">
+                                                <img src="~/images/UserImages/@coverPhoto.ImagePath" alt="@coverPhoto.Title" class="img-responsive">
+                                                <!-- <span class="trend_view"><img src="../images/eye-white.png" alt="eyeimage" /> <span class="view_cnt">1000</span></span> -->
+                                                <span class="trend_loc"><img src="~/images/address-white.png" alt="" /> &nbsp;<span class="view_cnt"> @IndiaEntertainers.HTMLHelper.CustomHelper.GetCityName(Model.CityId)</span></span>
+                                                <div class="dtls">
+                                                    <h3 class="trend_name">@ViewBag.Title</h3>
+                                                    <h4 class="trend_shrtname"><img src="~/images/mic-white.png" alt="" /> &nbsp;<span>@IndiaEntertainers.HTMLHelper.CustomHelper.GetEntCatName(Model.EntrId)</span></h4>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                        <div class="trend_dtl">
+                                            <div class="dtl">
+                                                <a href="javascript:;" title="Change Cover Image" data-toggle="modal" data-target="#changeProfileimage">
+                                                    <img src="~/images/UserImages/@profilePhoto.ImagePath" alt="@profilePhoto.Title">
+                                                </a>
+                                                <div class="trend_state">@Model.ProfileTitle</div>
+
+                                                <div class="col-xs-12 col-sm-12">
+                                                    <div class="grid">PERFORMANCE FEES <span class="pull-right"><b>&#x20B9; @Model.Performancefee </b> onwards</span></div>
+                                                    <hr class="line-separtr" />
+                                                </div>
+
+                                                <div class="col-xs-12 col-sm-12">
+                                                    <div class="col-xs-4 col-sm-4 grid">
+                                                        <p><b>@Model.Gender</b></p>
+                                                        <p class="grid_sub">GENDER</p>
+                                                    </div>
+
+                                                    <div class="col-xs-4 col-sm-4 grid">
+                                                        <p><b>@Model.Nationality</b></p>
+                                                        <p class="grid_sub">NATIONALITY</p>
+                                                    </div>
+
+                                                    <div class="col-xs-4 col-sm-4 grid">
+                                                        <p><b>@Model.NoofShow +</b></p>
+                                                        <p class="grid_sub">NO. OF SHOWS</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xs-12 col-sm-12">
+                                                    <div class="col-xs-4 col-sm-4 grid">
+                                                        <p><b>@Model.PerfLanguage </b></p>
+                                                        <p class="grid_sub">PERFORMANCE LANGUAGE</p>
+                                                    </div>
+
+                                                    <div class="col-xs-4 col-sm-4 grid">
+                                                        <p><b>@Model.PerfLength </b></p>
+                                                        <p class="grid_sub">PERFORMANCE LENGTH (Mins)</p>
+                                                    </div>
+
+                                                    <div class="col-xs-4 col-sm-4 grid">
+                                                        <p><b>@Model.PERFORMINGMEMBERS </b></p>
+                                                        <p class="grid_sub">PERFORMING MEMBERS</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xs-12 col-sm-12">
+                                                    <ul class="social_sec">
+                                                        @if (Model.FBPageLink != null)
+                                                        {
+                                                        <li><a target="_blank" href="@Model.FBPageLink" class="fb_icon"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                                        }
+                                                        @if (Model.TwiterPageLink != null)
+                                                        {
+                                                        <li><a target="_blank" href="@Model.TwiterPageLink" class="twt_icon"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                                        }
+                                                        @if (Model.IntgramPageLink != null)
+                                                        {
+                                                        <li><a target="_blank" href="@Model.IntgramPageLink" class="linkedin_icon"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                                        }
+                                                    </ul>
+                                                </div>
+
+                                                <div class="col-xs-12 col-sm-12">
+                                                    @*<div class="trend_cnt"><a href="javascript:;" data-toggle="modal" ng-click='GetEntrnId(@Model.EntrId)' data-target="#contactdialog">CONTACT</a></div>*@
+                                                    @*<div class="trend_cnt"><a href="javascript:;" data-toggle="modal" ng-click='GetEntrnId(@Model.EntrId)' data-target="#contactdialog">CONTACT</a></div>*@
+                                                    @*<div class="trend_cnt"><a href="javascript:;" data-toggle="modal" data-target="#contactdialog">CONTACT</a></div>*@
+                                                    @*<div class="trend_rvw"><a href="javascript:;">Add Review</a></div>*@
+                                                    <div data-ng-click="GetDetails()" class="trend_cnt"><a href="javascript:;" data-toggle="modal" data-target="#UpdateProDetails">Edit Details</a></div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </section>
+                            @*left side end*@
+
+
+                            <section class="right_side col-xs-12 col-sm-7 col-md-8">
+                                <!-- Video slider starts -->
+                                <div class="trending_perf_wrp vid_section prof_sec">
+                                    <div class="prof_head"><b>VIDEOS</b> <span>(@videos.Count())</span><span class="text-info text-right"><a href="javascript:;" title="Add New Image" class="pull-right" data-toggle="modal" data-target="#AddNewVideoe">Add New Video</a></span> </div>
+                                    <div class="swiper-container trending_perf">
+                                        <div class="swiper-wrapper">
+                                            @foreach (var v in videos)
+                                            {
+                                            <div class="swiper-slide">
+                                                <div class="trending-wrap">
+                                                    <div class="trend_img" style="position:relative;">
+                                                        <span class="text-info text-right" style="position:absolute; padding:10px; right:0;">
+                                                            <a href="javascript:;" title="Delete Video" data-ng-click="DeleteVideo(@v.Vid)" style="color:white;">
+                                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                            </a>
+                                                        </span>
+                                                        <a class="video-pop-link vidlink" rel="media-gallery" href="@v.Videolink">
+                                                            <span class="video-icon"></span>
+                                                            <img src="@IndiaEntertainers.HTMLHelper.CustomHelper.GetYouTubeVideoImage(v.Videolink)" class="img-responsive video-cover-img">
+                                                            <!-- <span class="trend_view"><img src="../images/eye-white.png" /> <span class="view_cnt">1000</span></span> -->
+                                                            <h3 class="trend_name"></h3>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            }
+                                        </div>
+                                    </div>
+                                    <!-- Add Arrows -->
+                                    <div class="swiper-button-next3 swiper-button-next"></div>
+                                    <div class="swiper-button-prev3 swiper-button-prev"></div>
+                                </div>                        <!-- Video slider ends -->
+                                <!-- Video photos starts -->
+                                <div class="trending_perf_wrp photo_section prof_sec">
+                                    <div class="prof_head"><b>PHOTOS</b> <span>(@UsrPhotos.Count())</span> <span class="text-info text-right pull-right"><a href="javascript:;" title="Add New Image" data-toggle="modal" data-target="#AddNewImagee">Add New Photo</a></span> </div>
+                                    <div class="swiper-container trending_perf">
+                                        <div class="swiper-wrapper lightbox">
+                                            @foreach (var p in UsrPhotos)
+                                            {
+                                            <div class="swiper-slide">
+                                                <div class="trending-wrap">
+                                                    <div class="trend_img" style="position:relative;">
+                                                        <span class="text-info text-right" style="position:absolute; padding:10px; right:0;">
+                                                            <a href="javascript:;" title="Delete Image" data-ng-click="DeleteImage(@p.ImageId)" style="color:white;">
+                                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                            </a>
+                                                        </span>
+                                                        <a class="video-pop-link imggal" href="~/images/UserImages/@p.ImagePath">
+                                                            <img src="~/images/UserImages/@p.ImagePath" alt="@p.Title" class="img-responsive video-cover-img">
+                                                            <!-- <span class="trend_view"><img src="../images/eye-white.png" /> <span class="view_cnt">1000</span></span> -->
+                                                            <h3 class="trend_name">@if (@p.Title != "undefined") { @p.Title}</h3>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            }
+                                        </div>
+
+                                    </div>
+                                    <!-- Add Arrows -->
+                                    <div class="swiper-button-next4 swiper-button-next"></div>
+                                    <div class="swiper-button-prev5 swiper-button-prev"></div>
+                                </div>
+                                <!-- Video Photos ends -->
+                                <!-- Profile starts -->
+                                <div class="trending_perf_wrp profile_section prof_sec">
+                                    <div class="prof_head"><b>PROFILE</b><span class="text-info text-right pull-right"><a href="javascript:;" class="pull-right" title="Update" data-ng-click="GetProMessage()" data-toggle="modal" data-target="#UpdateProfileModal">Edit</a></span></div>
+                                    <div class="trending_perf">
+                                        <p class="prof_cntnt">
+                                            @Html.DisplayFor(model => model.Profile)
+                                        </p>
+                                        <p class="less-more">
+                                            <a onclick="lessmore($(this));" href="javascript:;" class="text_chng"><span>Read More...</span></a>
+                                        </p>
+                                    </div>
+
+                                </div>
+                                <!-- Profile ends -->
+                                <!-- PROJECTOGRAPHY starts -->
+                                @*<div class="trending_perf_wrp project_section prof_sec">
+                                    <div class="prof_head"><b>PROJECTOGRAPHY</b></div>
+                                    <div class="trending_perf">
+                                        <div class="panel-group" id="accordion">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                                            latest projects
+                                                            <i class="indicator glyphicon glyphicon-chevron-up pull-right"></i>
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne" class="panel-collapse collapse in">
+                                                    <div class="panel-body">
+                                                        <!-- <div class="pad0 col-sm-7">
+                                                            <div class="panel-img">
+                                                                <img src="../images/img_1.jpg" class="img-responsive"/>
+                                                                <span class="trend_view"><img src="../images/eye-white.png"> <span class="view_cnt">1000</span></span>
+                                                            </div>
+                                                            <div class="panel-txt">
+                                                                <b>Time:</b>
+                                                                <p>7pm to 11pm, July 29, 2017</p>
+                                                                <b>Venue:</b>
+                                                                <p>Near Union Bank, Swami Vivekanand Road, Krishna Colony</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="pad0 col-sm-5">
+                                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch.
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                                            latest projects
+                                                            <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo" class="panel-collapse collapse">
+                                                    <div class="panel-body">
+                                                        <!-- <div class="pad0 col-sm-7">
+                                                            <div class="panel-img">
+                                                                <img src="../images/img_2.jpg" class="img-responsive"/>
+                                                                <span class="trend_view"><img src="../images/eye-white.png"> <span class="view_cnt">1000</span></span>
+                                                            </div>
+                                                            <div class="panel-txt">
+                                                                <b>Time:</b>
+                                                                <p>7pm to 11pm, July 29, 2017</p>
+                                                                <b>Venue:</b>
+                                                                <p>Near Union Bank, Swami Vivekanand Road, Krishna Colony</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="pad0 col-sm-5">
+                                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch.
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                                            latest projects
+                                                            <i class="indicator glyphicon glyphicon-chevron-down pull-right"></i>
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseThree" class="panel-collapse collapse">
+                                                    <div class="panel-body">
+                                                        <!-- <div class="pad0 col-sm-7">
+                                                            <div class="panel-img">
+                                                                <img src="../images/img_3.jpg" class="img-responsive"/>
+                                                                <span class="trend_view"><img src="../images/eye-white.png"> <span class="view_cnt">1000</span></span>
+                                                            </div>
+                                                            <div class="panel-txt">
+                                                                <b>Time:</b>
+                                                                <p>7pm to 11pm, July 29, 2017</p>
+                                                                <b>Venue:</b>
+                                                                <p>Near Union Bank, Swami Vivekanand Road, Krishna Colony</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="pad0 col-sm-5">
+                                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch.
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>*@
+                            </section>
+
+                            <div id="contactdialog" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div class="form log-reg">
+                                                <div id="logindiv">
+                                                    <h1>Contact Us</h1>
+                                                    <div data-ng-show="ShowCntFrm">
+                                                        <form name="contactform">
+                                                            <fieldset>
+                                                                <div class="field-wrap">
+                                                                    <label>
+                                                                        Name
+                                                                    </label>
+                                                                    <input class="form-control" type="text" data-ng-model="EntnMessage.Name" name="EntnMessage.Name" required>
+                                                                </div>
+
+                                                                <div class="field-wrap">
+                                                                    <label>
+                                                                        Email ID
+                                                                    </label>
+                                                                    <input class="form-control" type="email" data-ng-model="EntnMessage.EmailID" name="EntnMessage.EmailID" required>
+                                                                </div>
+
+                                                                <div class="field-wrap">
+                                                                    <label>
+                                                                        Contact No.
+                                                                    </label>
+                                                                    <input class="form-control" type="text" data-ng-model="EntnMessage.ContactNo" name="EntnMessage.ContactNo" required>
+                                                                </div>
+
+                                                                <div class="field-wrap">
+                                                                    <label>
+                                                                        Message
+                                                                    </label>
+                                                                    <textarea class="form-control" data-ng-model="EntnMessage.Message" placeholder="Max 100 Characters" rows="3" id="Message" required></textarea>
+                                                                </div>
+                                                                <p class="text-info">{{cntfrmMessage}}</p>
+                                                                <button class="btnPopUp" type="submit" data-ng-disabled="!contactform.$valid" data-ng-click="SendMessagetoEntrn(EntnMessage)">Submit</button>
+                                                            </fieldset>
+                                                        </form>
+                                                    </div>
+                                                    <div data-ng-hide="ShowCntFrm">
+                                                        <p class="text-info">{{cntfrmMessage}}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div id="changecoverimage" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div class="form log-reg">
+                                                <div id="logindiv">
+                                                    <h1>Change Cover Image</h1>
+                                                    <ng-form name="CoverImgChageFrm">
+                                                        <fieldset>
+                                                            <div data-ng-show="ShowChangeCoverModel">
+                                                                <div class="field-wrap">
+                                                                    <label>
+                                                                        Title<span class="req">* </span>
+                                                                    </label>
+                                                                    <input class="form-control" type="text" data-ng-model="Title" name="Title">
+                                                                </div>
+
+                                                                <div class="field-wrap">
+                                                                    <label>
+                                                                        Select Cover Image<span class="req">* </span>
+                                                                    </label>
+                                                                    <input name="myFile" upload-file="myFile" type="file" />
+                                                                </div>
+                                                                <p class="text-info">{{coverImgMessage}}</p>
+                                                                <button class="btnPopUp" type="button" ng-click="ChangeCoverImage()">Upload</button>
+                                                            </div>
+                                                            <div data-ng-hide="ShowChangeCoverModel">
+                                                                <p class="text-info">{{coverImgMessage}}</p>
+                                                            </div>
+
+                                                            @*<button class="button button-block" type="button" ng-click="ChangeCoverImage()">Submit</button>*@
+                                                        </fieldset>
+                                                    </ng-form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="changeProfileimage" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div class="form log-reg">
+                                                <div id="logindiv">
+                                                    <h1>Change Profile Picture</h1>
+                                                    <ng-form name="PrfImgChageFrm">
+                                                        <fieldset>
+                                                            <div data-ng-show="ShowChangeProfileModel">
+                                                                <div class="field-wrap">
+                                                                    <label>
+                                                                        Title<span class="req">* </span>
+                                                                    </label>
+                                                                    <input class="form-control" type="text" data-ng-model="Title" name="Title">
+                                                                </div>
+
+                                                                <div class="field-wrap">
+                                                                    <label>
+                                                                        Select Profile Pic.<span class="req">* </span>
+                                                                    </label>
+                                                                    <input name="myprofilePic" upload-file="myprofilePic" type="file" />
+                                                                </div>
+                                                                <p class="text-info">{{coverPrfMessage}}</p>
+                                                                <button class="btnPopUp" type="button" ng-click="ChangeProfileImage()">Upload</button>
+                                                            </div>
+                                                            <div data-ng-hide="ShowChangeProfileModel">
+                                                                <p class="text-info">{{coverPrfMessage}}</p>
+                                                            </div>
+
+                                                            @*<button class="button button-block" type="button" ng-click="ChangeCoverImage()">Submit</button>*@
+                                                        </fieldset>
+                                                    </ng-form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="AddNewImagee" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div class="form log-reg">
+                                                <div id="logindiv">
+                                                    <h1>Add New Photo</h1>
+                                                    <ng-form name="PrfImgChageFrm">
+                                                        <fieldset>
+                                                            <div data-ng-show="ShowAddphtoProfileModel">
+                                                                <div class="field-wrap">
+                                                                    <label>
+                                                                        Select Profile Pic.<span class="req">* </span>
+                                                                    </label>
+                                                                    <input name="MyNewPhoto" upload-file="MyNewPhoto" type="file" />
+                                                                </div>
+
+                                                                <div class="field-wrap">
+                                                                    <label>
+                                                                        Caption<span class="req">* </span>
+                                                                    </label>
+                                                                    <input class="form-control" type="text" data-ng-model="Title" name="Title">
+                                                                </div>
+
+                                                                <p class="text-info">{{NewPhotoMessage}}</p>
+                                                                <button class="btnPopUp" type="button" ng-click="AddNewPhoto()">Upload</button>
+                                                            </div>
+                                                            <div data-ng-hide="ShowAddphtoProfileModel">
+                                                                <p class="text-info">{{NewPhotoMessage}}</p>
+                                                            </div>
+
+                                                            @*<button class="button button-block" type="button" ng-click="ChangeCoverImage()">Submit</button>*@
+                                                        </fieldset>
+                                                    </ng-form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="AddNewVideoe" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div class="form log-reg">
+                                                <div id="logindiv">
+                                                    <h1>Add New Video</h1>
+                                                    <ng-form name="PrfImgChageFrm">
+                                                        <fieldset>
+                                                            <div data-ng-show="ShowAddvdoProfileModel">
+                                                                <div class="field-wrap">
+                                                                    <label>
+                                                                        Title<span class="req"> </span>
+                                                                    </label>
+                                                                    <input class="form-control" type="text" data-ng-model="NewWid.Title" name="Title">
+                                                                </div>
+
+                                                                <div class="field-wrap">
+                                                                    <label>
+                                                                        Video Link<span class="req">* </span>
+                                                                    </label>
+                                                                    <input data-ng-model="NewWid.Videolink" type="url" />
+                                                                </div>
+                                                                <p class="text-info">{{AdVdMessage}}</p>
+                                                                <button class="btnPopUp" type="button" ng-click="AddVideo(NewWid)">Upload</button>
+                                                            </div>
+                                                            <div data-ng-hide="ShowAddvdoProfileModel">
+                                                                <p class="text-info">{{AdVdMessage}}</p>
+                                                            </div>
+
+                                                            @*<button class="button button-block" type="button" ng-click="ChangeCoverImage()">Submit</button>*@
+                                                        </fieldset>
+                                                    </ng-form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="UpdateProfileModal" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div class="form log-reg">
+                                                <div id="logindiv">
+                                                    <h1>Update Profile</h1>
+                                                    <ng-form name="PrfImgChageFrm">
+                                                        <fieldset>
+                                                            <div data-ng-show="ShowUpdateProfileModel">
+                                                                <div class="field-wrap">
+                                                                    <label>
+                                                                        Profile<span class="req"> </span>
+                                                                    </label>
+                                                                    <textarea class="form-control" data-ng-model="profile" maxlength="150" name="profile" placeholder="Max 150 Characters" rows="6" id="comment"></textarea>
+                                                                </div>
+                                                                <p class="text-info">{{UpProfileMessage}}</p>
+                                                                <button class="btnPopUp" type="button" ng-click="UpdateProfile(profile)">Update</button>
+                                                            </div>
+                                                            <div data-ng-hide="ShowUpdateProfileModel">
+                                                                <p class="text-info">{{UpProfileMessage}}</p>
+                                                            </div>
+
+                                                            @*<button class="button button-block" type="button" ng-click="ChangeCoverImage()">Submit</button>*@
+                                                        </fieldset>
+                                                    </ng-form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="UpdateProDetails" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div class="form log-reg">
+                                                <div id="logindiv">
+                                                    <h1>Update Profile</h1>
+                                                    <ng-form name="PrfImgChageFrm">
+                                                        <fieldset>
+                                                            <div data-ng-show="ShowUpdateProfileModel">
+                                                                <div class="field-wrap col-md-12">
+                                                                    <label>
+                                                                        Profile Title<span class="req"> </span>
+                                                                    </label>
+                                                                    <textarea class="form-control" data-ng-model="UpdDetails.ProfTitle" maxlength="100" name="ProfileTitle" placeholder="Max 150 Characters" rows="4" id="comment"></textarea>
+                                                                </div>
+                                                                <div class="clearfix"></div>
+
+                                                                <div class="field-wrap col-md-6">
+                                                                    <label>
+                                                                        Performance Fees<span class="req"> </span>
+                                                                    </label>
+                                                                    <input class="form-control" type="text" data-ng-model="UpdDetails.PerfFee" name="PerfFee">
+                                                                </div>
+
+                                                                <div class="field-wrap col-md-6">
+                                                                    <label>
+                                                                        Gender<span class="req"> </span>
+                                                                    </label>
+                                                                    <div class="form-group drpdwn gen">
+                                                                        <div class="btn-group">
+                                                                            <button data-toggle="dropdown" class="btn dropdown-toggle" data-placeholder="Please select"><span class="selected_val">{{UpdDetails.Gender}}</span> <span class="caret"></span></button>
+                                                                            <ul class="dropdown-menu" style="max-width:230px;">
+                                                                                <li>
+                                                                                    <div class="radio radio1 radio-danger" style="margin-top: 5px;">
+                                                                                        <input type="radio" style="margin-top: 5px;" data-ng-model="UpdDetails.Gender" name="Gender" id="input_val16" value="Male">
+                                                                                        <label for="input_val16">
+                                                                                            Male
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </li>
+
+                                                                                <li>
+                                                                                    <div class="radio radio-danger">
+                                                                                        <input type="radio" data-ng-model="UpdDetails.Gender" name="Gender" id="input_val17" value="Female">
+                                                                                        <label for="input_val17">
+                                                                                            Female
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <div class="radio radio-danger">
+                                                                                        <input type="radio" data-ng-model="UpdDetails.Gender" name="Gender" id="input_val18" value="All Male Group">
+                                                                                        <label for="input_val18">
+                                                                                            All Male Group
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <div class="radio radio-danger">
+                                                                                        <input type="radio" data-ng-model="UpdDetails.Gender" name="Gender" id="input_val19" value="All Female Group">
+                                                                                        <label for="input_val19">
+                                                                                            All Female Group
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <div class="radio radio-danger">
+                                                                                        <input type="radio" data-ng-model="UpdDetails.Gender" name="Gender" id="input_val20" value="Mixed Group">
+                                                                                        <label for="input_val20">
+                                                                                            Mixed Group
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <!-- Other items -->
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="field-wrap col-md-6">
+                                                                    <label>
+                                                                        NATIONALITY<span class="req"> </span>
+                                                                    </label>
+                                                                    <div class="form-group drpdwn gen">
+                                                                        <div class="btn-group">
+                                                                            <button data-toggle="dropdown" class="btn dropdown-toggle" data-placeholder="Please select"><span>{{UpdDetails.Nationality}}</span> <span class="caret"></span></button>
+                                                                            <ul class="dropdown-menu" style="max-width:230px;">
+                                                                                <li>
+                                                                                    <div class="radio radio-danger">
+                                                                                        <input type="radio" data-ng-model="UpdDetails.Nationality" name="Nationality" id="iinput_val16" value="Indian">
+                                                                                        <label for="iinput_val16">
+                                                                                            Indian
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <div class="radio radio-danger">
+                                                                                        <input type="radio" data-ng-model="UpdDetails.Nationality" name="Nationality" id="iinput_val17" value="Non-Indian">
+                                                                                        <label for="iinput_val17">
+                                                                                            Non-Indian
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </li>
+
+                                                                                <!-- Other items -->
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="field-wrap col-md-6">
+                                                                    <label>
+                                                                        NO. OF SHOWS<span class="req"> </span>
+                                                                    </label>
+                                                                    <input class="form-control" type="number" data-ng-model="UpdDetails.NoOfShow" name="NoOfShow">
+                                                                </div>
+
+                                                                <div class="clearfix"></div>
+                                                                <div class="field-wrap col-md-6">
+                                                                    <label>
+                                                                        PERFORMANCE LANGUAGE<span class="req"> </span>
+                                                                    </label>
+                                                                    <div class="form-group drpdwn gen">
+                                                                        <div class="btn-group">
+                                                                            <button data-toggle="dropdown" class="btn dropdown-toggle" data-placeholder="Please select"><span>{{UpdDetails.PerfLang}}</span> <span class="caret"></span></button>
+                                                                            <ul class="dropdown-menu" style="max-width:230px;">
+                                                                                <li>
+                                                                                    <div class="radio radio-danger">
+                                                                                        <input type="radio" data-ng-model="UpdDetails.PerfLang" name="PerfLang" id="iiienput_val16" value="English">
+                                                                                        <label for="iiienput_val16">
+                                                                                            English
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <div class="radio radio-danger">
+                                                                                        <input type="radio" data-ng-model="UpdDetails.PerfLang" name="PerfLang" id="iiinput_val16" value="Hindi">
+                                                                                        <label for="iiinput_val16">
+                                                                                            Hindi
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <div class="radio radio-danger">
+                                                                                        <input type="radio" data-ng-model="UpdDetails.PerfLang" name="PerfLang" id="iiinput_val17" value="Regional">
+                                                                                        <label for="iiinput_val17">
+                                                                                            Regional
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </li>
+
+                                                                                <!-- Other items -->
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="field-wrap col-md-6">
+                                                                    <label>
+                                                                        PERFORMANCE LENGTH (Mins)<span class="req"> </span>
+                                                                    </label>
+                                                                    <input class="form-control" type="number" data-ng-model="UpdDetails.PerfLength" name="PerfLength">
+                                                                </div>
+
+                                                                <div class="clearfix"></div>
+                                                                <div class="field-wrap col-md-6">
+                                                                    <label>
+                                                                        PERFORMING MEMBERS<span class="req"> </span>
+                                                                    </label>
+                                                                    <input class="form-control" type="text" data-ng-model="UpdDetails.PerfMembers" name="PerfMembers">
+                                                                </div>
+                                                                @*<div class="field-wrap">
+                                                                    <label>
+                                                                        PERFORMANCE FEES<span class="req"> </span>
+                                                                    </label>
+                                                                    <input class="form-control" type="number" data-ng-model="UpdDetails.Performancefee" name="Performancefee">
+                                                                </div>*@
+                                                                <div class="clearfix"></div>
+                                                                <h4 class="text-danger h4 center">Social Media Links</h4>
+                                                                <div class="field-wrap col-md-6">
+                                                                    <label>
+                                                                        Facebook <span class="req"></span>
+                                                                    </label>
+                                                                    <input class="form-control" type="url" data-ng-model="UpdDetails.FbLink" name="FBPageLink">
+                                                                </div>
+                                                                <div class="field-wrap col-md-6">
+                                                                    <label>
+                                                                        Twitter<span class="req"> </span>
+                                                                    </label>
+                                                                    <input class="form-control" type="url" data-ng-model="UpdDetails.TwtLink" name="TwiterPageLink">
+                                                                </div>
+                                                                <div class="field-wrap col-md-6">
+                                                                    <label>
+                                                                        Instagram <span class="req"> </span>
+                                                                    </label>
+                                                                    <input class="form-control" type="url" data-ng-model="UpdDetails.InstLink" name="IntgramPageLink">
+                                                                </div>
+
+                                                                <p class="text-info">{{UpProfileMessage}}</p>
+                                                                <button class="btnPopUp" type="button" ng-click="UpdateProfileDetails(UpdDetails)">Update</button>
+                                                            </div>
+                                                            <div data-ng-hide="ShowUpdateProfileModel">
+                                                                <p class="text-info">{{UpProfileMessage}}</p>
+                                                            </div>
+
+                                                            @*<button class="button button-block" type="button" ng-click="ChangeCoverImage()">Submit</button>*@
+                                                        </fieldset>
+                                                    </ng-form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </section>
+                <!-- Profile ends -->
+            </div>
+        </div>
+        @section scripts
+        {
+        <script src="~/Scripts/profile.js"></script>
+        <script>
+        $(document).ready(function () {
+            $("body").addClass("detail-page");
+        });
+        </script>
+        }

@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>@ViewBag.Title - India Entertainers</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/animate.min.css" rel="stylesheet">
+    <link href="~/Content/style.css" rel="stylesheet">
+    <!-- <link href="~/Content/responsive.css" rel="stylesheet"> -->
+    <link href="~/Content/swiper.min.css" rel="stylesheet">
+    <link href="~/Content/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+    <link href="~/Content/blueimp-gallery.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv-respond.js"></script>
+    <![endif]-->
+    <link rel="shortcut icon" href="">
+</head>
+<body ng-app="IndEntnApp">
+    <div class="headerWrap">
+        @Html.Partial("_Header")
+
+        @RenderSection("pagetitle", required: false)
+    </div>
+
+    @RenderBody()
+    @*<hr />*@
+
+    <div id="myModal" class="modal fade" role="dialog" ng-controller="IndEntnJSController">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="form log-reg">
+                        <ul class="tab-group">
+                            <li class="tab active current" data-tab="login"><a href="javascript:;" class="">Log In</a></li>
+                            <li class="tab" data-tab="signup"><a href="javascript:;">Sign Up</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="login" class="tab-content_div current">
+                                <ng-form name="logform">
+                                    <fieldset>
+                                        <h1>Welcome Back!</h1>
+                                        <div class="field-wrap">
+                                            <label>
+                                                User Name<span class="req">*</span>
+                                            </label>
+                                            <input type="text" ng-disabled="fielddisablel" class="form-control" ng-model="loginModel.UserName" required>
+                                        </div>
+
+                                        <div class="field-wrap">
+                                            <label>
+                                                Password<span class="req">*</span>
+                                            </label>
+                                            <input id="pass_usr" ng-disabled="fielddisablel" class="form-control" type="password" ng-model="loginModel.password" required />
+                                        </div>
+                                        <p class="text-danger"> {{loginMessage}}</p>
+                                        @*<p class="forgot"><a href="#">Forgot Password?</a></p>*@
+
+                                        <button class="button button-block" id="login_frm" type="submit" data-ng-disabled="!logform.$valid" data-ng-click="loginform(loginModel)" value="login" name="login">Log In</button>
+                                    </fieldset>
+                                </ng-form>
+                            </div>
+
+                            <div id="signup" class="tab-content_div">
+
+                                <ng-form name="Reggform">
+                                    <fieldset>
+                                        <h1>Sign Up for Free</h1>
+                                        <div data-ng-show="ShowRegForm">
+                                            <div class="top-row">
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        Email<span class="req">*</span>
+                                                    </label>
+                                                    <input type="email" ng-disabled="fielddisabler" class="form-control" ng-model="RegModel.Email" required>
+                                                </div>
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        Register As
+                                                    </label>
+                                                    @IndiaEntertainers.HTMLHelper.CustomHelper.ReqAsDropDownList("RegModel.UserType", "form-control", "UserType", null, "required")
+                                                </div>
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        UserName<span class="req">*</span>
+                                                    </label>
+                                                    <input type="text" ng-disabled="fielddisabler" class="form-control" ng-model="RegModel.UserName" required>
+                                                </div>
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        Set A Password<span class="req">*</span>
+                                                    </label>
+                                                    <input type="password" ng-disabled="fielddisabler" class="form-control" ng-model="RegModel.password" id="password1" required>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <p class="text-info">{{Reqmessage}}</p>
+                                            <button type="submit" class="button button-block" id="register_frm" data-ng-disabled="!Reggform.$valid" data-ng-click="SubmitReqForm(RegModel)" value="register" name="register">Register</button>
+                                        </div>
+                                        <div data-ng-hide="ShowRegForm">
+                                            <p class="text-info">{{Reqmessage}}</p>
+                                        </div>
+                                    </fieldset>
+                                </ng-form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Html.Partial("_Footer")
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,158 @@
+﻿@model IndiaEntertainers.Models.tbl_TalentSeeker
+
+@{
+    ViewBag.Title = "MyPofile";
+}
+
+<div class="row">
+    <div class="container">
+        <h2 class="text-info h2 page-header">My Profile</h2>
+
+        <table class="table table-responsive table-striped">
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.CompanyName)
+                </td>
+
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.CompanyName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.CompEmail)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.CompEmail)
+                </td>
+
+                <td>
+                    @Html.DisplayNameFor(model => model.ComMobile)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.ComMobile)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.ContactPerson)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.ContactPerson)
+                </td>
+
+                <td>
+                    @Html.DisplayNameFor(model => model.CPContNo)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.CPContNo)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.CPEmail)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.CPEmail)
+                </td>
+
+                <td>
+                    @Html.DisplayNameFor(model => model.OfficeNo)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.OfficeNo)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Name
+                </td>
+
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.FName) &nbsp; @Html.DisplayFor(model => model.MName) &nbsp; @Html.DisplayFor(model => model.LName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Gender)
+                </td>
+
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.Gender)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.DOB)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.DOB)
+                </td>
+
+                <td>
+                    @Html.DisplayNameFor(model => model.Email)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.Email)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Mobile)
+                </td>
+
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.Mobile)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.StateId)
+                </td>
+
+                <td>
+                    @IndiaEntertainers.HTMLHelper.CustomHelper.GetStateName(Model.StateId)
+                </td>
+
+                <td>
+                    @Html.DisplayNameFor(model => model.CityId)
+                </td>
+
+                <td>
+                    @IndiaEntertainers.HTMLHelper.CustomHelper.GetStateName(Model.CityId)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Address)
+                </td>
+
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.Address)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.PostalCode)
+                </td>
+
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.PostalCode)
+                </td>
+            </tr>
+        </table>
+
+        <div class="clearfix"></div><br /><hr />
+        <p class="col-md-2">
+            @Html.ActionLink("Update","Update", "Dashboard", new {area = "TalentSeeker" },htmlAttributes : new { @class = "btn btn-primary"})
+        </p>
+    </div>
+</div>

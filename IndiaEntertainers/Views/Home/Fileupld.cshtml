@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/angular.js"></script>
+<script src="~/Scripts/angular-upload.js"></script>
+
+<div class="container">
+    <div ng-controller="PhtUpladJsController">
+        <input name="myFile" upload-file="myFile" type="file" />
+        <input type="button" ng-click="doUpload()" text="Upload" />
+    </div>
+</div>

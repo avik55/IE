@@ -1,0 +1,313 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    <meta name="description" content="@ViewBag.Description">
+    <meta name="keywords" content="@ViewBag.Keywords">   
+    <meta name="geo.region" content="IN-MH" />
+    <meta name="geo.placename" content="Mumbai, Delhi, Bangalore" />
+    <meta name="geo.position" content="19.135065;72.832478" />
+    <meta name="ICBM" content="19.135065, 72.832478" />    
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/animate.min.css" rel="stylesheet">
+    <link href="~/Content/style.css" rel="stylesheet">
+    <!-- <link href="~/Content/responsive.css" rel="stylesheet"> -->
+    <link href="~/Content/swiper.min.css" rel="stylesheet">
+    <link href="~/Content/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+    <link href="~/Content/bootstrap.slider.min.css" rel="stylesheet">
+    <link href="~/Content/blueimp-gallery.min.css" rel="stylesheet">
+    @*<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">*@
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv-respond.js"></script>
+    <![endif]-->
+    <link rel="shortcut icon" href="">
+
+    @*<style>
+            #fvpp-blackout {
+                display: none;
+                z-index: 499;
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                background: #000;
+                opacity: 0.5;
+            }
+
+            #my-welcome-message {
+                display: none;
+                z-index: 500;
+                position: fixed;
+                width: 50%;
+                height:78%;
+                left: 30%;
+                top: 8%;
+                padding: 10px 1%;
+                font-family: Calibri, Arial, sans-serif;
+                background: #FFF;
+            }
+
+            #fvpp-close {
+                position: absolute;
+                top: 10px;
+                right: 20px;
+                cursor: pointer;
+            }
+
+            #fvpp-dialog h2 {
+                font-size: 2em;
+                margin: 0;
+            }
+
+            #fvpp-dialog p {
+                margin: 0;
+            }
+        </style>*@
+    <style>
+        .btnPopUp {
+            margin-left: 34%;
+            background: #f33247;
+            color: #fff;
+            padding: 8px 25px;
+            min-width: 150px;
+            display: inline-block;
+            cursor: pointer;
+            border-radius: 20px;
+            font-size: 14px;
+            font-family: 'Roboto-Regular';
+            text-transform: uppercase;
+            border: 0;
+        }
+    </style>
+</head>
+
+<body ng-app="IndEntnApp">
+    <div class="headerWrap">
+        @Html.Partial("_Header")
+        @RenderSection("pagetitle", required: false)
+    </div>
+
+    @RenderBody()
+    @*<hr />*@
+
+    <div id="myModal" class="modal fade" role="dialog" ng-controller="IndEntnJSController">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="height:60px;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 style="color:white;font-size:20px;margin:0;text-align:center;">Welcome Back!</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form log-reg">
+                        <ul class="tab-group" id="loginRegister" style="display:none;">
+                            <li class="tab" data-tab="login"><a href="#login" class="login">Log In</a></li>                            
+                        </ul>
+                        <div class="tab-content">
+                            <div id="login" class="tab-content_div">
+                                <form ng-submit="loginform(loginModel)" name="logform">
+                                    <fieldset>
+                                        <div class="field-wrap">
+                                            <label>
+                                                Username
+                                            </label>
+                                            <input type="text" ng-disabled="fielddisablel" class="form-control" ng-model="loginModel.UserName" required>
+                                        </div>
+
+                                        <div class="field-wrap">
+                                            <label>
+                                                Password
+                                            </label>
+                                            <input id="pass_usr" ng-disabled="fielddisablel" class="form-control" type="password" ng-model="loginModel.password" required />
+                                        </div>
+                                        <p class="text-danger text-center"> {{loginMessage}}</p>
+
+                                        <p class="forgot"><a href="#" data-ng-click="Hideloginform()" data-username="{{loginModel.UserName}}" data-toggle="modal" data-target="#forgotpasswordmodal">Forgot Password?</a></p>
+                                        <p class="pull-right">New User? Please register as <a href="@Url.Action("Register", "Home", new { area = ""}, null)" style="color:blue;">Entertainer</a> or <a href="@Url.Action("RegisterTalentSeekar", "Home", new { area = ""}, null)" style="color:blue;">Talent Seeker</a></p>
+                                        <button class="btnPopUp" id="login_frm" type="submit" data-ng-disabled="!logform.$valid" @*data-ng-click="loginform(loginModel)"*@ value="login" name="login">Log In</button>
+                                    </fieldset>
+                                </form>
+                            </div>                                                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="changepasswordmodal" class="modal fade" role="dialog" ng-controller="IndEntnJSController" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="height:60px;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 style="color:white;font-size:20px;margin:0;text-align:center;">Change Password</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form log-reg">
+                        <div id="logindiv">
+                            <ng-form name="ChangePassWordform">
+                                <fieldset>
+                                    <div data-ng-show="ShowChngPassForm">
+                                        <div class="top-row">
+                                            <div class="field-wrap">
+                                                <label>
+                                                    Old Password
+                                                </label>
+                                                <input type="password" class="form-control" ng-minlength="6" ng-model="ChngPassModel.OldPassword" id="OldPassword" name="OldPassword" required>
+                                                <div ng-messages="ChangePassWordform.OldPassword.$error" class="text-danger">
+                                                    <!--<div ng-message="required">This field is required</div>-->
+                                                    <div ng-message="minlength">Old Password must be over 6 characters</div>
+                                                </div>
+                                            </div>
+                                            <div class="field-wrap">
+                                                <label>
+                                                    New Password
+                                                </label>
+                                                <input type="password" class="form-control" ng-minlength="6" ng-model="ChngPassModel.Password" id="Password" name="Password" required>
+                                                <div ng-messages="ChangePassWordform.Password.$error" class="text-danger">
+                                                    <!--<div ng-message="required">This field is required</div>-->
+                                                    <div ng-message="minlength">New Password must be over 6 characters</div>
+                                                </div>
+                                            </div>
+                                            <div class="field-wrap">
+                                                <label>
+                                                    Confirm Password
+                                                </label>
+                                                @*<input type="password" class="form-control" ng-minlength="6" ng-model="ChngPassModel.ConfirmPassword" id="ConfirmPassword" name="ConfirmPassword" required>*@
+                                                <input type="password" class="form-control" ng-minlength="6" ng-model="ChngPassModel.ConfirmPassword" nx-equal="ChngPassModel.Password" name="ConfirmPassword" required>
+                                                <div ng-messages="ChangePassWordform.ConfirmPassword.$error" class="text-danger">
+                                                    <!--<div ng-message="required">This field is required</div>-->
+                                                    <div ng-message="minlength">Confirm Password must be over 6 characters</div>
+                                                    <div ng-message="nxEqual">New Password and Confirm Password Must be equal!</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <br />
+                                        <p class="text-danger" style="color:red;" data-ng-repeat="msg in Chngpassmsg">{{msg}}</p>
+                                        <button type="submit" class="btnPopUp" id="register_frm" data-ng-disabled="!ChangePassWordform.$valid" data-ng-click="ChangePassword(ChngPassModel)" value="Change Password" name="ChangePassword">Change Password</button>
+                                    </div>
+                                    <div data-ng-hide="ShowChngPassForm">
+                                        <p class="text-danger" style="color:forestgreen;" data-ng-repeat="msg in Chngpassmsg">{{msg}}</p>
+                                    </div>
+                                </fieldset>
+                            </ng-form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="forgotpasswordmodal" class="modal fade" role="dialog" ng-controller="IndEntnJSController" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="height:60px;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 style="color:white;font-size:20px;margin:0;text-align:center;">Forgot Password</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form log-reg">
+                        <div id="logindiv">
+                            <ng-form name="ForgotPassWordform">
+                                <fieldset>
+                                    <div data-ng-show="ShowfrgotPassForm">
+                                        <div class="top-row">
+                                            <div class="field-wrap">
+                                                <label>
+                                                    Enter your email
+                                                </label>
+                                                <input type="email" class="form-control" ng-model="UserEmail" id="UserEmail" name="UserEmail" required>
+                                                <div ng-messages="ForgotPassWordform.UserEmail.$error" class="text-danger">
+                                                    <!--<div ng-message="required">This field is required.</div>-->
+                                                    <div ng-message="email">Please Enter valid Email Id.</div>
+                                                </div>
+                                            </div>
+                                            <div class="field-wrap">
+                                                <label>
+                                                    UserName
+                                                </label>
+                                                <input type="text" class="form-control" ng-model="UserName" id="UserName" name="UserName" required>
+                                                <div ng-messages="ForgotPassWordform.UserName.$error" class="text-danger">
+                                                    <!--<div ng-message="required">This field is required.</div>-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <br />
+                                        <p class="text-danger" style="color:red;" data-ng-repeat="msg in forgotpassmsg">{{msg}}</p>
+                                        <button type="submit" class="btnPopUp" id="register_frm" data-ng-disabled="!ForgotPassWordform.$valid" data-ng-click="ForgotPassword(UserEmail)" value="Forgot Password" name="ForgotPassword">Submit</button>
+                                    </div>
+                                    <div data-ng-hide="ShowfrgotPassForm">
+                                        <p class="text-danger" style="color:forestgreen;" data-ng-repeat="msg in forgotpassmsg">{{msg}}</p>
+                                    </div>
+                                </fieldset>
+                            </ng-form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<div id="my-welcome-message">
+            <img src="~/images/IE_PopUpImage.jpg" style="height: 100%;width: 100%;" />
+        </div>*@
+
+    @Html.Partial("_Footer")
+
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $(document).ready(function () {
+            $('#myModal').on('shown.bs.modal', function (e) {
+                var caller = $(e.relatedTarget).data('name');
+                $('#myModal').modal({
+                    backdrop: 'static'
+                });
+
+                if (caller == "Login") {
+                    $('#loginRegister .login').tab('show');
+                    $('#loginRegister').hide();
+                }
+                else {
+                    $('#loginRegister .signup').tab('show');
+                    $('#loginRegister').hide();
+                }
+            });
+        });
+
+
+    </script>
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-93245764-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+    <script type="text/javascript">
+        $('#regUserName').keypress(function (e) {
+            if (e.which < 48 || (e.which > 57 && e.which < 65) || (e.which > 90 && e.which < 97) || e.which > 122) {
+                return false;
+            }
+        });
+    </script>
+
+</body>
+</html>

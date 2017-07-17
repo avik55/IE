@@ -1,0 +1,260 @@
+﻿@model IndiaEntertainers.ViewModel.RegisterViewModel
+
+@{
+    ViewBag.Title = "Register Talent Seeker";
+}
+
+<style>
+    select {
+        border: none !important;
+        appearance: none;
+        -moz-appearance: none; /* Firefox */
+        -webkit-appearance: none; /* Safari and Chrome */
+        border-bottom: solid 2px #ccc !important;
+        border-radius: 0 !important;
+        margin-top: 16px;
+        background: rgba(255, 255, 255, 0.97);
+        background-image: linear-gradient(45deg, transparent 50%, gray 50%), linear-gradient(135deg, gray 50%, transparent 50%), linear-gradient(to right, #ccc, #ccc);
+        background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
+        background-size: 5px 5px, 5px 5px, 1px 1.5em;
+        background-repeat: no-repeat;
+    }
+
+        select:focus {
+            outline: none !important;
+        }
+
+    .deactiveAnchor {
+        pointer-events: none;
+        cursor: default;
+    }
+</style>
+
+<div class="headerWrap registerfrm">
+
+    <section id="breadcrumbs">
+        <div class="container">
+            <div class="row">
+                <span class="url_lnk hme"><a href="@Url.Action("Index","Home",new { area = ""}, null)" title="Home" class="home_icon">Home</a></span> <b>&gt;</b> <span class="url_lnk">Talent Seeker</span>
+            </div>
+        </div>
+    </section>
+    <section id="home-banner" class="home-banner register-frm-wrp">
+        <div class="container" ng-controller="IndEntnJSController">
+            <p class="sub-title">REGISTRATION OF TALENT-SEEKER</p>
+            <div class="stepwizard">
+                <div class="head_topic stp1">Step 1. Please share your basic contact details</div>
+                <div class="head_topic stp2 hidden">Step 2. OTP Confirmation</div>
+                <div class="stepwizard-row setup-panel">
+                    <span class="bar_progress" style="width:40%;"></span>
+                    <div class="stepwizard-step step-nav-1">
+                        <a href="#step-1" type="button" class="btn btn-primary btn-circle cr1 deactiveAnchor"><i class="fa fa-address-book-o" aria-hidden="true"></i></a>
+                        <!-- <p>Step 1</p> -->
+                    </div>
+                    <div class="stepwizard-step step-nav-2">
+                        <a href="#step-2" type="button" class="btn btn-default btn-circle cr2 deactiveAnchor" disabled="disabled"><i class="fa fa-envelope-open-o" aria-hidden="true"></i></a>
+                        <!-- <p>Step 2</p> -->
+                    </div>
+                </div>
+            </div>
+
+            <form name="frmTalentSeekarRegistration" id="frmTalentSeekarRegistration" ng-submit="submitTalentSeekarRegForm(frmTalentSeekarRegistration.$valid, registration)" novalidate="novalidate">
+                <img src="~/images/Loader/loader.gif" style="display:none;height:50px;" class="imgLoader">
+                <div class="row setup-content step-form-1" id="step-1">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <input type="hidden" name="UserType" ng-init="registration.UserType='Talent Seeker'" ng-value="UserType" />
+                        <div class="form-group" style="width: 100%;" ng-class="{ 'has-error' : frmTalentSeekarRegistration.fname.$invalid && (frmTalentSeekarRegistration.fname.$dirty  || frmTalentSeekarRegistration.$submitted)}">
+                            <input type="text" name="fname"
+                                   ng-model="registration.fname"
+                                   class="form-control chkinput"
+                                   placeholder="First Name"
+                                   required="required"
+                                   ng-required="true"
+                                   ng-pattern="/^[a-zA-Z ]*$/"
+                                   maxlength="50"
+                                   tabindex="1" />
+                            <p ng-show="frmTalentSeekarRegistration.fname.$error.required && (frmTalentSeekarRegistration.fname.$dirty || frmTalentSeekarRegistration.$submitted)" class="help-block">Please fill firstname</p>
+                            <p ng-show="frmTalentSeekarRegistration.fname.$error.pattern && (frmTalentSeekarRegistration.fname.$dirty || frmTalentSeekarRegistration.$submitted)" class="help-block">Please fill valid firstname</p>
+                        </div>
+
+                        <div class="form-group" style="width: 100%;" ng-class="{ 'has-error' : frmTalentSeekarRegistration.companyname.$invalid && (frmTalentSeekarRegistration.companyname.$dirty  || frmTalentSeekarRegistration.$submitted)}">
+                            <input type="text" name="companyname"
+                                   ng-model="registration.companyname"
+                                   class="form-control chkinput"
+                                   placeholder="Company Name"
+                                   required="required"
+                                   ng-required="true"
+                                   maxlength="50"
+                                   tabindex="3" />
+                            <p ng-show="frmTalentSeekarRegistration.companyname.$error.required && (frmTalentSeekarRegistration.companyname.$dirty || frmTalentSeekarRegistration.$submitted)" class="help-block">Please fill company name</p>
+                        </div>
+
+                        <div class="form-group" style="width: 100%;" ng-class="{ 'has-error' : frmTalentSeekarRegistration.email.$invalid && (frmTalentSeekarRegistration.email.$dirty || frmTalentSeekarRegistration.$submitted)}">
+                            <input type="email" name="email"
+                                   ng-model="registration.Email"
+                                   class="form-control chkinput"
+                                   placeholder="Email Address"
+                                   required
+                                   ng-required="true"
+                                   tabindex="5" />
+                            <p ng-show="frmTalentSeekarRegistration.email.$error.required && (frmTalentSeekarRegistration.email.$dirty || frmTalentSeekarRegistration.$submitted)" class="help-block">Please fill email address</p>
+                            <p ng-show="frmTalentSeekarRegistration.email.$error.email && (frmTalentSeekarRegistration.email.$dirty || frmTalentSeekarRegistration.$submitted)" class="help-block">Please fill correct email address</p>
+                        </div>
+
+                        <div class="form-group" style="width: 100%;" ng-class="{ 'has-error' : frmTalentSeekarRegistration.username.$invalid && (frmTalentSeekarRegistration.username.$dirty || frmTalentSeekarRegistration.$submitted)}">
+                            <input type="text"
+                                   placeholder="Create Username"
+                                   id="userName"
+                                   class="form-control chkinput"
+                                   name="username"
+                                   prevent-right-click=""
+                                   ng-model="registration.UserName"
+                                   maxlength="30"
+                                   ng-required="true"
+                                   required="required"
+                                   aria-invalid="true"
+                                   ng-unique
+                                   tabindex="7"
+                                   capitalize />
+                            <p ng-show="frmTalentSeekarRegistration.username.$error.required && (frmTalentSeekarRegistration.username.$dirty || frmTalentSeekarRegistration.$submitted)" class="help-block">Please enter username</p>
+                            <p data-ng-show="!frmTalentSeekarRegistration.username.$error.required && frmTalentSeekarRegistration.username.$error.unique" class="help-block">Username already exists.</p>
+                            <p ng-if="frmTalentSeekarRegistration.username.$pending" style="color:green;">Checking Username....</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group" style="width: 100%;" ng-class="{ 'has-error' : frmTalentSeekarRegistration.lname.$invalid && (frmTalentSeekarRegistration.lname.$dirty  || frmTalentSeekarRegistration.$submitted)}">
+                            <input type="text" name="lname"
+                                   ng-model="registration.lname"
+                                   class="form-control chkinput"
+                                   placeholder="Last Name"
+                                   required="required"
+                                   ng-required="true"
+                                   ng-pattern="/^[a-zA-Z ]*$/"
+                                   maxlength="50"
+                                   tabindex="2" />
+                            <p ng-show="frmTalentSeekarRegistration.lname.$error.required && (frmTalentSeekarRegistration.lname.$dirty || frmTalentSeekarRegistration.$submitted)" class="help-block">Please fill lastname</p>
+                            <p ng-show="frmTalentSeekarRegistration.lname.$error.pattern && (frmTalentSeekarRegistration.lname.$dirty || frmTalentSeekarRegistration.$submitted)" class="help-block">Please fill valid lastname</p>
+                        </div>
+
+                        <div class="form-group" style="width: 100%;" ng-class="{ 'has-error' : frmTalentSeekarRegistration.city.$invalid && (frmTalentSeekarRegistration.city.$dirty || frmTalentSeekarRegistration.$submitted)}">
+                            @IndiaEntertainers.HTMLHelper.CustomHelper.CityDropDownList("city", "btn dropdown-toggle form-control chkinput", "CityId", @ViewBag.CityId, true)
+                            <p ng-show="frmTalentSeekarRegistration.city.$error.required && (frmTalentSeekarRegistration.city.$dirty || frmTalentSeekarRegistration.$submitted)" class="help-block" aria-hidden="true" style="">Please select city</p>
+                        </div>
+
+                        <div class="form-group" style="width: 100%;" ng-class="{ 'has-error' : frmTalentSeekarRegistration.mobileno.$invalid && (frmTalentSeekarRegistration.mobileno.$dirty || frmTalentSeekarRegistration.$submitted)}">
+                            <input placeholder="Mobile Number" type="text"
+                                   id="artistMobile"
+                                   class="form-control chkinput"
+                                   name="mobileno"
+                                   prevent-right-click=""
+                                   ng-model="registration.Mobile"
+                                   ng-mobile-exists=""
+                                   ng-pattern="/^[0-9]*$/"
+                                   maxlength="12"
+                                   ng-required="true"
+                                   required="required"
+                                   aria-invalid="true"
+                                   tabindex="6" />
+                            <p ng-show="frmTalentSeekarRegistration.mobileno.$error.required && (frmTalentSeekarRegistration.mobileno.$dirty || frmTalentSeekarRegistration.$submitted)" class="help-block">Please fill mobile number</p>
+                            <p ng-show="frmTalentSeekarRegistration.mobileno.$error.pattern && (frmTalentSeekarRegistration.mobileno.$dirty || frmTalentSeekarRegistration.$submitted)" class="help-block">Please fill valid mobile number </p>
+                        </div>
+
+                        <div class="form-group" style="width: 100%;" ng-class="{ 'has-error' : frmTalentSeekarRegistration.password.$invalid && (frmTalentSeekarRegistration.password.$dirty || frmTalentSeekarRegistration.$submitted)}">
+                            <input type="password" name="password"
+                                   ng-model="registration.Password"
+                                   class="form-control chkinput"
+                                   placeholder="Password"
+                                   ng-required="true"
+                                   ng-minlength="6"
+                                   tabindex="8" />
+                            <p ng-show="frmTalentSeekarRegistration.password.$error.required && (frmTalentSeekarRegistration.password.$dirty || frmTalentSeekarRegistration.$submitted)" class="help-block">Please fill password</p>
+                            <p ng-show="frmTalentSeekarRegistration.password.$error.minlength && (frmTalentSeekarRegistration.password.$dirty || frmTalentSeekarRegistration.$submitted)" class="help-block">Minimum length should be 6 characters</p>
+                        </div>
+                    </div>
+                    <div class="btn-nxt-wrp">
+                        <button type="submit" class="nextBtnReg" style="border: transparent;">Next</button>
+                    </div>
+                </div>
+            </form>
+            <form name="frmTalentSeekarOTPvalidation" id="frmTalentSeekarOTPvalidation" ng-submit="submitTalentSeekarOTPForm(frmTalentSeekarOTPvalidation.$valid)" novalidate="novalidate">
+                <img src="~/images/Loader/loader.gif" style="display:none;height:50px;" class="imgLoader">
+                <div class="row setup-content step-form-1 step-form-2" id="step-2">
+                    <h2 style="color: #f23246;">An OTP has been sent to your email address. Please verify.</h2>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group" style="width:100%" ng-class="{ 'has-error' : frmTalentSeekarOTPvalidation.otp.$invalid && (frmTalentSeekarOTPvalidation.otp.$dirty || frmTalentSeekarOTPvalidation.$submitted)}">
+                            <input type="hidden" ng-model="otpModel.hdnotp" name="hdnOTP" id="hdnOTP" />
+                            <input type="hidden" ng-model="otpModel.enteredotp" name="enteredOTP" id="enteredOTP" value="{{otpModel.otp}}" />
+                            <input type="hidden" name="hdnUserID" ng-init="otpModel.hdnUserID" ng-value="hdnUserID" />
+                            <input type="hidden" name="hdnfname" ng-init="otpModel.hdnfname" ng-value="hdnfname" />
+                            <input type="hidden" name="hdnlname" ng-init="otpModel.hdnlname" ng-value="hdnlname" />
+                            <input type="hidden" name="hdncompanyname" ng-init="otpModel.hdncompanyname" ng-value="hdncompanyname" />
+                            <input type="hidden" name="hdnemail" ng-init="otpModel.hdnemail" ng-value="hdnemail" />
+                            <input type="hidden" name="hdnCityId" ng-init="otpModel.hdnCityId" ng-value="hdnCityId" />
+                            <input type="hidden" name="hdnSentMail" ng-init="otpModel.hdnSentMail" ng-value="hdnSentMail" />
+
+                            <input name="otp" type="text"
+                                   placeholder="Please enter OTP"
+                                   id="regOTP"
+                                   class="form-control chkinput"
+                                   ng-model="otpModel.otp"
+                                   ng-required="true"
+                                   required="required"
+                                   maxlength="10" />
+                            <p ng-show="frmTalentSeekarOTPvalidation.otp.$error.required && (frmTalentSeekarOTPvalidation.otp.$dirty || frmTalentSeekarOTPvalidation.$submitted)" class="help-block">OTP is required</p>
+                            <p id="correctOTP" class="help-block" style="color:red; display:none;">Please enter correct OTP</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="btn-nxt-wrp" style="margin: 2em;">
+                            <button type="submit" class="nextBtnReg" style="border: transparent;">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                <a id="openSuccessMsgTalentSeeker" style="display:none;" href="javascript:;" data-toggle="modal" data-target="#SuccessMsgRegisterTalentSeeker" data-backdrop="static" data-keyboard="false"></a>
+            </form>
+
+            <div id="SuccessMsgRegisterTalentSeeker" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header" style="height:60px;">
+                            <button type="button" id="" ng-click="closeTSSuccessPopUp()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h3 style="font-size: 20px;color: white;margin: 0;text-align:center;">Success</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form">
+                                <div class="text-center" style="font-family:Calibri;font-size:16px;">
+                                    <br />
+                                    <p>Your registration is complete.</p>
+                                    <p>You can now connect with all Entertainers listed here – Directly & Instantly.</p>
+                                    <p>Search Fast. Search Easy. Search Smart.</p>
+                                    <p>For any assistance, you can call on 8080700999.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("body").addClass("detail-page page");
+            $('#changeImgProfile').click(function () { $('#myprofilePic').trigger('click'); });
+            $('#changeImgCover').click(function () { $('#myFile').trigger('click'); });
+            $('#addPictureInGallery').click(function () { $('#uploadGalleryPic').trigger('click'); });
+
+            $('.step-nav-2 a').on('click', function () {
+                debugger;
+                $('.stp2').removeClass('hidden');
+                $('.stp1,.stp3,.stp4,.stp5').addClass('hidden');
+                $('.bar_progress').css('width', '100%');
+            });
+        });
+
+        $("#userName").on("keypress", function (e) { if (e.which === 32) return false; });
+    </script>
+}

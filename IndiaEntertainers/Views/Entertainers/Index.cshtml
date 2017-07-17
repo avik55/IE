@@ -1,0 +1,369 @@
+﻿@{
+    if (ViewBag.SearhBy == "Singers")
+    {
+        ViewBag.Title = "Book Online Famous & Professional Singers from IndiaEntertainers.com";
+        ViewBag.Description = "Rock your party, wedding, events, fashion show and many programs by booking or hiring singers from India’s No.1 online artist booking platform. BOOK NOW!";
+        ViewBag.Keywords = "singers for hire, hire a singer, hire a singer for a party, singer hire singers for weddings, bollywood singers for hire, hire singer for party, hire singers, booking singers for parties, book singer for wedding, book singers for events";
+    }
+    else if (ViewBag.SearhBy == "Bands")
+    {
+        ViewBag.Title = "Book Online Popular & New Rock, Jazz, Fusion, Pop, Sufi Bands";
+        ViewBag.Description = "Hire famous or new bands for wedding, events, charity, corporate, concert, campus and other occasion from India’s No.1 artist booking platform (IndiaEntertainers)";
+        ViewBag.Keywords = "hire band, live band hire, hire a band, book a band, book orchestra, book jazz band, book rock band, book sufi band, book fusion band, book pop band, hire orchestra, hire jazz band, hire rock band, hire pop band, hire sufi band, hire fusion band";
+    }
+    else if (ViewBag.SearhBy == "Dancers")
+    {
+        ViewBag.Title = "Book Online Bollywood, Western, Classical & Belly Dancers";
+        ViewBag.Description = "Hire your favourite dancers, dance group or Choreographers from India’s No.1 artist booking platform (IndiaEntertainers) as per your budget, location & occasion!";
+        ViewBag.Keywords = "hire belly dancer, book belly dancer, book bollywood dancer, book western dancer, book folk dancer, book classical dancer, hire bollywood dancer, hire western dancer, hire folk dancer, hire classical dancer, book belly dancers, book a dance group, belly dancers for hire";
+    }
+    else if (ViewBag.SearhBy == "DJS")
+    {
+        ViewBag.Title = "Book India’s Famous & Top DJs for Wedding, Party, Events, Concerts";
+        ViewBag.Description = "Hire your favourite Bollywood, EDM, trance, electro from India’s No. 1 online artist booking site IndiaEntertainers as per your location, budget & occasion. Book Now!";
+        ViewBag.Keywords = "book dj online, book dj for party, book dj for wedding, book trance, book techno, book electro, book bollywood dj, hire best dj india, book best dj india, hire top dj, book top dj, dj for hire";
+    }
+    else if (ViewBag.SearhBy == "Anchors")
+    {
+        ViewBag.Title = "Book Now Male/ Female Anchors, Radio/Video Jockeys Online";
+        ViewBag.Description = "Hire talented anchors, radio jockeys, voice-over artists from India’s No.1 online artist booking site (IndiaEntertainers) as per your location, Occasion & Budget!";
+        ViewBag.Keywords = "book anchor for wedding, book anchor for party, book anchor for event, book voice-over artist, book anchor india, book emcee delhi, radio jockey for event, hire voice over artist for shows, book hindi anchor, hire anchor for concert, book anchors in goa, book anchor for event mumbai, book female anchor";
+    }
+    else if (ViewBag.SearhBy == "Stand-up Comedians")
+    {
+        ViewBag.Title = "Book Now Male/ Female Comedian";
+        ViewBag.Description = "Hire talented Comedian, radio jockeys, voice-over artists from India’s No.1 online artist booking site (IndiaEntertainers) as per your location, Occasion & Budget!";
+        ViewBag.Keywords = "book anchor for wedding, book anchor for party, book anchor for event, book voice-over artist, book anchor india, book emcee delhi, radio jockey for event, hire voice over artist for shows, book hindi anchor, hire anchor for concert, book anchors in goa, book anchor for event mumbai, book female anchor";
+    }
+    else if (ViewBag.SearhBy == "Uncut (Aspiring Singers)")
+    {
+        ViewBag.Title = "Book Online Famous & Professional Singers from IndiaEntertainers.com";
+        ViewBag.Description = "Rock your party, wedding, events, fashion show and many programs by booking or hiring singers from India’s No.1 online artist booking platform. BOOK NOW!";
+        ViewBag.Keywords = "singers for hire, hire a singer, hire a singer for a party, singer hire singers for weddings, bollywood singers for hire, hire singer for party, hire singers, booking singers for parties, book singer for wedding, book singers for events";
+    }
+    else
+    {
+        ViewBag.Keywords = "Top Singers, Best Singers, Live Singers, Live Bands, Punjabi Singers, Jazz Singers,Top DJs, Best DJs, Club DJs, DJs in India, Top 10 DJs,Top Bands, Best Bands, Live Bands, Jazz Bands, Retro Music, Rock Bands,Top Dancers, Best Dancers, Dance Troupes, Bhangra Dancers, Hip hop dancers, LED dancers, Salsa Dancers";
+    }
+}
+
+
+<div ng-app="IndEntnApp">
+
+    @section pagetitle{
+        <section id="breadcrumbs">
+            <div class="container">
+                <div class="row">
+                    @if (@ViewBag.SearhBy != "Entertainers")
+                    {
+                        <span class="url_lnk hme"><a href="@Url.Action("Index","Home",new { area = "" })" title="Home" class="home_icon">Home</a></span> <b>&gt;</b> <span class="url_lnk"><a href="@Url.Action("Index","Entertainers",new { area = "", id = ""})" title="Entertainers">Entertainers</a></span> <b>&gt;</b> <span class="url_lnk"><a href="@Url.Action("Index","Entertainers",new { area = "", @id = @ViewBag.SearhBy})" title="@ViewBag.SearhBy">@ViewBag.SearhBy</a></span>
+                    }
+                    else
+                    {
+                        <span class="url_lnk hme"><a href="@Url.Action("Index","Home",new { area = "" })" title="Home" class="home_icon">Home</a></span> <b>&gt;</b> <span class="url_lnk"><a href="@Url.Action("Index","Entertainers",new { area = "", id = ""})" title="Entertainers">Entertainers</a></span>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <div ng-controller="TypeaheadCtrl" ng-cloak>
+            <div class="" style="text-align:center;">
+                <form id="search-form" class="search_form" action="" method="post">
+                    <div class="srchbox col-xs-12">
+                        <input id="search-query" type="text" name="search" autocomplete="off" ng-model="asyncSelected" uib-typeahead="item as item.Name for item in getResults($viewValue)" placeholder="Type Entertainer Name or Category" typeahead-on-select="Redirect(asyncSelected)" typeahead-min-length="2" required />
+                        <span class="srchico"><i class="fa fa-search" aria-hidden="true"></i></span>
+                    </div>
+                    <input type="submit" value="Search" id="submit-search" data-ng-click="Search(Qury)" class="submit-search">
+                </form>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <h1 class="page-title">@ViewBag.SearhBy <span class="page-sub">(@ViewBag.TotalRows)</span></h1>
+            </div>
+        </div>
+
+    }
+
+    <div ng-controller="IndEntnJSController">        
+        <div ng-controller="SrchFilterJsController" ng-init="AssignCatId(@ViewBag.CatId)">
+            <div class="filter-search-wrp" ng-cloak>
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-md-2 filter-srch-list">
+                            <div class="btn-group">
+                                <div class="dropdown">
+                                    <button class='btn btn-secondary dropdown-toggle' type='button' data-toggle='dropdown'>
+                                        Location <span class='caret'></span>
+                                    </button>
+                                    <div class='dropdown-menu'>
+                                        <div class='search-bar-drpdwn'>
+                                            <form class='navbar-form' role='search'>
+                                                <div class='input-group add-on'>
+                                                    <input class='form-control' autocomplete="off" data-ng-model="Qury" data-ng-keyup="GetCities(Qury)" placeholder='Type to Select City' type='text'>
+                                                    <div class='input-group-btn'>
+                                                        <button class='btn btn-default' data-ng-click="GetCities(Qury)" type='submit'><i class='glyphicon glyphicon-search'></i></button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <div class='scrollbar'>
+                                            <div class='top-cities city-lists' data-ng-hide="ShowCitiesFltrModel">
+                                                <div class='drpdwn-sec-title'>Selected Cities</div>
+                                                <ul data-ng-repeat="cttt in MyFlCity">
+                                                    <li><label for="cityy-{{cttt.Id}}"><input type="checkbox" ng-checked="true" id="cityy-{{cttt.Id}}" data-ng-click="InnerFilter(); deleteCity(cttt);" ng-true-value="{{cttt}}"> {{cttt.Name}}</label></li>
+                                                </ul>
+                                            </div>
+                                            <div class="top-cities lists" data-ng-show="ShowCitiesFltrModel">
+                                                <div class="drpdwn-sec-title">Search Cities</div>
+                                                <ul data-ng-repeat="cttt in FltrCities">
+                                                    <li><label for="cityy-{{cttt.Id}}"><input type="checkbox" id="cityy-{{cttt.Id}}" data-ng-click="InnerFilter(); addCity(cttt);"> {{cttt.Name}} </label></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 filter-srch-list">
+                            <div class="btn-group">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                        Category <span class="caret"></span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <div class="search-bar-drpdwn">
+                                            <form class="navbar-form" role="search">
+                                                <div class="input-group add-on">
+                                                    <input class="form-control" data-ng-model="Qury" data-ng-keyup="GetCategories(Qury)" autocomplete="off" placeholder="Type Name or Category of Entertainer" name="srch-term" id="srch-term" type="text">
+                                                    <div class="input-group-btn">
+                                                        <button class="btn btn-default" data-ng-click="GetCategories(Qury)" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="scrollbar">
+                                            <div class="top-cities lists">
+                                                <ul class="chkboxes" data-ng-hide="ShowCategoriesFltrModel">
+                                                    <li><label for="Catett-5"><input type="checkbox" id="Catett-5" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlCategory[1]" ng-true-value="15" ng-checked="Cat1checked"> Bands</label></li>
+                                                    <li><label for="Catett-15"><input type="checkbox" id="Catett-15" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlCategory[2]" ng-true-value="9" ng-checked="Cat2checked"> Dancers</label></li>
+                                                    <li><label for="Catett-9"><input type="checkbox" id="Catett-9" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlCategory[3]" ng-true-value="11" ng-checked="Cat3checked"> DJs</label></li>
+                                                    <li><label for="Catett-11"><input type="checkbox" id="Catett-11" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlCategory[0]" ng-true-value="5" ng-checked="Cat4checked"> Anchors</label></li>
+                                                    <li><label for="Catett-2"><input type="checkbox" id="Catett-2" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlCategory[4]" ng-true-value="2" ng-checked="Cat5checked"> Singers</label></li>
+                                                    <li><label for="Catett-12"><input type="checkbox" id="Catett-12" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlCategory[5]" ng-true-value="12" ng-checked="Cat6checked"> Stand-up Comedians</label></li>
+                                                    <li><label for="Catett-14"><input type="checkbox" id="Catett-14" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlCategory[6]" ng-true-value="14" ng-checked="Cat7checked"> Uncut (Aspiring Singers)</label></li>
+                                                </ul>
+                                                <div data-ng-show="ShowCategoriesFltrModel">
+                                                    <ul class="chkboxes" data-ng-repeat="catttt in FltrCategories">
+                                                        <li><label for="Catett-{{catttt.Id}}"><input id="Catett-{{catttt.Id}}" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlCategory[$index]" type="checkbox" name="FrCategory" ng-true-value="{{catttt.Id}}"> {{catttt.Name}}</label></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 filter-srch-list">
+                            <div class="btn-group">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                        Gender <span class="caret"></span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <div class="lists">
+                                            <ul>
+                                                <li><label for="Gedd-1"><input type="checkbox" id="Gedd-1" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlGender[0]" ng-true-value='1'> Male</label></li>
+                                                <li><label for="Gedd-2"><input type="checkbox" id="Gedd-2" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlGender[1]" ng-true-value="2"> Female</label></li>
+                                                <li><label for="Gedd-3"><input type="checkbox" id="Gedd-3" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlGender[2]" ng-true-value="3"> All Male Groups</label></li>
+                                                <li><label for="Gedd-4"><input type="checkbox" id="Gedd-4" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlGender[3]" ng-true-value="4"> All Female Groups</label></li>
+                                                <li><label for="Gedd-5"><input type="checkbox" id="Gedd-5" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlGender[4]" ng-true-value="5"> Mixed Groups</label></li>
+                                                <!-- Other items -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 filter-srch-list">
+                            <div class="btn-group">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                        Nationality <span class="caret"></span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <div class="lists">
+                                            <ul>
+                                                <li><label for="Natn-1"><input type="checkbox" id="Natn-1" data-ng-click="InnerFilter(FilterModel)" data-ng-model="FilterModel.FlNationality[0]" name="FlNationality" ng-true-value="1"> Indian </label></li>
+                                                <li><label for="Natn-2"><input type="checkbox" id="Natn-2" data-ng-click="InnerFilter(FilterModel)" data-ng-model="FilterModel.FlNationality[1]" name="FlNationality" ng-true-value="2"> Non-Indian </label></li>
+                                                <!-- Other items -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 filter-srch-list">
+                            <div class="btn-group">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                        Performance Language <span class="caret"></span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <div class="lists">
+                                            <ul>
+                                                <li><label for="PerLang-1"><input id="PerLang-1" type="checkbox" data-ng-click="InnerFilter(FilterModel)" data-ng-model="FilterModel.FlPerfLanguage[0]" name="FlPerfLanguage" ng-true-value="1"> Hindi</label></li>
+                                                <li><label for="PerLang-2"><input id="PerLang-2" type="checkbox" data-ng-click="InnerFilter(FilterModel)" data-ng-model="FilterModel.FlPerfLanguage[1]" name="FlPerfLanguage" ng-true-value="2"> English</label></li>
+                                                <li><label for="PerLang-3"><input id="PerLang-3" type="checkbox" data-ng-click="InnerFilter(FilterModel)" data-ng-model="FilterModel.FlPerfLanguage[2]" name="FlPerfLanguage" ng-true-value="3"> Multilingual</label></li>
+                                                <!-- Other items -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-2 filter-srch-list">
+                            <div class="btn-group">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                        Budget <span class="caret"></span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <div class="search-bar-drpdwn">
+                                            <form class="navbar-form" role="search">
+                                                <div class="input-group add-on">
+                                                    <input class="form-control minbg pull-left" placeholder="Min Budget" data-ng-model="FilterModel.FlbudgetMin" type="number" id="FlbudgetMin" name="FlbudgetMin" min="0">
+                                                    <span class="line_dv"></span>
+                                                    <input class="form-control maxbg pull-right" placeholder="Max Budget" data-ng-model="FilterModel.FlbudgetMax" type="number" id="FlbudgetMax" name="FlbudgetMax" min="0">
+                                                </div>
+                                                <div class="rangeslider">
+                                                    <input id="slideValue" type="number" />
+                                                    <span class="pull-left">INR 0</span>
+                                                    <span class="pull-right">INR 2500000+</span>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <input type="button" name="Range" value="OK" data-ng-click="InnerFilter(FilterModel)" class="btn btn-danger btn-sm btn-block" />
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="reset_sec"><a href="javascript:;" data-ng-click="Resetfilters()" title="Reset Filter"> <i class="fa fa-refresh" aria-hidden="true"></i> </a> </div>
+                    </div>
+                </div>
+            </div>
+           
+            <section id="trending" ng-cloak style="overflow-y:scroll;">
+                <div class="container">
+                    <div class="row">                     
+                        <div class="trending animated" data-ng-show="ShowEntertainersFilter">
+                            @if (ViewBag.Msg != null)
+                            {
+                                <h2 class="text-center h2" style="color:red;">@ViewBag.Msg</h2>
+                                <br /><hr />
+                            }
+                            <div data-ng-repeat="Entrtner in Entertainers">
+                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                    <div class="trending-wrap">
+                                        <div class="trend_img">
+                                            <a target="_blank" href="{{Entrtner.URL}}">
+                                                <div class="trend_image" style="height:200px;">
+                                                    <img ng-src="{{Entrtner.imgurl}}" alt="{{Entrtner.Name}}" class="img-responsive profile-image" />
+                                                </div>                                                
+                                                <h3 class="trend_name">{{Entrtner.Name}}</h3>
+                                                <span class="overlay"></span>
+                                            </a>
+                                        </div>
+                                        <div class="trend_dtl">
+                                            <div class="dtl">
+                                                <span class="trend_singer"><img src="~/images/mic.png" /> {{Entrtner.Category}}</span>
+                                                <span class="trend_address"><img src="~/images/address.png" /> {{Entrtner.City}}</span>
+                                            </div>
+                                            <div class="trend_cnt"><a href="javascript:;" data-toggle="modal" ng-click='GetEntrnId(Entrtner.EntrId)' data-target="#contactdialogEntertainer" data-backdrop="static" data-keyboard="false">CONTACT</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="trend_all" data-ng-show="ShowLoadMoreOption"><a href="javascript:;" id="loadMoreLink" data-ng-click='InnerFilter("Loadmore")'></a></div>
+            </section>
+        </div>
+               
+        <div id="contactdialogEntertainer" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" id="closebtn" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div data-ng-show="ShowCntFrm">
+                            <h3 style="font-size: 20px;color: white;margin: 0;text-align:center;">Contact Entertainer</h3>
+                        </div>
+                        <div data-ng-hide="ShowCntFrm">
+                            <h3 style="font-size: 20px;color: white;margin: 0;text-align:center;">Success</h3>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form log-reg">
+                            <div id="logindiv">
+                                <div data-ng-show="ShowCntFrm">
+
+                                    <ng-form name="contactform">
+                                        <fieldset>
+                                            <div data-ng-hide="UserLoggedIn" style="text-align:center;">                                              
+                                                <p>To contact this entertainer, You must be logged in</p>
+                                                <p>
+                                                    <a href="javascript:;" id="loginLink" style="color:blue;"> Click here to login</a>
+                                                </p>
+                                                <a href="javascript:;" id="loginPop" data-toggle="modal" data-name="Login" data-target="#myModal" data-backdrop="static" data-keyboard="false" style="display:none;"></a>
+                                            </div>
+                                            <div data-ng-show="UserLoggedIn" class="field-wrap">
+                                                <label>
+                                                    Message
+                                                </label>
+                                                <textarea class="form-control" data-ng-model="EntnMessage.Message" placeholder="Max 150 Characters" rows="3" id="Message" ng-maxlength="150" ng-minlength="1" ng-required="cntfrmrqured"></textarea>
+                                            </div>
+                                            <div data-ng-show="UserLoggedIn">
+                                                <p class="text-info text-center" style="white-space:pre-wrap;">{{cntfrmMessage}}</p>
+                                                <button class="btnPopUp" type="submit" data-ng-disabled="!contactform.$valid" data-ng-click="SendMessagetoEntrn(EntnMessage)">Submit</button>
+                                            </div>
+                                        </fieldset>
+                                    </ng-form>
+                                </div>
+                                <div data-ng-hide="ShowCntFrm" class="text-center" style="white-space:pre-wrap;">
+                                    <p class="text-info">{{cntfrmMessage}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("body").addClass("detail-page page search-pg");
+        });
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() + $(window).height() > $(document).height() - 200) {
+                $("#loadMoreLink").trigger("click");
+            }
+        });
+    </script>
+}

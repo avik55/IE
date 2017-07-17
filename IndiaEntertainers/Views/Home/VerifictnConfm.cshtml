@@ -1,0 +1,27 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row detail-page page">
+    <div class="container">
+        @*<section id="breadcrumbs">
+            <div class="container">
+                <div class="row">
+                    <span class="url_lnk hme"><a href="javascript:;" title="Home" class="home_icon">Home</a></span> <b>&gt;</b> <span class="url_lnk">Verification Confirmation</span>
+                </div>
+            </div>
+        </section>*@
+
+        <section id="home-banner" class="home-banner register-frm-wrp">
+            <div class="container text-left">
+                <h2 class="sub-title text-center">Welcome Back</h2>
+                <br />
+                <p class="abt_head"><br /> <b>Verification complete.</b></p>
+                <p>You can now fill in your profile details, post pictures and videos. <a href="@Url.Action("ProfileDetail", "MyAccount", new { area = "Entertainer"}, null)"> click here. </a></p>
+                <p>For assistance, you can read <a href="@Url.Action("HCYP", "Home", new { area = ""}, null)"> How to Create Your Profile?</a></p>
+            </div>
+        </section>
+    </div>
+</div>
+
+

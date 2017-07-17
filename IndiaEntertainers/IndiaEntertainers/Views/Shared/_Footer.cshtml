@@ -1,0 +1,53 @@
+﻿<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" style="display: none;">
+	<div class="slides"></div>
+	<h3 class="title hidden"></h3>
+	<a class="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+	<a class="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+	<a class="close"><span class="glyphicon glyphicon-remove"></span></a>
+	<a class="play-pause"></a>
+	<ol class="indicator"></ol>
+</div>
+
+
+<footer id="footer" class="midnight-blue">
+	<div class="container">
+		<div class="row">
+			<div class="copyright col-sm-4 col-md-3 col-lg-3 col-xs-12">
+				<img src="~/images/copyright-img.png" alt="Copyright" /> India Entertainers.com<span class="dot-seperator"></span>
+			</div>
+			<div class="col-sm-5 col-md-4 col-lg-3 col-xs-12">
+				Visitor Agreement & Privacy Policy
+			</div>
+		</div>
+	</div>
+</footer>
+
+<script src="~/Scripts/angular.min.js"></script>
+<script src="~/Scripts/angular-upload.js"></script>
+<script src="~/Scripts/jquery.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/common.js"></script>
+<script src="~/Scripts/swiper.min.js"></script>
+<script src="~/Scripts/jquery.mCustomScrollbar.min.js"></script>
+<script src="~/Scripts/bootstrap.slider.min.js"></script>
+<script src="~/Scripts/jquery.blueimp-gallery.min.js"></script>
+<script src="~/Scripts/profile.js"></script>
+<script src="~/Scripts/App/app.js"></script>
+<script src="~/Scripts/App/IndEntnJSController.js"></script>
+<script>
+		$(function(){
+		 var shrinkHeader = 50;
+		  $(window).scroll(function() {
+			var scroll = getCurrentScroll();
+			  if ( scroll >= shrinkHeader ) {
+				   $('#header_wrapper').addClass('shrink');
+				}
+				else {
+					$('#header_wrapper').removeClass('shrink');
+				}
+		  });
+		function getCurrentScroll() {
+			return window.pageYOffset;
+			}
+		});
+</script>

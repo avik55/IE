@@ -1,0 +1,56 @@
+﻿@model IEnumerable<IndiaEntertainers.Models.tbl_EntrImages>
+
+@{
+    ViewBag.Title = "My Images";
+    int srno = 0;
+}
+
+<div class="row">
+    <div class="container">
+        <h2 class="h2 page-header text-info">My Images</h2>
+        <p class="col-md-2">
+            @Html.ActionLink("Add New", "UploadImage", "MyAccount", new { area = "Entertainer" }, htmlAttributes: new { @class = "btn btn-info btn-block" })
+        </p>
+
+        <div class="clearfix"></div>
+        <table class="table table-striped table-responsive">
+            <tr>
+                <th>#</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    Image
+                </th>
+
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                srno++;
+            <tr>
+                <td>@srno</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    <img src="~/images/UserImages/@item.ImagePath" alt="@item.Title" title="@item.Title" class="img-responsive img-thumbnail" height="200" width="400" />
+                </td>
+                <td>
+                    @Html.ActionLink("Update", "UpdateImg", new { id = item.ImageId })
+                </td>
+                <td>
+                    @Html.ActionLink("Delete", "DeleteImg", new { id = item.ImageId }, new { onclick = "return confirm('Are you sure you wish to delete this Image?');" })
+                </td>
+            </tr>
+            }
+        </table>
+
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+
+

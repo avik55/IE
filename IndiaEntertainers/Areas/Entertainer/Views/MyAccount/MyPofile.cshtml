@@ -1,0 +1,266 @@
+﻿@model IndiaEntertainers.Models.tbl_Entertainer
+
+@{
+    ViewBag.Title = "MyPofile";
+}
+
+
+<div class="row">
+    <div class="container">
+        <h2 class="text-info h2 page-header">My Profile</h2>
+
+        <table class="table table-responsive table-striped">
+            <tr>
+                <td>
+                    Name
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.FName)
+                </td>
+                <td>
+                    Category
+                </td>
+                <td>
+                    @IndiaEntertainers.HTMLHelper.CustomHelper.GetEntCatName(Model.EntrId)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Gender)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.Gender)
+                </td>
+
+                <td>
+                    @Html.DisplayNameFor(model => model.DOB)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.DOB)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Email)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.Email)
+                </td>
+
+                <td>
+                    @Html.DisplayNameFor(model => model.Mobile)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.Mobile)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.IsItIndian)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.IsItIndian)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(model => model.Nationality)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.Nationality)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.NoofShow)
+                </td>
+
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.NoofShow)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.PerfLanguage)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.PerfLanguage)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(model => model.PerfLength)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.PerfLength)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Performancefee)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.Performancefee)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(model => model.PERFORMINGMEMBERS)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.PERFORMINGMEMBERS)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Showfee)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.Showfee)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(model => model.YearsOfPerforming)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.YearsOfPerforming)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.ProfileTitle)
+                </td>
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.ProfileTitle)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Profile)
+                </td>
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.Profile)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.TwiterPageLink)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.TwiterPageLink)
+                </td>
+                <td>
+                    @Html.DisplayNameFor(model => model.FBPageLink)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.FBPageLink)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.IntgramPageLink)
+                </td>
+
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.IntgramPageLink)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.ContactPerson)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.ContactPerson)
+                </td>
+
+                <td>
+                    @Html.DisplayNameFor(model => model.CPContNo)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.CPContNo)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.CPEmail)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.CPEmail)
+                </td>
+
+                <td>
+                    @Html.DisplayNameFor(model => model.OfficeNo)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.OfficeNo)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.StateId)
+                </td>
+
+                <td>
+                    @IndiaEntertainers.HTMLHelper.CustomHelper.GetStateName(Model.StateId)
+                </td>
+
+                <td>
+                    @Html.DisplayNameFor(model => model.CityId)
+                </td>
+
+                <td>
+                    @IndiaEntertainers.HTMLHelper.CustomHelper.GetStateName(Model.CityId)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Address)
+                </td>
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.Address)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.PostalCode)
+                </td>
+
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.PostalCode)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Type)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.Type)
+                </td>
+
+                <td>
+                    @Html.DisplayNameFor(model => model.Members)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.Members)
+                </td>
+            </tr>
+        </table>
+
+        <div class="clearfix"></div><br /><hr />
+        <p class="col-md-2">
+            @Html.ActionLink("Update", "Update", "MyAccount", new { area = "Entertainer" }, htmlAttributes: new { @class = "btn btn-primary" })
+        </p>
+
+    </div>
+</div>

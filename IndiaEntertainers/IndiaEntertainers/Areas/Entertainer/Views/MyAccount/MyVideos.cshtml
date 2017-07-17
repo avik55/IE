@@ -1,0 +1,53 @@
+﻿@model IEnumerable<IndiaEntertainers.Models.tbl_EntrVideos>
+
+@{
+    ViewBag.Title = "MyVideos";
+    int srno = 0;
+}
+
+<div class="row">
+    <div class="container">
+        <h2 class="h2 page-header text-info">My Videos</h2>
+        <p class="col-md-2">
+            @Html.ActionLink("Add New", "UploadVideo", "MyAccount", new { area = "Entertainer" }, htmlAttributes: new { @class = "btn btn-info btn-block" })
+        </p>
+        <div class="clearfix"></div>
+
+        <table class="table table-striped table-responsive">
+            <tr>
+                <th>#</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Videolink)
+                </th>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                srno++;
+                <tr>
+                    <td>@srno</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Videolink)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Update", "UpdateVd", new { id = item.Vid })
+                    </td>
+                    <td>
+                        @Html.ActionLink("Delete", "DeleteVd", new { id = item.Vid }, new { onclick = "return confirm('Are you sure you wish to delete this Video?');" })
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <div class="clearfix"></div>
+    </div>
+</div>

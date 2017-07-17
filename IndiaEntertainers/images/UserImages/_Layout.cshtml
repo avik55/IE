@@ -1,0 +1,271 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>@ViewBag.Title - India Entertainers</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/animate.min.css" rel="stylesheet">
+    <link href="~/Content/style.css" rel="stylesheet">
+    <!-- <link href="~/Content/responsive.css" rel="stylesheet"> -->
+    <link href="~/Content/swiper.min.css" rel="stylesheet">
+    <link href="~/Content/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+    <link href="~/Content/blueimp-gallery.min.css" rel="stylesheet">
+    @*<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">*@
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv-respond.js"></script>
+    <![endif]-->
+    <link rel="shortcut icon" href="">
+</head>
+<body ng-app="IndEntnApp">
+    <div class="headerWrap">
+        @Html.Partial("_Header")
+        @RenderSection("pagetitle", required: false)
+    </div>
+
+    @RenderBody()
+    @*<hr />*@
+
+    <div id="myModal" class="modal fade" role="dialog" ng-controller="IndEntnJSController">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+ <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form log-reg">
+                        <ul class="tab-group" id="loginRegister">
+                            <li class="tab" data-tab="login"><a href="#login" class="login">Log In</a></li>
+                            <li class="tab" data-tab="signup"><a href="#signup" class="signup">Sign Up</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="login" class="tab-content_div">
+                                <form ng-submit="loginform(loginModel)" name="logform">
+                                    <fieldset>
+                                        <h1>Welcome Back!</h1>
+                                        <div class="field-wrap">
+                                            <label>
+                                                User Name<span class="req">*</span>
+                                            </label>
+                                            <input type="text" ng-disabled="fielddisablel" class="form-control" ng-model="loginModel.UserName" required>
+                                        </div>
+
+                                        <div class="field-wrap">
+                                            <label>
+                                                Password<span class="req">*</span>
+                                            </label>
+                                            <input id="pass_usr" ng-disabled="fielddisablel" class="form-control" type="password" ng-model="loginModel.password" required />
+                                        </div>
+                                        <p class="text-danger text-center"> {{loginMessage}}</p>
+                                        <p class="forgot"><a href="#" data-ng-click="Hideloginform()" data-toggle="modal" data-target="#forgotpasswordmodal">Forgot Password?</a></p>
+                                        <button class="button button-block" id="login_frm" type="submit" data-ng-disabled="!logform.$valid" @*data-ng-click="loginform(loginModel)"*@ value="login" name="login">Log In</button>
+                                    </fieldset>
+                                </form>
+                            </div>
+
+                            <div id="signup" class="tab-content_div">
+
+                                <form ng-submit="SubmitReqForm(RegModel)" name="Reggform">
+                                    <fieldset>
+                                       
+                                        <div data-ng-show="ShowRegForm">
+                                             <h1>Sign Up for Free</h1>
+                                            <div class="top-row">
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        Email<span class="req">*</span>
+                                                    </label>
+                                                    <input type="email" class="form-control" ng-model="RegModel.Email" required>
+                                                </div>
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        Register As
+                                                    </label>
+                                                    @IndiaEntertainers.HTMLHelper.CustomHelper.ReqAsDropDownList("RegModel.UserType", "form-control", "UserType", null, "required")
+                                                </div>
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        UserName<span class="req">*</span>
+                                                    </label>
+                                                    <input type="text" class="form-control" ng-model="RegModel.UserName" required>
+                                                </div>
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        Set A Password<span class="req">*</span>
+                                                    </label>
+                                                    <input type="password" class="form-control" ng-model="RegModel.password" id="password1" required>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <p class="text-danger text-center" style="color:red;" data-ng-repeat="msg in Reqmessage">{{msg}}</p>
+                                            <button type="submit" class="button button-block" id="register_frm" data-ng-disabled="!Reggform.$valid" @*data-ng-click="SubmitReqForm(RegModel)"*@ value="register" name="register">Register</button>
+                                        </div>
+                                        <div data-ng-hide="ShowRegForm">
+                                            <p class="text-danger text-center" style="color:red;" data-ng-repeat="msg in Reqmessage">{{msg}}</p>
+                                        </div>
+                                    </fieldset>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="changepasswordmodal" class="modal fade" role="dialog" ng-controller="IndEntnJSController">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+ <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form log-reg">
+                        <div id="logindiv">
+                            <h1>Change Password</h1>
+                            <ng-form name="ChangePassWordform">
+                                <fieldset>
+                                    <div data-ng-show="ShowChngPassForm">
+                                        <div class="top-row">
+                                            <div class="field-wrap">
+                                                <label>
+                                                    Old Password<span class="req">*</span>
+                                                </label>
+                                                <input type="password" class="form-control" ng-minlength="6" ng-model="ChngPassModel.OldPassword" id="OldPassword" name="OldPassword" required>
+                                                <div ng-messages="ChangePassWordform.OldPassword.$error" class="text-danger">
+                                                    <div ng-message="required">This field is required</div>
+                                                    <div ng-message="minlength">Old Password must be over 6 characters</div>
+                                                </div>
+                                            </div>
+                                            <div class="field-wrap">
+                                                <label>
+                                                    New Password<span class="req">*</span>
+                                                </label>
+                                                <input type="password" class="form-control" ng-minlength="6" ng-model="ChngPassModel.Password" id="Password" name="Password" required>
+                                                <div ng-messages="ChangePassWordform.Password.$error" class="text-danger">
+                                                    <div ng-message="required">This field is required</div>
+                                                    <div ng-message="minlength">New Password must be over 6 characters</div>
+                                                </div>
+                                            </div>
+                                            <div class="field-wrap">
+                                                <label>
+                                                    Confirm Password<span class="req">*</span>
+                                                </label>
+                                                @*<input type="password" class="form-control" ng-minlength="6" ng-model="ChngPassModel.ConfirmPassword" id="ConfirmPassword" name="ConfirmPassword" required>*@
+                                                <input type="password" class="form-control" ng-minlength="6" ng-model="ChngPassModel.ConfirmPassword" nx-equal="ChngPassModel.Password" name="ConfirmPassword" required>
+                                                <div ng-messages="ChangePassWordform.ConfirmPassword.$error" class="text-danger">
+                                                    <div ng-message="required">This field is required</div>
+                                                    <div ng-message="minlength">Confirm Password must be over 6 characters</div>
+                                                    <div ng-message="nxEqual">New Password and Confirm Password Must be equal!</div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <br />
+                                        <p class="text-danger text-center" style="color:red;" data-ng-repeat="msg in Chngpassmsg">{{msg}}</p>
+                                        <button type="submit" class="button button-block" id="register_frm" data-ng-disabled="!ChangePassWordform.$valid" data-ng-click="ChangePassword(ChngPassModel)" value="Change Password" name="ChangePassword">Change Password</button>
+                                    </div>
+                                    <div data-ng-hide="ShowChngPassForm">
+                                        <p class="text-danger text-center" style="color:forestgreen;" data-ng-repeat="msg in Chngpassmsg">{{msg}}</p>
+                                    </div>
+                                </fieldset>
+                            </ng-form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="forgotpasswordmodal" class="modal fade" role="dialog" ng-controller="IndEntnJSController">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+ <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form log-reg">
+                        <div id="logindiv">
+                            <h1>Forgot Password</h1>
+                            <ng-form name="ForgotPassWordform">
+                                <fieldset>
+                                    <div data-ng-show="ShowfrgotPassForm">
+                                        <div class="top-row">
+                                            <div class="field-wrap">
+                                                <label>
+                                                    Enter your email.<span class="req">*</span>
+                                                </label>
+                                                <input type="email" class="form-control" ng-model="UserEmail" id="UserEmail" name="UserEmail" required>
+                                                <div ng-messages="ForgotPassWordform.UserEmail.$error" class="text-danger">
+                                                    <div ng-message="required">This field is required.</div>
+                                                    <div ng-message="email">Please Enter valid Email Id.</div>
+                                                </div>
+                                            </div>
+                                            <div class="field-wrap">
+                                                <label>
+                                                    UserName.<span class="req">*</span>
+                                                </label>
+                                                <input type="text" class="form-control" ng-model="UserName" id="UserName" name="UserName" required>
+                                                <div ng-messages="ForgotPassWordform.UserName.$error" class="text-danger">
+                                                    <div ng-message="required">This field is required.</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <br />
+                                        <p class="text-danger text-center" style="color:red;" data-ng-repeat="msg in forgotpassmsg">{{msg}}</p>
+                                        <button type="submit" class="button button-block" id="register_frm" data-ng-disabled="!ForgotPassWordform.$valid" data-ng-click="ForgotPassword(UserEmail)" value="Forgot Password" name="ForgotPassword">Forgot Password</button>
+                                    </div>
+                                    <div data-ng-hide="ShowfrgotPassForm">
+                                        <p class="text-danger text-center" style="color:forestgreen;" data-ng-repeat="msg in forgotpassmsg">{{msg}}</p>
+                                    </div>
+                                </fieldset>
+                            </ng-form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    @Html.Partial("_Footer")
+
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $(document).ready(function () {
+            $('#myModal').on('shown.bs.modal', function (e) {
+                var caller = $(e.relatedTarget).data('name');
+
+                if(caller == "Login")
+                {
+                    $('#loginRegister .login').tab('show');
+                    $('#loginRegister').hide();
+                }
+                else
+                {
+                    $('#loginRegister .signup').tab('show');
+                    $('#loginRegister').hide();
+                }
+
+            });
+        });
+
+
+    </script>
+</body>
+</html>

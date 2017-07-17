@@ -1,0 +1,136 @@
+﻿@{
+    ViewBag.Title = ViewBag.SearhBy;
+}
+
+@section pagetitle
+{
+    <section id="breadcrumbs">
+        <div class="container">
+            <div class="row">
+                @if (@ViewBag.SearhBy != "Entertainers")
+                {
+                    <span class="url_lnk hme"><a href="@Url.Action("Index","Home",new { area = "" })" title="Home" class="home_icon">Home</a></span> <b>&gt;</b> <span class="url_lnk"><a href="@Url.Action("Index","Entertainers",new { area = "", q = ""})" title="Entertainers">Entertainers</a></span> <b>&gt;</b> <span class="url_lnk"><a href="@Url.Action("Index","Entertainers",new { area = "", @q = @ViewBag.SearhBy})" title="@ViewBag.SearhBy">@ViewBag.SearhBy</a></span>
+                }
+                else
+                {
+                    <span class="url_lnk hme"><a href="@Url.Action("Index","Home",new { area = "" })" title="Home" class="home_icon">Home</a></span> <b>&gt;</b> <span class="url_lnk"><a href="@Url.Action("Index","Entertainers",new { area = "", q = ""})" title="Entertainers">Entertainers</a></span>
+                }
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <h1 class="page-title">@ViewBag.SearhBy <span class="page-sub">(@ViewBag.TotalRows)</span></h1>
+            </div>
+        </div>
+    </section>
+}
+
+<div ng-app="IndEntnApp">
+
+
+    <section id="trending" ng-controller="IndEntnJSController">
+        <div class="container">
+            <div class="row">
+                <div class="trending animated">
+
+                    @foreach (var item in ViewBag.Entertainer as List<IndiaEntertainers.ViewModel.TrendingViewModel>)
+                {
+
+                        <div class="col-xs-12 col-sm-4 col-md-3">
+                            <div class="trending-wrap ">
+                                <div class="trend_img">
+                                    <a href="@Url.Action("ProfileDetail", "Entertainers", new { id = item.EntrId})">
+                                        <img src="~/images/UserImages/@item.ProfilePhoto" alt="@item.FullName" class="img-responsive center-block" style="height:172px;" />
+                                        <span class="trend_view"><img src="../images/eye-white.png" /> <span class="view_cnt">1000</span></span>
+                                        <h3 class="trend_name">@item.FullName</h3>
+                                        <span class="overlay"></span>
+                                    </a>
+                                </div>
+
+                                <div class="trend_dtl">
+                                    <div class="dtl">
+                                        <span class="trend_singer"><img src="~/images/mic.png" /> @item.CategoryName</span>
+                                        <span class="trend_address"><img src="~/images/address.png" /> @item.CityName</span>
+                                        <div><p class="trend_price"><b>₹ @item.PerformanceFees</b> onwards</p></div>
+                                    </div>
+                                    @* <div class="trend_cnt"><a href="javascript:;">CONTACT</a></div>*@
+                                    <div class="trend_cnt"><a href="javascript:;" data-toggle="modal" ng-click='GetEntrnId(@item.EntrId)' data-target="#contactdialog">CONTACT</a></div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                }
+
+                </div>
+
+            </div>
+
+        </div>
+
+        @*<div class="trend_all"><a href="javascript:;">Load More Singers...</a></div>*@
+
+        <div id="contactdialog" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="form log-reg">
+                            <div id="logindiv">
+                                <h1>Contact Us</h1>
+                                <div data-ng-show="ShowCntFrm">
+                                    <ng-form name="contactform">
+                                        <fieldset>
+                                            <div class="field-wrap">
+                                                <label>
+                                                    Name<span class="req">* </span>
+                                                </label>
+                                                <input class="form-control" type="text" data-ng-model="EntnMessage.Name" name="Name" ng-required="cntfrmrqured">
+                                            </div>
+
+                                            <div class="field-wrap">
+                                                <label>
+                                                    Email ID<span class="req">*</span>
+                                                </label>
+                                                <input class="form-control" type="email" data-ng-model="EntnMessage.EmailID" name="EmailID" ng-required="cntfrmrqured">
+                                            </div>
+
+                                            <div class="field-wrap">
+                                                <label>
+                                                    Contact No.<span class="req">*</span>
+                                                </label>
+                                                <input class="form-control" type="text" data-ng-model="EntnMessage.ContactNo" name="ContactNo" ng-required="cntfrmrqured">
+                                            </div>
+
+                                            <div class="field-wrap">
+                                                <label>
+                                                    Message<span class="req">*</span>
+                                                </label>
+                                                <textarea class="form-control" data-ng-model="EntnMessage.Message" placeholder="Max 150 Characters" rows="3" id="Message" ng-maxlength="150" ng-minlength="10" ng-required="cntfrmrqured"></textarea>
+                                            </div>
+                                            <p class="text-info">{{cntfrmMessage}}</p>
+                                            <button class="button button-block" type="submit" data-ng-disabled="!contactform.$valid" data-ng-click="SendMessagetoEntrn(EntnMessage)">Submit</button>
+                                        </fieldset>
+                                    </ng-form>
+                                </div>
+                                <div data-ng-hide="ShowCntFrm">
+                                    <p class="text-info">{{cntfrmMessage}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("body").addClass("detail-page page search-pg");
+        });
+    </script>
+}

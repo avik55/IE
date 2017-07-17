@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Entertainer</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet">
+    <!--<link href="~/Content/animate.min.css" rel="stylesheet">-->
+    <link href="~/Content/style.css" rel="stylesheet">
+    <!-- <link href="~/Content/responsive.css" rel="stylesheet"> -->
+    <link href="~/Content/swiper.min.css" rel="stylesheet">
+    <link href="~/Content/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+    <link href="~/Content/blueimp-gallery.min.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="">
+</head>
+
+<body class="detail-page page">
+    <div class="headerWrap registerfrm abtus">
+
+        <section id="breadcrumbs">
+            <div class="container">
+                <div class="row">
+                    <span class="url_lnk hme"><a href="@Url.Action("Index","Home",new { area = ""}, null)" title="Home" class="home_icon">Home</a></span> <b>&gt;</b> <span class="url_lnk">Entertainer</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="home-banner" class="home-banner register-frm-wrp">
+            <div class="container text-left">
+                <p class="sub-title text-center">Welcome Back</p>
+                <br />
+                <p class="abt_head"><br /> <b>With indiaentertainers.com, you can:</b></p>
+                <ul>
+                    <li>Showcase your Talent to several Talent-Seekers across the world.</li>
+                    <li>Raise your exposure by publicizing your gigs to absolutely the right prospects.</li>
+                    <li>Get ‘more’ assignments from anywhere in the world.</li>
+                </ul>
+                <p>Your profile is LIVE (or ‘Not Live yet as it is yet incomplete. To complete your profile, <a href="@Url.Action("ProfileDetail", "MyAccount", new { area = "Entertainer"}, null)"> click here</a>')</p>
+                <p>If you wish to make any changes to your profile, <a href="@Url.Action("ProfileDetail", "MyAccount", new { area = "Entertainer"}, null)"> click here</a></p>
+                <p>If you would like to connect with any other Entertainers, please<a href="@Url.Action("Index", "Home", new { area = ""}, null)"> click here</a></p>
+               <br /><br />
+                 <p>You can also do all of the above using the menu options on Top</p>
+            </div>
+        </section>
+
+    </div>
+</body>
+</html>

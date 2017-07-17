@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "Confirm Mail Send";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+
+    <div class="row">
+        <div class="container">
+            <div>
+                <h2>Confirmation Email Sent.</h2>
+
+                <h3>Please Check your email and confirm your email address.</h3>
+
+                <br />
+                <br />
+                @Html.ActionLink("Resend Confirmation Link", "GenerateEmailConfirmToken", new { controller = "Account", area = "", userId = @ViewBag.UserId }, htmlAttributes: new { @class = "btn btn-primary" })
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,804 @@
+﻿@model IndiaEntertainers.ViewModel.RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<style>
+    select {
+        border: none !important;
+        appearance: none;
+        -moz-appearance: none; /* Firefox */
+        -webkit-appearance: none; /* Safari and Chrome */
+        border-bottom: solid 2px #ccc !important;
+        border-radius: 0 !important;
+        margin-top: 16px;
+        background: rgba(255, 255, 255, 0.97);
+        background-image: linear-gradient(45deg, transparent 50%, gray 50%), linear-gradient(135deg, gray 50%, transparent 50%), linear-gradient(to right, #ccc, #ccc);
+        background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
+        background-size: 5px 5px, 5px 5px, 1px 1.5em;
+        background-repeat: no-repeat;
+    }
+
+        select:focus {
+            outline: none !important;
+        }
+
+    textarea {
+        resize: none;
+    }
+
+    .image {
+        position: relative;
+        width: 60%; /* for IE 6 */
+    }
+
+    h2 span {
+        color: white;
+        font: bold 24px/45px Helvetica, Sans-Serif;
+        letter-spacing: -1px;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px;
+    }
+
+    .btnAddUpload {
+        color: #fff;
+        padding: 8px 25px;
+        min-width: 150px;
+        display: inline-block;
+        cursor: pointer;
+        border-radius: 20px;
+        font-size: 14px;
+        font-family: 'Roboto-Regular';
+    }
+
+    .deactiveAnchor {
+        pointer-events: none;
+        cursor: default;
+    }
+
+    /*img#coverimgprvw:hover span#changeImgCover {
+        opacity: 1;
+    }*/
+
+
+    .containerImg {
+        position: relative;
+        /*float: left;*/
+        /*border: 1px solid #aaa;*/
+    }
+
+        .containerImg span {
+            position: absolute;
+            bottom: 0;
+            height: 30px;
+            background: rgba(0,0,0,.5);
+            color: #fff;
+            width: 100%;
+            left: 0;
+            line-height: 30px;
+            text-align: center;
+            opacity: 0;
+            -webkit-transition: all 1s;
+            -moz-transition: all 1s;
+            transition: all 1s;
+        }
+
+        .containerImg:hover span {
+            opacity: 1;
+        }
+</style>
+<script>
+    function showimagepreview(input) {
+        //debugger;
+        $("#profilePicError").hide();
+        $("#profileProperPicError").hide();
+        var validFormats = ['jpg', 'jpeg', 'png'];
+        var fileName = input.files[0].name;
+        var ext = fileName.substr(fileName.lastIndexOf('.') + 1);
+        if (ext == '') return;
+
+        if (validFormats.indexOf(ext) == -1) {
+            $("#profileProperPicError").show();
+            return false;
+        }
+
+        if (input.files && input.files[0]) {
+            var filerdr = new FileReader();
+            filerdr.onload = function (e) {
+                $('#proimgprvw').show();
+                $('#proimgprvw').attr('src', e.target.result);
+                $('#profilePicChange').trigger('click');
+            }
+            filerdr.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function showcoverimagepreview(input) {
+        $("#coverPicError").hide();
+        $("#coverProperPicError").hide();
+        var validFormats = ['jpg', 'jpeg', 'png'];
+        var fileName = input.files[0].name;
+        var ext = fileName.substr(fileName.lastIndexOf('.') + 1);
+        if (ext == '') return;
+
+        if (validFormats.indexOf(ext) == -1) {
+            $("#coverProperPicError").show();
+            return false;
+        }
+
+        if (input.files && input.files[0]) {
+            var filerdr = new FileReader();
+            filerdr.onload = function (e) {
+                $('#coverimgprvw').show();
+                $('#coverimgprvw').attr('src', e.target.result);
+                $('#coverPicChange').trigger('click');
+            }
+            filerdr.readAsDataURL(input.files[0]);
+        }
+    }
+
+</script>
+<div class="headerWrap registerfrm">
+
+    <section id="breadcrumbs">
+        <div class="container">
+            <div class="row">
+                <span class="url_lnk hme"><a href="@Url.Action("Index","Home",new { area = ""}, null)" title="Home" class="home_icon">Home</a></span> <b>&gt;</b> <span class="url_lnk">Entertainer</span>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="home-banner" class="home-banner register-frm-wrp">
+        <div class="container" ng-controller="IndEntnJSController">
+            <p class="sub-title">REGISTRATION OF ARTIST</p>
+            <div class="stepwizard">
+                <div class="head_topic stp1">Step 1. Please share your basic contact details</div>
+                <div class="head_topic stp2 hidden">Step 2. OTP confirmation</div>
+                <div class="head_topic stp3 hidden">Step 3. Select your category</div>
+                <div class="head_topic stp4 hidden">Step 4. Fill in your performance details</div>
+                <div class="head_topic stp5 hidden">Step 5. Enter details about your talent</div>
+                <div class="stepwizard-row setup-panel">
+                    <span class="bar_progress" style="width:15%;"></span>
+                    <div class="stepwizard-step step-nav-1">
+                        <a href="#step-1" type="button" class="btn btn-primary btn-circle cr1 deactiveAnchor"><i class="fa fa-address-book-o" aria-hidden="true"></i></a>
+                        <!-- <p>Step 1</p> -->
+                    </div>
+                    <div class="stepwizard-step step-nav-2">
+                        <a href="#step-2" type="button" class="btn btn-default btn-circle cr2 deactiveAnchor" disabled="disabled"><i class="fa fa-envelope-open-o" aria-hidden="true"></i></a>
+                        <!-- <p>Step 2</p> -->
+                    </div>
+                    <div class="stepwizard-step step-nav-3">
+                        <a href="#step-3" type="button" class="btn btn-default btn-circle cr3 deactiveAnchor" disabled="disabled"><img src="~/images/step2.png" alt="" /></a>
+                        <!-- <p>Step 3</p> -->
+                    </div>
+                    <div class="stepwizard-step step-nav-4">
+                        <a href="#step-4" type="button" class="btn btn-default btn-circle cr4 deactiveAnchor" disabled="disabled"><img src="~/images/step3.png" alt="" /></a>
+                        <!-- <p>Step 4</p> -->
+                    </div>
+                    <div class="stepwizard-step step-nav-5">
+                        <a href="#step-5" type="button" class="btn btn-default btn-circle cr4 deactiveAnchor" disabled="disabled"><img src="~/images/step4.png" alt="" /></a>
+                        <!-- <p>Step 4</p> -->
+                    </div>
+                </div>
+            </div>
+
+
+            <form name="frmRegistration" id="frmRegistration" ng-submit="submitRegForm(frmRegistration.$valid, registration)" novalidate="novalidate">
+                <img src="~/images/Loader/loader.gif" style="display:none;height:50px;" class="imgLoader">
+                <div class="row setup-content step-form-1" id="step-1">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <input type="hidden" name="UserType" ng-init="registration.UserType='Entertainer'" ng-value="UserType" />
+                        <div class="form-group" style="width: 100%;" ng-class="{ 'has-error' : frmRegistration.fname.$invalid && (frmRegistration.fname.$dirty  || frmRegistration.$submitted)}">
+                            <input type="text" name="fname"
+                                   ng-model="registration.fname"
+                                   class="form-control chkinput"
+                                   placeholder="Artist/Group Name"
+                                   required="required"
+                                   ng-required="true"
+                                   ng-pattern="/^[a-zA-Z ]*$/"
+                                   maxlength="50"
+                                   tabindex="1" />
+                            <p ng-show="frmRegistration.fname.$error.required && (frmRegistration.fname.$dirty || frmRegistration.$submitted)" class="help-block">Please fill Artist/Group Name</p>
+                            <p ng-show="frmRegistration.fname.$error.pattern && (frmRegistration.fname.$dirty || frmRegistration.$submitted)" class="help-block">Please fill valid Artist/Group Name</p>
+                        </div>
+
+                        <div class="form-group" style="width: 100%;" ng-class="{ 'has-error' : frmRegistration.mobileno.$invalid && (frmRegistration.mobileno.$dirty || frmRegistration.$submitted)}">
+                            <input placeholder="Mobile Number" type="text"
+                                   id="artistMobile"
+                                   class="form-control chkinput"
+                                   name="mobileno"
+                                   prevent-right-click=""
+                                   ng-model="registration.Mobile"
+                                   ng-mobile-exists=""
+                                   ng-pattern="/^[0-9]*$/"
+                                   maxlength="12"
+                                   ng-required="true"
+                                   required="required"
+                                   aria-invalid="true"
+                                   tabindex="3" />
+                            <p ng-show="frmRegistration.mobileno.$error.required && (frmRegistration.mobileno.$dirty || frmRegistration.$submitted)" class="help-block">Please fill mobile number</p>
+                            <p ng-show="frmRegistration.mobileno.$error.pattern && (frmRegistration.mobileno.$dirty || frmRegistration.$submitted)" class="help-block">Please fill valid mobile number </p>
+                            @*<p ng-show="frmRegistration.mobileno.$error.min && (frmRegistration.mobileno.$dirty || frmRegistration.$submitted)" class="help-block">Please fill valid mobile number </p>*@
+                        </div>
+
+                        <div class="form-group" style="width: 100%;" ng-class="{ 'has-error' : frmRegistration.username.$invalid && (frmRegistration.username.$dirty || frmRegistration.$submitted)}">
+                            <input type="text"
+                                   placeholder="Create Username"
+                                   id="userName"
+                                   class="form-control chkinput"
+                                   name="username"
+                                   prevent-right-click=""
+                                   ng-model="registration.UserName"
+                                   maxlength="30"
+                                   ng-required="true"
+                                   required="required"
+                                   aria-invalid="true"                                   
+                                   ng-unique
+                                   tabindex="5"
+                                   capitalize />
+                            <p ng-show="frmRegistration.username.$error.required && (frmRegistration.username.$dirty || frmRegistration.$submitted)" class="help-block">Please enter username</p>
+                            <p data-ng-show="!frmRegistration.username.$error.required && frmRegistration.username.$error.unique" class="help-block">Username already exists.</p>
+                            <p ng-if="frmRegistration.username.$pending" style="color:green;">Checking Username....</p>
+
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group" style="width: 100%;" ng-class="{ 'has-error' : frmRegistration.email.$invalid && (frmRegistration.email.$dirty || frmRegistration.$submitted)}">
+                            <div>
+                                <input type="email" name="email"
+                                       ng-model="registration.Email"
+                                       class="form-control chkinput"
+                                       placeholder="Email Address"
+                                       required
+                                       ng-required="true"
+                                       tabindex="2" />
+                                <p ng-show="frmRegistration.email.$error.required && (frmRegistration.email.$dirty || frmRegistration.$submitted)" class="help-block">Please fill email address</p>
+                                <p ng-show="frmRegistration.email.$error.email && (frmRegistration.email.$dirty || frmRegistration.$submitted)" class="help-block">Must be a valid email address</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="width: 100%;" ng-class="{ 'has-error' : frmRegistration.city.$invalid && (frmRegistration.city.$dirty || frmRegistration.$submitted)}">
+                            @IndiaEntertainers.HTMLHelper.CustomHelper.CityDropDownList("city", "btn dropdown-toggle form-control chkinput", "CityId", @ViewBag.CityId, true)
+                            <p ng-show="frmRegistration.city.$error.required && (frmRegistration.city.$dirty || frmRegistration.$submitted)" class="help-block" aria-hidden="true" style="">Please select city</p>
+                        </div>
+
+                        <div class="form-group" style="width: 100%;" ng-class="{ 'has-error' : frmRegistration.password.$invalid && (frmRegistration.password.$dirty || frmRegistration.$submitted)}">
+                            <input type="password" name="password"
+                                   ng-model="registration.Password"
+                                   class="form-control chkinput"
+                                   placeholder="Password"
+                                   ng-required="true"
+                                   ng-minlength="6"
+                                   tabindex="4" />
+                            <p ng-show="frmRegistration.password.$error.required && (frmRegistration.password.$dirty || frmRegistration.$submitted)" class="help-block">Please fill password</p>
+                            <p ng-show="frmRegistration.password.$error.minlength && (frmRegistration.password.$dirty || frmRegistration.$submitted)" class="help-block">Minimum length should be 6 characters</p>
+                        </div>
+                    </div>
+                    <div class="btn-nxt-wrp">
+                        <button type="submit" class="nextBtnReg" style="border: transparent;">Next</button>
+                    </div>
+                </div>
+            </form>
+            <form name="frmOTPvalidation" id="frmOTPvalidation" ng-submit="submitOTPForm(frmOTPvalidation.$valid)" novalidate="novalidate">
+                <img src="~/images/Loader/loader.gif" style="display:none;height:50px;" class="imgLoader">
+                <div class="row setup-content step-form-1 step-form-2" id="step-2">
+                    <h2 style="color: #f23246;font-size:16px;margin-left:5%;">An OTP has been sent to your email address. Please verify.</h2>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group" style="width:50%;margin-left:27%;" ng-class="{ 'has-error' : frmOTPvalidation.otp.$invalid && (frmOTPvalidation.otp.$dirty || frmOTPvalidation.$submitted)}">
+                            <input type="hidden" ng-model="otpModel.hdnotp" name="hdnOTP" id="hdnOTP" />
+                            <input type="hidden" ng-model="otpModel.enteredotp" name="enteredOTP" id="enteredOTP" value="{{otpModel.otp}}" />
+                            <input type="hidden" name="hdnUserID" ng-init="otpModel.hdnUserID" ng-value="hdnUserID" />
+
+                            <input name="otp" type="text"
+                                   placeholder="Please enter OTP"
+                                   id="regOTP"
+                                   class="form-control chkinput"
+                                   ng-model="otpModel.otp"
+                                   ng-required="true"
+                                   required="required"
+                                   maxlength="10" />
+                            <p ng-show="frmOTPvalidation.otp.$error.required && (frmOTPvalidation.otp.$dirty || frmOTPvalidation.$submitted)" class="help-block">OTP is required</p>
+                            <p id="correctOTP" class="help-block" style="color:red; display:none;">Please enter correct OTP</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="btn-nxt-wrp" style="margin: 2em;">
+                            <button type="submit" class="nextBtnReg" style="border: transparent;">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <form name="frmAddCategory" id="frmAddCategory" ng-submit="submitAddCategoryForm(frmAddCategory.$valid, category)" novalidate="novalidate">
+                <img src="~/images/Loader/loader.gif" style="display:none;height:50px;" class="imgLoader">
+                <div class="row setup-content step-form-1 step-form-3" id="step-3">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group" style="width: 100%;" ng-class="{ 'has-error' : frmAddCategory.CatId.$invalid && (frmAddCategory.CatId.$dirty || frmAddCategory.$submitted)}">
+                            @IndiaEntertainers.HTMLHelper.CustomHelper.CategoryDropDownList("CatId", "btn dropdown-toggle form-control", "CatId", null, true)
+                            <p ng-show="frmAddCategory.CatId.$error.required && (frmAddCategory.CatId.$dirty || frmAddCategory.$submitted)" class="help-block" aria-hidden="true" style="">Please select category</p>
+                        </div>
+                        <div class="form-group">
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group" style="width: 100%;" ng-class="{ 'has-error' : frmAddCategory.performancefee.$invalid && (frmAddCategory.performancefee.$dirty || frmAddCategory.$submitted)}">
+                            <input type="number" name="performancefee"
+                                   ng-model="category.Performancefee"
+                                   class="form-control chkinput"
+                                   placeholder="Performance Charges (INR)"
+                                   min="1000"
+                                   ng-required="true"
+                                   required="required" />
+                            <p ng-show="frmAddCategory.performancefee.$error.required && (frmAddCategory.performancefee.$dirty || frmAddCategory.$submitted)" class="help-block">Please fill performance fee</p>
+                            <p ng-show="frmAddCategory.performancefee.$error.min && (frmAddCategory.performancefee.$dirty || frmAddCategory.$submitted)" class="help-block">Price should be a minimum of INR 1000</p>
+                        </div>
+                        <div class="form-group" style="width: 53%;">
+                            <label for="521">
+                                <input type="checkbox" name="" style="display: inherit;width: 15px;height: 16px;" ng-model="category.selected" id="521" />
+                                <span class="ng-binding">Do not display fee on the site?</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="btn-nxt-wrp" style="margin: 2em;">
+                            <button type="submit" class="nextBtnReg" style="border: transparent;">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <form name="formProfileDetails" id="formProfileDetails" ng-submit="submitProfileDetailsForm(formProfileDetails.$valid, profileDetail)" novalidate="novalidate">
+                <img src="~/images/Loader/loader.gif" style="display:none;height:50px;" class="imgLoader">
+                <div class="row setup-content step-form-1 step-form-4" id="step-4">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group pull-left" style="margin-top: 18px;margin-bottom: 5px;">
+                            <p class="pull-left" style="margin: 11px 9px 5px 14px;font-size: 16px;">Average performance duration (in minutes):</p>
+                            <div class="pull-left" style="margin: 4px 15px 5px 16px;">
+                                <input type="radio" name="radioPerfmLength" class="pull-left" ng-model="profileDetail.PerfLength" ng-required="!profileDetail.PerfLength" value="30" style="height: 20px;width: 20px;display: inline;">
+                                <label class="pull-left" style="margin-top: 7px;margin-left: 4px;">
+                                    30
+                                </label><br />
+                            </div>
+                            <div class="pull-left" style="margin: 4px 15px 5px 5px;">
+                                <input type="radio" name="radioPerfmLength" class="pull-left" ng-model="profileDetail.PerfLength" ng-required="!profileDetail.PerfLength" value="60" style="height: 20px;width: 20px;display: inline;">
+                                <label class="pull-left" style="margin-top: 7px;margin-left: 4px;">
+                                    60
+                                </label>
+                            </div>
+                            <div class="pull-left" style="margin: 4px 15px 5px 5px;">
+                                <input type="radio" name="radioPerfmLength" class="pull-left" ng-model="profileDetail.PerfLength" ng-required="!profileDetail.PerfLength" value="120" style="height: 20px;width: 20px;display: inline;">
+                                <label class="pull-left" style="margin-top: 7px;margin-left: 4px;">
+                                    120
+                                </label>
+                            </div>
+                            <br />
+                            <p style="color:#a94442;width: 40%;" ng-show="formProfileDetails.radioPerfmLength.$error.required && (formProfileDetails.radioPerfmLength.$dirty || formProfileDetails.$submitted)" class="help-block">Please select any one</p>
+
+                        </div>
+                        <div class="form-group pull-left" style="margin-top: 18px;margin-bottom: 15px;">
+                            <p class="pull-left" style="margin: 11px 9px 5px 14px;font-size: 16px;">Nationality:</p>
+                            <div class="pull-left" style="margin: 5px 10px 0px 5px;">
+                                <input type="radio" name="radioNationality" class="pull-left" ng-model="profileDetail.Nationality" ng-required="!profileDetail.Nationality" value="Indian" style="height: 20px;width: 20px;display: inline;">
+                                <label class="pull-left" style="margin-top: 6px;margin-left: 5px;">
+                                    Indian
+                                </label><br />
+                            </div>
+                            <div class="pull-left" style="margin: 5px 0px 0px 0px;">
+                                <input type="radio" name="radioNationality" class="pull-left" ng-model="profileDetail.Nationality" ng-required="!profileDetail.Nationality" value="World" style="height: 20px;width: 20px;display: inline;">
+                                <label class="pull-left" style="margin-top: 6px;margin-left: 5px;">
+                                    Non-Indian
+                                </label>
+                            </div>
+                            <br />
+                            <p style="color:#a94442;width: 40%;" ng-show="formProfileDetails.radioNationality.$error.required && (formProfileDetails.radioNationality.$dirty || formProfileDetails.$submitted)" class="help-block">Please select any one</p>
+
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : formProfileDetails.performanceMember.$invalid && (formProfileDetails.performanceMember.$dirty || formProfileDetails.$submitted)}">
+                            <input type="number" name="performanceMember"
+                                   ng-model="profileDetail.PerfMembers"
+                                   class="form-control chkinput"
+                                   placeholder="Number of performing members"
+                                   min="1" max="20"
+                                   ng-required="true"
+                                   required="required" />
+                            <p ng-show="formProfileDetails.performanceMember.$error.required && (formProfileDetails.performanceMember.$dirty || formProfileDetails.$submitted)" class="help-block">Please enter the number of performing members</p>
+                            <p ng-show="formProfileDetails.performanceMember.$error.min && (formProfileDetails.performanceMember.$dirty || formProfileDetails.$submitted)" class="help-block">Atleast one member is required</p>
+                            <p ng-show="formProfileDetails.performanceMember.$error.max && (formProfileDetails.performanceMember.$dirty || formProfileDetails.$submitted)" class="help-block">Maximum 20 members are allowed</p>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group drpdwn catttt" style="margin-top:18px;" ng-class="{ 'has-error' : formProfileDetails.NoofShow.$invalid && (formProfileDetails.NoofShow.$dirty || formProfileDetails.$submitted)}">
+                            <div class="btn-group">
+                                @IndiaEntertainers.HTMLHelper.CustomHelper.NoOfShowDropDownList("NoofShow", "btn dropdown-toggle form-control", "NoofShow", @ViewBag.NoofShow, true)
+                                <p ng-show="formProfileDetails.NoofShow.$error.required && (formProfileDetails.NoofShow.$dirty || formProfileDetails.$submitted)" class="help-block">Please enter number of shows performed</p>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group drpdwn catttt" style="margin-top:15px;" ng-class="{ 'has-error' : formProfileDetails.PerfLanguage.$invalid && (formProfileDetails.PerfLanguage.$dirty || formProfileDetails.$submitted)}">
+                            <div class="btn-group">
+                                @IndiaEntertainers.HTMLHelper.CustomHelper.PerformanceLanguageDropDownList("PerfLanguage", "btn dropdown-toggle form-control", "PerfLanguage", @ViewBag.PerfLanguage, true)
+                                <p ng-show="formProfileDetails.PerfLanguage.$error.required && (formProfileDetails.PerfLanguage.$dirty || formProfileDetails.$submitted)" class="help-block">Please select performance language</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group drpdwn catttt" style="margin-top:13px;" ng-class="{ 'has-error' : formProfileDetails.Gender.$invalid && (formProfileDetails.Gender.$dirty || formProfileDetails.$submitted)}">
+                            <div class="btn-group">
+                                @IndiaEntertainers.HTMLHelper.CustomHelper.GenderDropDownList("Gender", "btn dropdown-toggle form-control", "Gender", @ViewBag.Gender, true)
+                                <p ng-show="formProfileDetails.Gender.$error.required && (formProfileDetails.Gender.$dirty || formProfileDetails.$submitted)" class="help-block">Please select gender</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="btn-nxt-wrp">
+                            <button type="submit" class="nextBtnReg" style="border: transparent;">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <form name="formprofileCompleteDetails" id="formprofileCompleteDetails" ng-submit="submitProfileCompleteDetail(formprofileCompleteDetails.$valid, profileCompleteDetail)" novalidate="novalidate">
+                <img src="~/images/Loader/loader.gif" style="display:none;height:50px;" class="imgLoader">
+                <div id="profileTxtDiv"></div>
+                
+                <input type="hidden" name="FName" ng-init="profileCompleteDetail.FName" ng-value="FName" />
+                <input type="hidden" name="EntrId" ng-init="profileCompleteDetail.EntrId" ng-value="EntrId" />
+                <input type="hidden" name="CatId" ng-init="profileCompleteDetail.CatId" ng-value="CatId" />
+                <input type="hidden" name="Showfee" ng-init="profileCompleteDetail.Showfee" ng-value="Showfee" />
+                <input type="hidden" name="Performancefee" ng-init="profileCompleteDetail.Performancefee" ng-value="Performancefee" />
+                <input type="hidden" name="PerfLength" ng-init="profileCompleteDetail.PerfLength" ng-value="PerfLength" />
+                <input type="hidden" name="YearsOfPerforming" ng-init="profileCompleteDetail.YearsOfPerforming" ng-value="YearsOfPerforming" />
+                <input type="hidden" name="PerfMembers" ng-init="profileCompleteDetail.PerfMembers" ng-value="PerfMembers" />
+                <input type="hidden" name="NoofShow" ng-init="profileCompleteDetail.NoofShow" ng-value="NoofShow" />
+                <input type="hidden" name="PerfLanguage" ng-init="profileCompleteDetail.PerfLanguage" ng-value="PerfLanguage" />
+                <input type="hidden" name="Gender" ng-init="profileCompleteDetail.Gender" ng-value="Gender" />
+                <input type="hidden" name="Nationality" ng-init="profileCompleteDetail.Nationality" ng-value="Nationality" />
+                <input type="hidden" name="CityID" ng-init="profileCompleteDetail.CityID" ng-value="CityID" />
+                <input type="hidden" name="Mobile" ng-init="profileCompleteDetail.Mobile" ng-value="Mobile" />
+                <div class="row setup-content step-form-1 step-form-5" id="step-5">
+                    <div class="col-md-12" style="padding:0;">
+                        <p class="text-left" style="font-size: 18px;font-weight: 600;">Tagline:</p>
+                        <div class="" ng-class="{ 'has-error' : formprofileCompleteDetails.profiletitle.$invalid && (formprofileCompleteDetails.profiletitle.$dirty || formprofileCompleteDetails.$submitted)}">
+                            <textarea name="profiletitle"
+                                      id="profiletitle"
+                                      ng-required="true"
+                                      required
+                                      ng-model="profileCompleteDetail.ProfTitle"
+                                      maxlength="100"
+                                      placeholder="Tagline"
+                                      class="form-control"
+                                      ng-minlength="20"
+                                      onkeyup="profileTitleLength(this);"
+                                      style="height:50px;border: 1px solid #61778c;"></textarea>
+                            <span class="pull-left"><span id="spanProfileTitle">0</span> / 100</span>
+                            <p ng-show="formprofileCompleteDetails.profiletitle.$error.required && (formprofileCompleteDetails.profiletitle.$dirty || formprofileCompleteDetails.$submitted)" class="help-block">Define your talent/act in one line</p>
+                            <p ng-show="formprofileCompleteDetails.profiletitle.$error.minlength && (formprofileCompleteDetails.profiletitle.$dirty || formprofileCompleteDetails.$submitted)" class="help-block">Tagline must be over 20 characters</p>
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                    </div>
+
+                    <div class="col-md-12" style="padding:0;">
+                        <p class="text-left" style="font-size: 18px;font-weight: 600;">Detailed Profile:</p>
+                        <div class="" ng-class="{ 'has-error' : formprofileCompleteDetails.detailprofile.$invalid && (formprofileCompleteDetails.detailprofile.$dirty || formprofileCompleteDetails.$submitted)}">
+                            <textarea name="detailprofile"
+                                      id="detailprofileid"
+                                      ng-required="true"
+                                      required
+                                      ng-model="profileCompleteDetail.ProfDetail"
+                                      placeholder="Define your act/talent"
+                                      maxlength="5000"
+                                      rows="4"
+                                      cols="40"
+                                      class="form-control"
+                                      onkeyup="profileDetailLength(this);"
+                                      ng-minlength="150"
+                                      style="border: 1px solid #61778c;"></textarea>
+                            <span class="pull-left"><span id="spanProfileLength">0</span> / 5000</span>
+                            <p ng-show="formprofileCompleteDetails.detailprofile.$error.required && (formprofileCompleteDetails.detailprofile.$dirty || formprofileCompleteDetails.$submitted)" class="help-block">Define your act in detail</p>
+                            <p ng-show="formprofileCompleteDetails.detailprofile.$error.minlength && (formprofileCompleteDetails.detailprofile.$dirty || formprofileCompleteDetails.$submitted)" class="help-block">Profile must be over 150 characters</p>
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                    </div>
+
+                    <div class="col-md-12" style="border: 1px solid #61778c;margin-bottom:10px;border-radius: 4px;">
+                        <div style="margin: 5px 5px 5px 5px;">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <p class="text-left" style="font-size: 18px;font-weight: 600;">Add Profile Picture:</p>
+                                <div class="image containerImg" style="margin-bottom: 10px;" ng-class="{ 'has-error' : formprofileCompleteDetails.myprofilePic.$invalid && (formprofileCompleteDetails.myprofilePic.$dirty || formprofileCompleteDetails.$submitted)}">
+                                    <img src="~/images/UserIcon.png" style="height:200px;width:110%;" id="proimgprvw" />
+                                    <span id="changeImgProfile" style="font-size: 15px;height: 200px;width: 110%;">
+                                        <h2 style="color: white;margin-top: 32%;">
+                                            ADD/CHANGE
+                                        </h2>
+                                    </span>
+                                    <input type="file"
+                                           style="display:none;"
+                                           name="myprofilePic"
+                                           upload-file="myprofilePic"
+                                           class="form-control"
+                                           id="myprofilePic"
+                                           onchange="showimagepreview(this)"
+                                           required />
+                                    <button type="button" style="display:none;" id="profilePicChange" ng-click="AddProfilePicRegister()"></button>
+                                    <p id="profilePicError" style="color:#a94442;display:none;" class="help-block">Profile picture is required</p>
+                                    <p id="profileProperPicError" style="color:#a94442;display:none;" class="help-block">Please select valid picture</p>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <p class="text-left" style="font-size: 18px;font-weight: 600;">Add Cover Picture:</p>
+                                <div class="image containerImg">
+                                    <img src="~/images/BlankCoverImg.jpg" style="height:200px;width:350px;" id="coverimgprvw" />
+                                    <span id="changeImgCover" style="font-size: 15px;height: 200px;width: 350px;">
+                                        <h2 style="color: white;margin-top: 25%;">
+                                            ADD/CHANGE
+                                        </h2>
+                                    </span>
+                                    <input type="file"
+                                           style="display:none;"
+                                           name="myFile"
+                                           upload-file="myFile"
+                                           class="form-control"
+                                           required
+                                           id="myFile"
+                                           onchange="showcoverimagepreview(this)" />
+                                    <button class="button button-block" style="display:none;" id="coverPicChange" type="button" ng-click="AddCoverPicRegister()"></button>
+                                    <p id="coverPicError" style="color:#a94442;display:none;" class="help-block">Cover picture is required</p>
+                                    <p id="coverProperPicError" style="color:#a94442;display:none;" class="help-block">Please select valid picture</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <input name="MyNewPhoto"
+                           upload-file="MyNewPhoto"
+                           type="file"
+                           id="uploadGalleryPic"
+                           multiple
+                           style="display:none;"
+                           onchange="angular.element(this).scope().getFilePreview(this)" />
+
+                    <div class="col-md-12" style="border: 1px solid #61778c;margin-bottom:10px;border-radius: 4px;">
+                        <div style="margin: 5px 5px 5px 5px;">
+                            <button type="button" id="addPictureInGallery" style="border:0;background-color:#f33247;" class="btnAddUpload pull-left">Add More Pictures For Gallery</button>
+
+                            <br /><br /><br />
+                            <img src="~/images/Loader/loader.gif" style="display:none;height:50px;" class="imgLoaderMultipleImg">
+                            <div id="gallery" class="lightbox"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" style="border: 1px solid #61778c;margin-bottom:10px;border-radius: 4px;">
+                        <div style="margin: 5px 5px 5px 5px;">
+                            <button type="button" id="addVideoInGallery" style="border:0;background-color:#f33247;" class="btnAddUpload pull-left">
+                                <a href="javascript:;" style="color: white;" title="Add New Image" class="" data-toggle="modal" data-target="#AddNewVideoRegister" data-backdrop="static" data-keyboard="false">Add Video</a>
+                            </button>
+                            <br /><br /><br />
+                            <img src="~/images/Loader/loader.gif" style="display:none;height:50px;" class="imgLoaderMultipleVid">
+                            <div id="galleryVideo"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" style="margin-top:15px;">
+                        <div style="margin: 5px 5px 5px 5px;">
+                            <div class="col-md-12">
+                                <label for="checkb1" style="font-size: 18px;font-weight: 600;">
+                                    Social Media Links (optional)
+                                </label>
+                                <br />
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="text" ng-model="profileCompleteDetail.FbLink" class="form-control chkinput" />
+                                    <label class="control-label"><i class="fa fa-facebook-square" aria-hidden="true"></i> </label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" ng-model="profileCompleteDetail.InstLink" class="form-control chkinput" />
+                                    <label class="control-label"><i class="fa fa-instagram" aria-hidden="true"></i> </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="text" ng-model="profileCompleteDetail.TwtLink" class="form-control chkinput" />
+                                    <label class="control-label"><i class="fa fa-twitter-square" aria-hidden="true"></i> </label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" ng-model="profileCompleteDetail.Linkden" class="form-control chkinput" />
+                                    <label class="control-label"><i class="fa fa-linkedin-square" aria-hidden="true"></i> </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <img src="~/images/Loader/loader.gif" style="display:none;height:50px;" class="imgLoader">
+                    <div class="btn-nxt-wrp">
+                        <button type="submit" style="border:0;" class="nextBtnReg">SUBMIT</button>
+                    </div>
+                </div>
+                <a id="openSuccessMsg" style="display:none;" href="javascript:;" data-toggle="modal" data-target="#SuccessMessageRegister" data-backdrop="static" data-keyboard="false"></a>
+            </form>
+
+            <div id="AddNewVideoRegister" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header" style="height:60px;">
+                            <button type="button" id="closeVideoPopUp" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h3 style="text-align:center;color:white;font-size:20px;margin:0;">Add New Video</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form log-reg">
+                                <div id="logindiv">
+                                    <ng-form name="PrfImgChageFrm">
+                                        <fieldset>
+                                            <div data-ng-show="ShowAddvdoProfileModel">
+                                                <div class="field-wrap">
+                                                    <input name="videoLinktest1" placeholder="Video Link" data-ng-model="NewWid.Videolink1" type="url" />
+                                                </div>
+                                                <div class="field-wrap">
+                                                    <input name="videoLinktest2" placeholder="Video Link" data-ng-model="NewWid.Videolink2" type="url" />
+                                                </div>
+                                                <div class="field-wrap">
+                                                    <input name="videoLinktest3" placeholder="Video Link" data-ng-model="NewWid.Videolink3" type="url" />
+                                                </div>
+                                                <div class="field-wrap">
+                                                    <input name="videoLinktest4" placeholder="Video Link" data-ng-model="NewWid.Videolink4" type="url" />
+                                                </div>
+                                                <div class="field-wrap">
+                                                    <input name="videoLinktest5" placeholder="Video Link" data-ng-model="NewWid.Videolink5" type="url" />
+                                                </div>
+                                                <p class="text-info">{{AdVdMessage}}</p>
+                                                <button class="btnPopUp" style="margin-left:0;" type="button" ng-click="AddVideoRegister(NewWid)">Upload</button>
+                                            </div>
+                                        </fieldset>
+                                    </ng-form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="SuccessMessageRegister" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header" style="height:60px;">
+                            <button type="button" id="" ng-click="closeSuccessPopUp()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h3 style="text-align:center;font-size: 20px;color: white;margin: 0;">Success</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form">
+                                <div class="text-center" style="font-family:Calibri;font-size:16px;">
+                                    <br />
+                                    <p>Your registration is complete. </p>
+                                    <p>Your profile is now LIVE on www.indiaentertainers.com.</p>
+                                    <p>We wish you a great experience here. Get MORE for your Talent!</p>
+                                    <p>For any assistance, you can also call us at 8080700999.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("body").addClass("detail-page page");
+
+            $('#changeImgProfile').click(function () { $('#myprofilePic').trigger('click'); });
+            $('#changeImgCover').click(function () { $('#myFile').trigger('click'); });
+            $('#addPictureInGallery').click(function () { $('#uploadGalleryPic').trigger('click'); });
+
+
+            //var imagesPreview = function (input, placeToInsertImagePreview) {
+
+            $('.step-nav-2 a').on('click', function () {
+                //debugger;
+                $('.stp2').removeClass('hidden');
+                $('.stp1,.stp3,.stp4,.stp5').addClass('hidden');
+                $('.bar_progress').css('width', '30%');
+            })
+            $('.step-nav-3 a').on('click', function () {
+                //debugger;
+                $('.stp3').removeClass('hidden');
+                $('.stp1,.stp2,.stp4,.stp5').addClass('hidden');
+                $('.bar_progress').css('width', '50%');
+            })
+            $('.step-nav-4 a').on('click', function () {
+                //debugger;
+                $('.stp4').removeClass('hidden');
+                $('.stp1,.stp2,.stp3,.stp5').addClass('hidden');
+                $('.bar_progress').css('width', '70%');
+            })
+            $('.step-nav-5 a').on('click', function () {
+                //debugger;
+                $('.stp5').removeClass('hidden');
+                $('.stp1,.stp2,.stp3,.stp4').addClass('hidden');
+                $('.bar_progress').css('width', '100%');
+            })
+            //Get Cities by StateId
+            $("#StateId").on("change", function () {
+                //debugger;
+                var sId = this.value;
+                var url = "/CustomHLPR/GetCities";
+                $.getJSON(url, { StateId: sId }, function (citieslist) {
+                    console.log(citieslist);
+                    var clist = $("#CityId");
+                    clist.empty();
+                    $(clist).append($("<option />", { value: "", text: "-- Select City --" }));
+                    $.each(citieslist, function (index, item) {
+                        $(clist).append($("<option />", { value: this.Value, text: this.Text }));
+                    });
+                });
+            });
+        });
+
+        function profileDetailLength(e) { $("#spanProfileLength").text($(e).val().length) }
+        function profileTitleLength(e) { $("#spanProfileTitle").text($(e).val().length) }
+
+
+        $("#userName").on("keypress", function (e) { if (e.which === 32) return false; });
+
+
+        function deleteImgFunction(element) {
+            if (confirm("Are you sure you want to remove this image.")) {
+                $("#formprofileCompleteDetails").find('img[class=imgLoaderMultipleImg]').show();
+                var imageDiv = $(".imageDiv");
+                var fileName = $(element).data("title");
+                $.post("/Account/DeleteRegisterImages", { ImageTitle: fileName }, function (data, textStatus, jqXHr) {
+                    debugger;
+                    if (data) {
+                        if (data == "Success") {
+                            $(element).closest(imageDiv).remove();
+                            setTimeout(function () {
+                                alert("Image deleted successfully.");
+                                $("#formprofileCompleteDetails").find('img[class=imgLoaderMultipleImg]').hide();
+                            }, 1000);
+                        } else {
+                            alert("Cannot delete image, Please try after sometime.");
+                            $("#formprofileCompleteDetails").find('img[class=imgLoaderMultipleImg]').hide();
+                        }
+                    }
+                });
+            }
+        }
+
+
+        function deleteVideoFunction(element) {
+            debugger;
+            if (confirm("Are you sure you want to remove this video.")) {
+                debugger;
+                $("#formprofileCompleteDetails").find('img[class=imgLoaderMultipleVid]').show();
+                var videoDiv = $(".VideoDiv");
+                var fileName = $(element).data("vidtitle");
+                $.post("/Account/DeleteRegisterVideo", { VideoTitle: fileName }, function (data, textStatus, jqXHr) {
+                    debugger;
+                    if (data) {
+                        if (data == "Success") {
+                            $(element).closest(videoDiv).remove();
+                            setTimeout(function () {
+                                alert("Video deleted successfully.");
+                                $("#formprofileCompleteDetails").find('img[class=imgLoaderMultipleVid]').hide();
+                            }, 1000);
+                        } else {
+                            alert("Cannot delete video, Please try after sometime.");
+                            $("#formprofileCompleteDetails").find('img[class=imgLoaderMultipleVid]').hide();
+                        }
+                    }
+                });
+            }
+        }
+
+    </script>
+}

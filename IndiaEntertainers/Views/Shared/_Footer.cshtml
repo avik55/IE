@@ -1,0 +1,267 @@
+﻿<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" style="display: none;">
+    <div class="slides"></div>
+    <h3 class="title hidden"></h3>
+    <a class="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+    <a class="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+    <a class="close"><span class="glyphicon glyphicon-remove"></span></a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+</div>
+
+<section id="bottom">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-3 col-sm-6">
+                <div class="widget">
+                    <a class="navbar-brand" href="http://indiaentertainers.com" style="height:30px; overflow:hidden;"><img src="~/images/site-logo-no-bita.png" alt="logo"></a>
+                    <ul class="cont_sec">
+                        <li>
+                            <span class="ico"><img src="~/images/addr_on.png" alt="" /></span> <span class="cont_data">
+                                Social, Level 3, Fun Republic
+                                New Link Road, Andheri (W)<br />
+                                Mumbai 400 053
+                            </span>
+                        </li>
+                        <li><span class="ico"><img src="~/images/mob_on.png" alt="" /></span> <span class="cont_data">+91 80 80 700 999</span></li>
+                        <li><span class="ico"><img src="~/images/msg_on.png" alt="" /></span> <span class="cont_data"><a href="mailto:info@indiaentertainers.com">info@indiaentertainers.com</a></span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6">
+                <div class="widget">
+                    <h3>Content</h3>
+                    <ul>
+                        <li><a href="@Url.Action("Index", "Home", new { area = ""}, null)">Home</a></li>
+                        <li><a href="@Url.Action("AboutUs", "Home", new { area = ""}, null)">About Us</a></li>
+                        @*<li><a href="javascript:;">Why Register?</a></li>*@
+                        <li><a href="@Url.Action("FAQ", "Home", new { area = ""}, null)">FAQs</a></li>
+                        @*<li><a href="javascript:;">Sitemap</a></li>*@
+                        <li><a href="javascript:;" data-toggle="modal" data-target="#contactdialogIEE" data-backdrop="static" data-keyboard="false">Contact Us</a></li>
+                        <li><a href="http://localhost/Blog">Blog</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6">
+                <div class="widget">
+                    <h3>Entertainers</h3>
+                    <ul>
+                        <li><a href="javascript:;" data-toggle="modal" data-name="Login" data-target="#myModal" data-backdrop="static" data-keyboard="false">Login</a></li>
+                        <li>
+                            @*<a href="javascript:;" data-toggle="modal" data-name="Register" data-target="#myModal" data-backdrop="static" data-keyboard="false">Register</a>*@
+                            @if (String.IsNullOrEmpty(User.Identity.Name))
+                            {
+                                <a href="@Url.Action("Register", "Home", new { area = "" }, null)">Register</a>
+                            }
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6">
+                <div class="widget">
+                    <h3>Talent-Seekers</h3>
+                    <ul>
+                        <li><a href="javascript:;" data-toggle="modal" data-name="Login" data-target="#myModal" data-backdrop="static" data-keyboard="false">Login</a></li>
+                        <li>
+                            @*<a href="javascript:;" data-toggle="modal" data-name="Register" data-target="#myModal" data-backdrop="static" data-keyboard="false">Register</a>*@
+                            @if (String.IsNullOrEmpty(User.Identity.Name))
+                            {
+                                <a href="@Url.Action("RegisterTalentSeekar", "Home", new { area = "" }, null)">Register</a>
+                            }
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="widget">
+                    <br /><br class="hidden-xs" />
+                    <h3>Join Us On:</h3>
+                    <ul class="social_sec">
+                        <li><a href="https://www.facebook.com/indentertainers" class="fb_icon"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                        <li><a href="https://twitter.com/indentertainers?lang=en" class="twt_icon"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                        <li><a href="https://www.instagram.com/indiaentertainers/" class="fb_icon"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <div id="contactdialogIEE" class="modal fade" role="dialog" ng-controller="IndEntnJSController" data-ng-init="ChckLogin()">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="height: 60px;">
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <div class="modal-title" data-ng-show="ShowCntIEFrm" style="text-align: center;">
+                        <h3 style="font-size: 20px;">Contact Us</h3>
+                    </div>
+                    <div class="modal-title" data-ng-hide="ShowCntIEFrm" style="text-align: center;">
+                        <h3 style="font-size: 20px;">Success</h3>
+                    </div>
+
+                    @*<h4 class="modal-title">Modal Header</h4>*@
+                </div>
+                <div class="modal-body">
+                    <div class="form log-reg">
+                        <div id="logindiv">
+                            @*<h1>Contact Us</h1>*@
+                            <div data-ng-show="ShowCntIEFrm">
+                                <ng-form name="IEcontactform">
+                                    <fieldset>
+                                        <div data-ng-hide="UserLoggedInCTIE">
+                                            <div class="field-wrap">
+                                                <label>
+                                                    Name
+                                                </label>
+                                                <input class="form-control" type="text" data-ng-model="IEMessage.Name" name="Name" ng-required="!UserLoggedInCTIE">
+                                            </div>
+
+                                            <div class="field-wrap">
+                                                <label>
+                                                    Email ID
+                                                </label>
+                                                <input class="form-control" type="email" data-ng-model="IEMessage.EmailID" name="EmailID" ng-required="!UserLoggedInCTIE">
+                                                <div ng-messages="IEcontactform.EmailID.$error" class="text-danger">
+                                                    <div ng-message="email">The Email ID entered is not a valid one</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="field-wrap">
+                                                <label>
+                                                    Contact Number
+                                                </label>
+                                                <input class="form-control" type="number" data-ng-model="IEMessage.ContactNo" name="ContactNo" ng-required="!UserLoggedInCTIE">
+                                                <div ng-messages="IEcontactform.ContactNo.$error" class="text-danger">
+                                                    <div ng-message="maxlength">Mobile Number is not valid.</div>
+                                                    <div ng-message="minlength">Mobile Number is not valid.</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="field-wrap">
+                                            <label>
+                                                Message<span class="req"></span>
+                                            </label>
+                                            <textarea class="form-control" data-ng-model="IEMessage.Message" placeholder="Max 100 Characters" rows="3" id="Message" required></textarea>
+                                        </div>
+                                        <p class="text-info">{{cntfrmIEMessage}}</p>
+                                        <button class="btnPopUp" id="login_frm" type="submit" data-ng-disabled="!IEcontactform.$valid" data-ng-click="SendMessagetoIE(IEMessage)" value="login" name="login">Submit</button>
+                                    </fieldset>
+                                </ng-form>
+                            </div>
+                            <div data-ng-hide="ShowCntIEFrm">
+                                <p class="text-info">{{cntfrmIEMessage}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="javascript:;" data-toggle="modal" data-target="#inCompleteProfile" id="inCompleteReg" style="display:none;" data-backdrop="static" data-keyboard="false"></a>
+    <div id="inCompleteProfile" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="height: 60px;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <div class="modal-title" style="text-align: center;">
+                        <h3 style="font-size: 20px;">Message</h3>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form log-reg">
+                        <p class="text-info">Your profile is in-complete. Please complete your profile.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" style="display: none;">
+        <div class="slides"></div>
+        <h3 class="title hidden"></h3>
+        <a class="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+        <a class="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+        <a class="close"><span class="glyphicon glyphicon-remove"></span></a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+
+</section>
+
+<footer id="footer" class="midnight-blue">
+    <div class="container">
+        <div class="row">
+            <div class="copyright col-sm-4 col-md-3 col-lg-3 col-xs-12">
+                <img src="~/images/copyright-img.png" alt="Copyright" /> indiaentertainers.com
+            </div>
+            <div class="col-sm-5 col-md-4 col-lg-3 col-xs-12">
+                <a href="@Url.Action("TnC", "Home", new { area = ""}, null)">Visitor Agreement & Privacy Policy</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<script src="~/Scripts/jquery.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/common.js"></script>
+<script src="~/Scripts/swiper.min.js"></script>
+<script src="~/Scripts/jquery.mCustomScrollbar.min.js"></script>
+<script src="~/Scripts/bootstrap.slider.min.js"></script>
+<script src="~/Scripts/jquery.blueimp-gallery.min.js"></script>
+<script src="~/Scripts/profile.js"></script>
+<script src="~/Scripts/angular.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-sanitize.js"></script>
+<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+<script src="~/Scripts/angular-upload.js"></script>
+<script src="~/Scripts/angular-messages.min.js"></script>
+<script src="~/Scripts/App/app.js"></script>
+<script src="~/Scripts/App/IndEntnJSController.js"></script>
+<script src="~/Scripts/App/SrchFilterJsController.js"></script>
+<script src="~/Scripts/App/HomeSearchTypeHeadJSController.js"></script>
+@*<script src="~/Scripts/jquery.firstVisitPopup.js"></script>
+    <script src="~/Scripts/jquery.firstVisitPopup.min.js"></script>*@
+
+<script>
+    $(function () {
+        var shrinkHeader = 50;
+        $(window).scroll(function () {
+            var scroll = getCurrentScroll();
+            if (scroll >= shrinkHeader) {
+                $('#header_wrapper').addClass('shrink');
+            }
+            else {
+                $('#header_wrapper').removeClass('shrink');
+            }
+        });
+        function getCurrentScroll() {
+            return window.pageYOffset;
+        }
+
+
+        //$('#my-welcome-message').firstVisitPopup({
+        //    cookieName: 'homepage',
+        //    showAgainSelector: '#show-message'
+        //});
+
+        if ("@ViewBag.IsLoggedIn" == "True") {
+            $("#inCompleteReg").trigger("click");
+        }
+
+        $("#loginLink").on("click", function () {
+            $("#loginPop").trigger("click");
+            $("#closebtn").trigger("click");
+        });
+
+    });
+</script>

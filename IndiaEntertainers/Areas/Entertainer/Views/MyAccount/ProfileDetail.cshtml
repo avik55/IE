@@ -1,0 +1,1297 @@
+﻿@model IndiaEntertainers.Models.tbl_Entertainer
+
+@{
+    ViewBag.Title = Model.FName;
+    var photos = ViewBag.photos as List<IndiaEntertainers.Models.tbl_EntrImages>;
+    var videos = ViewBag.videos as List<IndiaEntertainers.Models.tbl_EntrVideos>;
+
+    var coverPhoto = photos.FirstOrDefault(d => d.IsCurCoverImg == true);
+    var profilePhoto = photos.FirstOrDefault(d => d.IsCurProfileImg == true);
+    var UsrPhotos = photos.Where(d => d.IsCurCoverImg != true && d.IsCurProfileImg != true).ToList();
+    //  var catname = @IndiaEntertainers.HTMLHelper.CustomHelper.GetEntCatName(Model.EntrId);
+    string cphoto = coverPhoto == null ? "BlankCoverImg.jpg" : coverPhoto.ImagePath;
+    string ctitle = coverPhoto == null ? null : coverPhoto.Title;
+    string pphoto = profilePhoto == null ? "UserIcon.png" : profilePhoto.ImagePath;
+    string ptitle = profilePhoto == null ? null : profilePhoto.Title;
+    string catname = IndiaEntertainers.HTMLHelper.CustomHelper.GetEntCatName(Model.EntrId);
+}
+
+<style>
+    .radio label::before {
+        content: "";
+        display: inline-block;
+        position: absolute;
+        width: 17px;
+        height: 17px;
+        left: 0;
+        margin-top: 5px;
+        margin-left: -20px;
+        border: 1px solid #cccccc;
+        border-radius: 50%;
+        background-color: #fff;
+        -webkit-transition: border 0.15s ease-in-out;
+        -o-transition: border 0.15s ease-in-out;
+        transition: border 0.15s ease-in-out;
+    }
+
+    .checkbox label::before {
+        content: "";
+        display: inline-block;
+        position: absolute;
+        width: 17px;
+        height: 14px;
+        left: 0;
+        margin-top: 5px;
+        margin-left: -20px;
+        border: 1px solid #cccccc;
+        border-radius: 10%;
+        background-color: #fff;
+        -webkit-transition: border 0.15s ease-in-out;
+        -o-transition: border 0.15s ease-in-out;
+        transition: border 0.15s ease-in-out;
+    }
+
+    .containerImg {
+        position: relative;
+        /*float: left;*/
+        /*border: 1px solid #aaa;*/
+    }
+
+        .containerImg span {
+            position: absolute;
+            bottom: -56px;
+            /*height: 30px;*/
+            background: rgba(0,0,0,.5);
+            color: #fff;
+            /*width: 100%;*/
+            /*left: 34px;*/
+            /*line-height: 30px;
+            text-align: center;
+            opacity: 0;
+            -webkit-transition: all 1s;
+            -moz-transition: all 1s;
+            transition: all 1s;*/
+        }
+
+    /*.containerImg:hover span {
+            opacity: 1;
+        }*/
+</style>
+
+<div ng-app="IndEntnApp">
+    <div ng-controller="IndEntnJSController">
+        <section id="Profile">
+            <div class="container">
+                <div class="row">
+                    <div class="moksha-relative">
+                        <section class="left_side col-xs-12 col-sm-5 col-md-4 moksha-sticky" id="scrollingDiv-disable">
+                            <div class="container" style="width: 100%;margin: -35px 0px 7px 30px;">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <span class="url_lnk hme"><a href="@Url.Action("Index","Home",new { area =""})" class="hme" title="Home"><img src="~/images/home_brd.png" alt="home" /></a></span> <b>></b> <span class="url_lnk"><a href="javascript:;" title="Entertainers">Entertainers</a></span> <b>></b> <span class="url_lnk"><a href="@Url.Action("Index","Entertainers",new { area ="", id = catname + 's' })" title="@catname">@catname</a></span> <b>></b> <span class="url_lnk">@Model.FName</span>
+                                    </div>
+                                    @*<div class="col-md-8 col-sm-12 col-xs-12">
+                                            @if (Model.IsProfileCompleted == true)
+                                            {
+                                                <p class="text-success text-center">Your Profile is Live.</p>
+                                            }
+                                            else
+                                            {
+                                                <p class="text-danger text-center">Fill in your details</p>
+                                            }
+
+                                        </div>*@
+                                </div>
+                            </div>
+                            <div class="trending_perf">
+                                <div class="trending-wrap">
+                                    <div class="trend_img lightbox">
+                                        <a class="video-pop-link imggal" href="~/images/UserImages/@cphoto">
+                                            <img src="~/images/UserImages/@cphoto" alt="@Model.FName" class="img-responsive video-cover-img" style="height: 180px;">
+                                        </a>
+                                        <span class="trend_loc"><img src="~/images/address-white.png" alt="" /> &nbsp;<span class="view_cnt"> @IndiaEntertainers.HTMLHelper.CustomHelper.GetCityName(Model.CityId)</span></span>
+                                        <div class="dtls">
+                                            <h3 class="trend_name">@ViewBag.Title</h3>
+                                            <h4 class="trend_shrtname">
+                                                <img src="~/images/mic-white.png" alt="" /> &nbsp;<span>@IndiaEntertainers.HTMLHelper.CustomHelper.GetEntCatName(Model.EntrId)</span>
+                                                @*<span class="pull-right">
+                                                        <a href="javascript:;" title="Change Cover Image" data-toggle="modal" data-target="#changecoverimage" data-backdrop="static" data-keyboard="false">
+                                                            <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 20px;color: white;"></i>
+                                                        </a>
+                                                    </span>*@
+                                            </h4>
+                                            <div class="containerImg">
+                                                <a href="javascript:;" title="Change Cover Image" data-toggle="modal" data-target="#changecoverimage" data-backdrop="static" data-keyboard="false">
+                                                    <span id="changeImgProfile" style="height: 22px;width: 10%;bottom: 0;right: 2px;">
+                                                        <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:24px;"></i>
+                                                        @*<h3 style="color: white;margin-top: 9%;text-align: center;">
+                                                                  change
+                                                            </h3>*@
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="trend_dtl">
+                                        <div class="dtl lightbox">
+                                            <div class="containerImg">
+                                                <a class="video-pop-link imggal" href="~/images/UserImages/@pphoto">
+                                                    <img src="~/images/UserImages/@pphoto" alt="@Model.FName" class="img-responsive video-cover-img">
+                                                </a>
+                                                <a href="javascript:;" title="Change Profile Image" data-toggle="modal" data-target="#changeProfileimage" data-backdrop="static" data-keyboard="false">
+                                                    <span id="changeImgProfile" style="/* font-size: 22px; *//* height: 27px; *//* width: 19%; *//* border-radius: 44%; */left: 60px;bottom: top;top: 40px;">
+                                                        <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size:20px;"></i>
+                                                        @*<h3 style="color: white;margin-top: 9%;text-align: center;">
+                                                                  change
+                                                            </h3>*@
+                                                    </span>
+                                                </a>
+
+                                            </div>
+                                            @*<a href="javascript:;" title="Change Profile Image" data-toggle="modal" data-target="#changeProfileimage" data-backdrop="static" data-keyboard="false">
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true" style="font-size: 20px;color: black;margin-left: 132px;"></i>
+                                                </a>*@
+
+                                            <div class="trend_state">@Model.ProfileTitle</div>
+                                            <div class="col-xs-12 col-sm-12">
+                                                <div class="grid">PERFORMANCE FEES <span class="pull-right">@*&#x20B9;*@ @Math.Abs(@Model.Performancefee).ToString("c0", System.Globalization.CultureInfo.GetCultureInfo("en-in")) onwards</span></div>
+                                                <hr class="line-separtr" />
+                                            </div>
+
+                                            <div class="col-xs-12 col-sm-12">
+                                                <div class="col-xs-4 col-sm-4 grid">
+                                                    <p><b>@Model.Gender</b></p>
+                                                    <p class="grid_sub">GENDER</p>
+                                                </div>
+
+                                                <div class="col-xs-4 col-sm-4 grid">
+                                                    <p><b>@Model.Nationality</b></p>
+                                                    <p class="grid_sub">NATIONALITY</p>
+                                                </div>
+
+                                                <div class="col-xs-4 col-sm-4 grid">
+                                                    <p><b>@Model.NoofShow +</b></p>
+                                                    <p class="grid_sub">NO. OF SHOWS</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-12 col-sm-12">
+                                                <div class="col-xs-4 col-sm-4 grid">
+                                                    <p><b>@Model.PerfLanguage </b></p>
+                                                    <p class="grid_sub">PERFORMANCE LANGUAGE</p>
+                                                </div>
+
+                                                <div class="col-xs-4 col-sm-4 grid">
+                                                    <p><b>@Model.PerfLength </b></p>
+                                                    <p class="grid_sub">PERFORMANCE LENGTH (Mins)</p>
+                                                </div>
+
+                                                <div class="col-xs-4 col-sm-4 grid">
+                                                    <p><b>@Model.PERFORMINGMEMBERS </b></p>
+                                                    <p class="grid_sub">PERFORMING MEMBERS</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-12 col-sm-12">
+                                                <ul class="social_sec">
+                                                    @if (Model.FBPageLink != null)
+                                                    {
+                                                        <li><a target="_blank" href="@Model.FBPageLink" class="fb_icon"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                                    }
+                                                    @if (Model.TwiterPageLink != null)
+                                                    {
+                                                        <li><a target="_blank" href="@Model.TwiterPageLink" class="twt_icon"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                                    }
+                                                    @if (Model.IntgramPageLink != null)
+                                                    {
+                                                        <li><a target="_blank" href="@Model.IntgramPageLink" class="linkedin_icon"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                                    }
+                                                </ul>
+                                            </div>
+
+                                            <div class="col-xs-12 col-sm-12">
+                                                @*<div class="trend_cnt"><a href="javascript:;" data-toggle="modal" ng-click='GetEntrnId(@Model.EntrId)' data-target="#contactdialog">CONTACT</a></div>*@
+                                                @*<div class="trend_cnt"><a href="javascript:;" data-toggle="modal" ng-click='GetEntrnId(@Model.EntrId)' data-target="#contactdialog">CONTACT</a></div>*@
+                                                @*<div class="trend_cnt"><a href="javascript:;" data-toggle="modal" data-target="#contactdialog">CONTACT</a></div>*@
+                                                @*<div class="trend_rvw"><a href="javascript:;">Add Review</a></div>*@
+                                                <div data-ng-click="GetDetails()" class="trend_cnt"><a href="javascript:;" data-toggle="modal" data-target="#UpdateProDetails" data-backdrop="static" data-keyboard="false">Edit Details</a></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </section>
+
+                        @*left side end*@
+
+                        <section class="right_side col-xs-12 col-sm-7 col-md-8 pull-right" style="margin-top: 14px;">
+                            <!-- Video slider starts -->
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                @if (Model.IsProfileCompleted == true)
+                                {
+                                    <p class="text-success text-center">YOUR PROFILE IS LIVE</p>
+                                }
+                                else
+                                {
+                                    <p class="text-danger text-center">Fill in your details</p>
+                                }
+
+                            </div>
+                            <div class="trending_perf_wrp vid_section prof_sec">
+                                <div class="prof_head"><b>VIDEOS</b> <span>(@videos.Count())</span><span class="text-info text-right"><a href="javascript:;" title="Add New Image" class="pull-right" data-toggle="modal" data-target="#AddVideoNew" data-backdrop="static" data-keyboard="false">Add new video</a></span> </div>
+                                <div class="swiper-container trending_perf">
+                                    <div class="swiper-wrapper">
+                                        @foreach (var v in videos)
+                                        {
+                                            <div class="swiper-slide">
+                                                <div class="trending-wrap">
+                                                    <div class="trend_img" style="position:relative;">
+                                                        <span class="text-info text-left" style="position:absolute; padding:10px; left:0;">
+                                                            <a href="javascript:;" title="Delete Video" data-ng-click="DeleteVideo(@v.Vid)" style="color:white;">
+                                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                            </a>
+                                                        </span>
+                                                        <a class="video-pop-link vidlink" rel="media-gallery" href="@v.Videolink">
+                                                            <span class="video-icon"></span>
+                                                            <img src="@IndiaEntertainers.HTMLHelper.CustomHelper.GetYouTubeVideoImage(v.Videolink)" class="img-responsive video-cover-img">
+                                                            <!-- <span class="trend_view"><img src="../images/eye-white.png" /> <span class="view_cnt">1000</span></span> -->
+                                                            <h3 class="trend_name"></h3>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <!-- Add Arrows -->
+                                <div class="swiper-button-next3 swiper-button-next"></div>
+                                <div class="swiper-button-prev3 swiper-button-prev"></div>
+                            </div>                        <!-- Video slider ends -->
+                            <!-- Video photos starts -->
+                            <div class="trending_perf_wrp photo_section prof_sec">
+                                <div class="prof_head"><b>PHOTOS</b> <span>(@UsrPhotos.Count())</span> <span class="text-info text-right pull-right"><a href="javascript:;" title="Add New Image" data-toggle="modal" data-target="#AddNewImagee" data-backdrop="static" data-keyboard="false">Add new photo</a></span> </div>
+                                <div class="swiper-container trending_perf">
+                                    <div class="swiper-wrapper lightbox">
+                                        @foreach (var p in UsrPhotos)
+                                        {
+                                            <div class="swiper-slide" style="width: 220px; margin-right: 5px;">
+                                                <div class="trending-wrap">
+                                                    <div class="trend_img" style="position:relative;">
+                                                        <span class="text-info text-left" style="position:absolute; padding:10px;left:0;">
+                                                            <a href="javascript:;" title="Delete Image" data-ng-click="DeleteImage(@p.ImageId)" style="color:white;">
+                                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                            </a>
+                                                        </span>
+                                                        <a class="video-pop-link imggal" href="~/images/UserImages/@p.ImagePath">
+                                                            <img src="~/images/UserImages/@p.ImagePath" alt="@Model.FName" class="img-responsive video-cover-img">
+                                                            <!-- <span class="trend_view"><img src="../images/eye-white.png" /> <span class="view_cnt">1000</span></span> -->
+                                                            <h3 class="trend_name">
+                                                                @if (@p.Title != "undefined")
+                                                                { @p.Title}
+                                                            </h3>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+
+                                </div>
+                                <!-- Add Arrows -->
+                                <div class="swiper-button-next4 swiper-button-next"></div>
+                                <div class="swiper-button-prev4 swiper-button-prev"></div>
+                            </div>
+                            <!-- Video Photos ends -->
+                            <!-- Profile starts -->
+                            <div class="trending_perf_wrp profile_section prof_sec">
+                                <div class="prof_head"><b>PROFILE</b><span class="text-info text-right pull-right"><a href="javascript:;" class="pull-right" title="Update" data-ng-click="GetProMessage()" data-toggle="modal" data-target="#UpdateProfileModal" data-backdrop="static" data-keyboard="false">Edit profile text</a></span></div>
+                                <div class="trending_perf">
+                                    <article class="profile-container">
+                                        <p class="prof_cntnt">
+                                            @Html.DisplayFor(model => model.Profile)
+                                        </p>
+                                    </article>
+                                    @*<p class="less-more">
+                                            <a onclick="lessmore($(this));" href="javascript:;" class="text_chng"><span>Read More...</span></a>
+                                        </p>*@
+                                </div>
+
+                            </div>
+                            <!-- Profile ends -->
+                            <!-- PROJECTOGRAPHY starts -->
+                            @*<div class="trending_perf_wrp project_section prof_sec">
+                                    <div class="prof_head"><b>PROJECTOGRAPHY</b></div>
+                                    <div class="trending_perf">
+                                        <div class="panel-group" id="accordion">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                                            latest projects
+                                                            <i class="indicator glyphicon glyphicon-chevron-up pull-right"></i>
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseOne" class="panel-collapse collapse in">
+                                                    <div class="panel-body">
+                                                        <!-- <div class="pad0 col-sm-7">
+                                                <div class="panel-img">
+                                                    <img src="../images/img_1.jpg" class="img-responsive"/>
+                                                    <span class="trend_view"><img src="../images/eye-white.png"> <span class="view_cnt">1000</span></span>
+                                                </div>
+                                                <div class="panel-txt">
+                                                    <b>Time:</b>
+                                                    <p>7pm to 11pm, July 29, 2017</p>
+                                                    <b>Venue:</b>
+                                                    <p>Near Union Bank, Swami Vivekanand Road, Krishna Colony</p>
+                                                </div>
+                                            </div>
+                                            <div class="pad0 col-sm-5">
+                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch.
+                                            </div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                                            latest projects
+                                                            <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseTwo" class="panel-collapse collapse">
+                                                    <div class="panel-body">
+                                                        <!-- <div class="pad0 col-sm-7">
+                                                <div class="panel-img">
+                                                    <img src="../images/img_2.jpg" class="img-responsive"/>
+                                                    <span class="trend_view"><img src="../images/eye-white.png"> <span class="view_cnt">1000</span></span>
+                                                </div>
+                                                <div class="panel-txt">
+                                                    <b>Time:</b>
+                                                    <p>7pm to 11pm, July 29, 2017</p>
+                                                    <b>Venue:</b>
+                                                    <p>Near Union Bank, Swami Vivekanand Road, Krishna Colony</p>
+                                                </div>
+                                            </div>
+                                            <div class="pad0 col-sm-5">
+                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch.
+                                            </div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                                            latest projects
+                                                            <i class="indicator glyphicon glyphicon-chevron-down pull-right"></i>
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapseThree" class="panel-collapse collapse">
+                                                    <div class="panel-body">
+                                                        <!-- <div class="pad0 col-sm-7">
+                                                <div class="panel-img">
+                                                    <img src="../images/img_3.jpg" class="img-responsive"/>
+                                                    <span class="trend_view"><img src="../images/eye-white.png"> <span class="view_cnt">1000</span></span>
+                                                </div>
+                                                <div class="panel-txt">
+                                                    <b>Time:</b>
+                                                    <p>7pm to 11pm, July 29, 2017</p>
+                                                    <b>Venue:</b>
+                                                    <p>Near Union Bank, Swami Vivekanand Road, Krishna Colony</p>
+                                                </div>
+                                            </div>
+                                            <div class="pad0 col-sm-5">
+                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch.
+                                            </div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>*@
+                        </section>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div id="contactdialog" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header" style="height:60px;">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <div data-ng-show="ShowCntFrm" style="text-align: center;">
+                                        <h3 style="color:white;font-size:20px;margin:0;">Contact Us</h3>
+                                    </div>
+                                    <div data-ng-hide="ShowCntFrm" style="text-align: center;">
+                                        <h3 style="color:white;font-size:20px;margin:0;">Success</h3>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form log-reg">
+                                        <div id="logindiv">
+                                            <div data-ng-show="ShowCntFrm">
+                                                <form name="contactform">
+                                                    <fieldset>
+                                                        <div class="field-wrap">
+                                                            <label>
+                                                                Name
+                                                            </label>
+                                                            <input class="form-control" type="text" data-ng-model="EntnMessage.Name" name="EntnMessage.Name" required>
+                                                        </div>
+
+                                                        <div class="field-wrap">
+                                                            <label>
+                                                                Email ID
+                                                            </label>
+                                                            <input class="form-control" type="email" data-ng-model="EntnMessage.EmailID" name="EntnMessage.EmailID" required>
+                                                        </div>
+
+                                                        <div class="field-wrap">
+                                                            <label>
+                                                                Contact No.
+                                                            </label>
+                                                            <input class="form-control" type="text" data-ng-model="EntnMessage.ContactNo" name="EntnMessage.ContactNo" required>
+                                                        </div>
+
+                                                        <div class="field-wrap">
+                                                            <label>
+                                                                Message
+                                                            </label>
+                                                            <textarea class="form-control" data-ng-model="EntnMessage.Message" placeholder="Max 100 Characters" rows="3" id="Message" required></textarea>
+                                                        </div>
+                                                        <p class="text-info">{{cntfrmMessage}}</p>
+                                                        <button class="btnPopUp" type="submit" data-ng-disabled="!contactform.$valid" data-ng-click="SendMessagetoEntrn(EntnMessage)">Submit</button>
+                                                    </fieldset>
+                                                </form>
+                                            </div>
+                                            <div data-ng-hide="ShowCntFrm">
+                                                <p class="text-info">{{cntfrmMessage}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="changecoverimage" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header" style="height:60px;">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h3 style="color:white;font-size:20px;margin:0;text-align:center;">Change Cover Image</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form log-reg">
+                                        <div id="logindiv">
+                                            <ng-form name="CoverImgChageFrm">
+                                                <fieldset>
+                                                    <div data-ng-show="ShowChangeCoverModel">
+                                                        @*<div class="field-wrap">
+                                                                <label>
+                                                                    Title<span class="req">* </span>
+                                                                </label>
+                                                                <input class="form-control" type="text" data-ng-model="Title" name="Title">
+                                                            </div>*@
+
+                                                        <div class="field-wrap">
+                                                            <label>
+                                                                Select cover image
+                                                            </label>
+                                                            <input name="myFile" upload-file="myFile" type="file" />
+                                                        </div>
+                                                        <p class="text-info">{{coverImgMessage}}</p>
+                                                        <button class="btnPopUp" type="button" ng-click="ChangeCoverImage()">Upload</button>
+                                                    </div>
+                                                    <div data-ng-hide="ShowChangeCoverModel">
+                                                        <p class="text-info">{{coverImgMessage}}</p>
+                                                    </div>
+
+                                                    @*<button class="button button-block" type="button" ng-click="ChangeCoverImage()">Submit</button>*@
+                                                </fieldset>
+                                            </ng-form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="changeProfileimage" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header" style="height:60px;">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h3 style="color:white;font-size:20px;margin:0;text-align:center;">Change Profile Image</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form log-reg">
+                                        <div id="logindiv">
+                                            <ng-form name="PrfImgChageFrm">
+                                                <fieldset>
+                                                    <div data-ng-show="ShowChangeProfileModel">
+                                                        @*<div class="field-wrap">
+                                                                <label>
+                                                                    Title<span class="req">* </span>
+                                                                </label>
+                                                                <input class="form-control" type="text" data-ng-model="Title" name="Title">
+                                                            </div>*@
+
+                                                        <div class="field-wrap">
+                                                            <label>
+                                                                Select profile image
+                                                            </label>
+                                                            <input name="myprofilePic" upload-file="myprofilePic" type="file" />
+                                                        </div>
+                                                        <p class="text-info">{{coverPrfMessage}}</p>
+                                                        <button class="btnPopUp" type="button" ng-click="ChangeProfileImage()">Upload</button>
+                                                    </div>
+                                                    <div data-ng-hide="ShowChangeProfileModel">
+                                                        <p class="text-info">{{coverPrfMessage}}</p>
+                                                    </div>
+
+                                                    @*<button class="button button-block" type="button" ng-click="ChangeCoverImage()">Submit</button>*@
+                                                </fieldset>
+                                            </ng-form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="AddNewImagee" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header" style="height:60px;">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="CloseAddNewPhoto()"><span aria-hidden="true">&times;</span></button>
+                                    <h3 style="color:white;font-size:20px;margin:0;text-align:center;">Add New Photo</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form log-reg">
+                                        <div id="logindiv">
+
+                                            <ng-form name="PrfImgChageFrm">
+                                                <fieldset>
+                                                    <div data-ng-show="ShowAddphtoProfileModel">
+                                                        <div class="field-wrap">
+                                                            <label>
+                                                                Select new photo
+                                                            </label>
+                                                            <input name="MyNewPhoto" upload-file="MyNewPhoto" type="file" multiple
+                                                                   onchange="angular.element(this).scope().getFileDetails(this)" />
+                                                        </div>
+
+                                                        @*<div class="field-wrap">
+                                                                <label>
+                                                                    Caption<span class="req">* </span>
+                                                                </label>
+                                                                <input class="form-control" type="text" data-ng-model="Title" name="Title">
+                                                            </div>*@
+
+                                                        <p class="text-info">{{NewPhotoMessage}}</p>
+                                                        <button class="btnPopUp" type="button" ng-click="AddNewPhoto()">Upload</button>
+                                                    </div>
+                                                    <div data-ng-hide="ShowAddphtoProfileModel">
+                                                        <p class="text-info">{{NewPhotoMessage}}</p>
+                                                    </div>
+
+                                                    @*<button class="button button-block" type="button" ng-click="ChangeCoverImage()">Submit</button>*@
+                                                </fieldset>
+                                            </ng-form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="AddVideoNew" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header" style="height:60px;">
+                                    <button type="button" id="closeVideoPopUp" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h3 style="text-align:center;color:white;font-size:20px;margin:0;">Add New Video</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form log-reg">
+                                        <div id="logindiv">
+                                            <ng-form name="PrfImgChageFrm">
+                                                <fieldset>
+                                                    <div data-ng-show="ShowAddvdoProfileModel">
+                                                        <div class="field-wrap">
+                                                            <input name="videoLinktest1" placeholder="Video Link 1" data-ng-model="NewWid.Videolink1" type="url" />
+                                                        </div>
+                                                        <div class="field-wrap">
+                                                            <input name="videoLinktest2" placeholder="Video Link 2" data-ng-model="NewWid.Videolink2" type="url" />
+                                                        </div>
+                                                        <div class="field-wrap">
+                                                            <input name="videoLinktest3" placeholder="Video Link 3" data-ng-model="NewWid.Videolink3" type="url" />
+                                                        </div>
+                                                        <div class="field-wrap">
+                                                            <input name="videoLinktest4" placeholder="Video Link 4" data-ng-model="NewWid.Videolink4" type="url" />
+                                                        </div>
+                                                        <div class="field-wrap">
+                                                            <input name="videoLinktest5" placeholder="Video Link 5" data-ng-model="NewWid.Videolink5" type="url" />
+                                                        </div>
+                                                        <p class="text-info">{{AdVdMessage}}</p>
+                                                        <button class="btnPopUp" type="button" ng-click="AddVideoNew(NewWid)">Upload</button>
+                                                    </div>
+                                                </fieldset>
+                                            </ng-form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="UpdateProfileModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header" style="height:60px;">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h3 style="color:white;font-size:20px;margin:0;text-align:center;">Update Profile</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form log-reg">
+                                        <div id="logindiv">
+
+                                            <ng-form name="UpdateProfileText">
+                                                <fieldset>
+                                                    <div data-ng-show="ShowUpdateProfileModel">
+
+                                                        <div class="field-wrap col-md-12">
+                                                            <label>
+                                                                Profile <span class="req"> </span>
+                                                            </label>
+                                                            <textarea required class="form-control" data-ng-model="Proppp.ProfTitle" ng-minlength="150" name="profile" placeholder="Profile" rows="6" id="comment"></textarea>
+                                                            <div ng-messages="UpdateProfileText.profile.$error" class="text-danger">
+                                                                <!-- <div ng-message="required">This field is required</div>-->
+                                                                <div ng-message="minlength">Profile must be over 150 characters</div>
+                                                                @*<div ng-message="maxlength">Profile must not exceed 1500 characters</div>*@
+                                                            </div>
+                                                        </div>
+
+                                                        @*<div class="field-wrap">
+                                                                <label>
+                                                                    Profile<span class="req"> </span>
+                                                                </label>
+                                                                <textarea class="form-control" data-ng-model="profile" minlength="150" maxlength="1500" name="profile" placeholder="Max 1500 Characters" rows="6" id="comment" required></textarea>
+                                                                <div ng-messages="UpdateProfileText.profile.$error" class="text-danger">
+                                                                    <!--<div ng-message="required">This field is required</div>-->
+                                                                    <div ng-message="minlength">Profile must be over 150 characters</div>
+                                                                    <div ng-message="maxlength">Profile must not exceed 1500 characters</div>
+                                                                </div>
+                                                            </div>*@
+
+                                                        <p class="text-info">{{UpProfileMessage}}</p>
+                                                        <button class="btnPopUp" type="submit" data-ng-disabled="!UpdateProfileText.$valid" ng-click="UpdateProfile()">Update</button>
+                                                    </div>
+                                                    <div data-ng-hide="ShowUpdateProfileModel">
+                                                        <p class="text-info">{{UpProfileMessage}}</p>
+                                                    </div>
+
+                                                    @*<button class="button button-block" type="button" ng-click="ChangeCoverImage()">Submit</button>*@
+                                                </fieldset>
+                                            </ng-form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="UpdateProDetails" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header" style="height:60px;">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h3 style="color:white;font-size:20px;margin:0;text-align:center;">Update Profile</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form log-reg">
+                                        <div id="logindiv">
+                                            <ng-form name="UsrDetailsForm">
+                                                <fieldset>
+                                                    <div data-ng-show="ShowUpdateProfileModel">
+                                                        <div class="field-wrap col-md-6">
+                                                            <label>
+                                                                Artist/Group name<span class="req"> </span>
+                                                            </label>
+                                                            <input class="form-control" data-ng-model="UpdDetails.FName" maxlength="100" name="FName" id="FName" required />
+                                                            <div ng-messages="UsrDetailsForm.FName.$error" class="text-danger">
+                                                                <!-- <div ng-message="required">This field is required</div>-->
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="field-wrap col-md-6">
+                                                            <label>
+                                                                Mobile Number<span class="req"> </span>
+                                                            </label>
+                                                            <input class="form-control" data-ng-model="UpdDetails.Mobile" maxlength="12" name="Mobile" id="Mobile" required />
+                                                            <div ng-messages="UsrDetailsForm.Mobile.$error" class="text-danger">
+                                                                <!-- <div ng-message="required">This field is required</div>-->
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="clearfix"></div>
+
+                                                        <div class="field-wrap col-md-6">
+                                                            <label>
+                                                                Category
+                                                            </label>
+                                                            <div class="form-group drpdwn gen">
+                                                                <div class="btn-group">
+                                                                    <button data-toggle="dropdown" id="categoryDropDown" class="btn dropdown-toggle" data-placeholder="Please select"><span>{{CatTitle}}</span> <span class="caret"></span></button>
+                                                                    <ul class="dropdown-menu" style="max-height:230px;">
+                                                                        <li class="category">
+                                                                            <div class="radio radio1 radio-danger category" style="margin-top: 5px;">
+                                                                                <input class="category" ng-checked="Cat1Cheked" required type="radio" data-ng-model="UpdDetails.CatId" name="CatId" data-ng-click="SetCatTitle(UpdDetails.CatId)" id="CatId-15" value="15">
+                                                                                <label for="CatId-15" class="category">
+                                                                                    Bands
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="category">
+                                                                            <div class="radio radio-danger category">
+                                                                                <input class="category" type="radio" ng-checked="Cat2Cheked" required data-ng-model="UpdDetails.CatId" data-ng-click="SetCatTitle(UpdDetails.CatId)" name="CatId" id="CatId-9" value="9">
+                                                                                <label for="CatId-9" class="category">
+                                                                                    Dancers
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="category">
+                                                                            <div class="radio radio-danger category">
+                                                                                <input class="category" ng-checked="Cat3Cheked" type="radio" required data-ng-model="UpdDetails.CatId" data-ng-click="SetCatTitle(UpdDetails.CatId)" name="CatId" id="CatId-11" value="11">
+                                                                                <label for="CatId-11" class="category">
+                                                                                    DJs
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="category">
+                                                                            <div class="radio radio-danger category">
+                                                                                <input class="category" ng-checked="Cat4Cheked" type="radio" required data-ng-model="UpdDetails.CatId" data-ng-click="SetCatTitle(UpdDetails.CatId)" name="CatId" id="CatId-5" value="5">
+                                                                                <label for="CatId-5" class="category">
+                                                                                    Anchors
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="category">
+                                                                            <div class="radio radio-danger category">
+                                                                                <input class="category" ng-checked="Cat5Cheked" type="radio" required data-ng-model="UpdDetails.CatId" data-ng-click="SetCatTitle(UpdDetails.CatId)" name="CatId" id="CatId-2" value="2">
+                                                                                <label for="CatId-2" class="category">
+                                                                                    Singers
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="category">
+                                                                            <div class="radio radio-danger category">
+                                                                                <input class="category" ng-checked="Cat6Cheked" type="radio" required data-ng-model="UpdDetails.CatId" data-ng-click="SetCatTitle(UpdDetails.CatId)" name="CatId" id="CatId-12" value="12">
+                                                                                <label for="CatId-12" class="category">
+                                                                                    Stand-up Comedians
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li class="category">
+                                                                            <div class="radio radio-danger category">
+                                                                                <input class="category" ng-checked="Cat7Cheked" type="radio" required data-ng-model="UpdDetails.CatId" data-ng-click="SetCatTitle(UpdDetails.CatId)" name="CatId" id="CatId-14" value="14">
+                                                                                <label for="CatId-14" class="category">
+                                                                                    Uncut (Aspiring Singers)
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <!-- Other items -->
+                                                                    </ul>
+
+                                                                </div>
+                                                            </div>
+                                                            <div ng-messages="UsrDetailsForm.CatId.$error" class="text-danger">
+                                                                <!-- <div ng-message="required">This field is required</div>-->
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="field-wrap col-md-6">
+                                                            <label>
+                                                                City @*<span class="req"> </span>*@
+                                                            </label>
+                                                            <div class="form-group drpdwn gen">
+                                                                <div class="btn-group">
+                                                                    @*<button data-toggle="dropdown" class="btn dropdown-toggle" data-placeholder="Please select"><span class="selected_val">{{CityyTitle}}</span> <span class="caret"></span></button>*@
+                                                                    <input data-toggle="dropdown" required class="form-control" data-ng-keyup="GetCities(CityyTitle)" name="CityyTitle" data-ng-model="CityyTitle" placeholder="Type City Name to select" />
+                                                                    <input type="hidden" required name="CityId" data-ng-model="UpdDetails.CityId" />
+                                                                    <ul class="dropdown-menu" style="max-height:230px; list-style:none;" data-ng-show="ShowCitiesFltrModel">
+                                                                        <li data-ng-repeat="ccatty in AllCities">
+                                                                            <div class='radio radio-danger list-group-item'>
+                                                                                <input required type='radio' data-ng-model='UpdDetails.CityId' name='CityId' data-ng-click='SetCityTitle(ccatty.Name)' id='CityyId-{{ccatty.CityId}}' value='{{ccatty.CityId}}' ng-selected='true'> <label for='CityyId-{{ccatty.CityId}}'> {{ccatty.Name}} </label>
+                                                                            </div>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-messages="UsrDetailsForm.CityId.$error" class="text-danger">
+                                                                <!--   <div ng-message="required">This field is required</div>-->
+                                                            </div>
+                                                            @*<div ng-messages="UsrDetailsForm.CityyTitle.$error" class="text-danger">
+                                                                    <div ng-message="required">This field is required</div>
+                                                                </div>*@
+                                                        </div>
+
+                                                        <div class="field-wrap col-md-12">
+                                                            <label>
+                                                                Tagline <span class="req"> </span>
+                                                            </label>
+                                                            <textarea required class="form-control" data-ng-model="UpdDetails.ProfDetail" name="ProfileDetail" style="display:none;"></textarea>
+                                                            <textarea required class="form-control" data-ng-model="UpdDetails.ProfTitle" ng-maxlength="150" ng-minlength="20" name="ProfileTitle" placeholder="Max 150 Characters" rows="2" id="comment"></textarea>
+                                                            <div ng-messages="UsrDetailsForm.ProfileTitle.$error" class="text-danger">
+                                                                <!--  <div ng-message="required">This field is required</div>-->
+                                                                <div ng-message="minlength">Tagline must be over 20 characters</div>
+                                                                <div ng-message="maxlength">Tagline must not exceed 150 characters</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="clearfix"></div>
+
+                                                        <div class="field-wrap col-md-6">
+                                                            <label>
+                                                                Nationality@*<span class="req"> </span>*@
+                                                            </label>
+                                                            <div class="form-group drpdwn gen">
+                                                                <div class="btn-group">
+                                                                    <button data-toggle="dropdown" id="nationalityDropDown" class="btn dropdown-toggle" data-placeholder="Please select"><span>{{UpdDetails.Nationality}}</span> <span class="caret"></span></button>
+                                                                    <ul class="dropdown-menu" style="max-width:230px;">
+                                                                        <li>
+                                                                            <div class="radio radio-danger">
+                                                                                <input required type="radio" data-ng-model="UpdDetails.Nationality" name="Nationality" id="iinput_val16" value="Indian">
+                                                                                <label for="iinput_val16" class="nationality">
+                                                                                    Indian
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="radio radio-danger">
+                                                                                <input required type="radio" data-ng-model="UpdDetails.Nationality" name="Nationality" id="iinput_val17" value="Non-Indian ">
+                                                                                <label for="iinput_val17" class="nationality">
+                                                                                    Non-Indian
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+
+                                                                        <!-- Other items -->
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-messages="UsrDetailsForm.Nationality.$error" class="text-danger">
+                                                                <!-- <div ng-message="required">This field is required</div>-->
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="field-wrap col-md-6">
+                                                            <label>
+                                                                Gender@*<span class="req"> </span>*@
+                                                            </label>
+                                                            <div class="form-group drpdwn gen">
+                                                                <div class="btn-group">
+                                                                    <button data-toggle="dropdown" id="genderDropDown" class="btn dropdown-toggle" data-placeholder="Please select"><span>{{UpdDetails.Gender}}</span> <span class="caret"></span></button>
+                                                                    <ul class="dropdown-menu" style="max-width:230px;">
+                                                                        <li>
+                                                                            <div class="radio radio1 radio-danger" style="margin-top: 5px;">
+                                                                                <input required type="radio" style="margin-top: 5px;" data-ng-model="UpdDetails.Gender" name="Gender" id="input_val16g" value="Male">
+                                                                                <label for="input_val16g" class="gender">
+                                                                                    Male
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+
+                                                                        <li>
+                                                                            <div class="radio radio-danger">
+                                                                                <input required type="radio" data-ng-model="UpdDetails.Gender" name="Gender" id="input_val17g" value="Female">
+                                                                                <label for="input_val17g" class="gender">
+                                                                                    Female
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="radio radio-danger">
+                                                                                <input required type="radio" data-ng-model="UpdDetails.Gender" name="Gender" id="input_val18g" value="All Male Group">
+                                                                                <label for="input_val18g" class="gender">
+                                                                                    All Male Group
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="radio radio-danger">
+                                                                                <input required type="radio" data-ng-model="UpdDetails.Gender" name="Gender" id="input_val19" value="All Female Group">
+                                                                                <label for="input_val19" class="gender">
+                                                                                    All Female Group
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="radio radio-danger">
+                                                                                <input required type="radio" data-ng-model="UpdDetails.Gender" name="Gender" id="input_val20" value="Mixed Group">
+                                                                                <label for="input_val20" class="gender">
+                                                                                    Mixed Group
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <!-- Other items -->
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-messages="UsrDetailsForm.Gender.$error" class="text-danger">
+                                                                <!--  <div ng-message="required">This field is required</div>-->
+                                                            </div>
+                                                        </div>
+
+                                                        @*<div class="field-wrap col-md-6">
+                                                                <label>
+                                                                    Performance Fees
+                                                                </label>
+                                                                <input required class="form-control" type="number" min="0" data-ng-model="UpdDetails.PerfFee" name="PerfFee">
+                                                                <div ng-messages="UsrDetailsForm.PerfFee.$error" class="text-danger">
+                                                                 <!--   <div ng-message="required">This field is required</div>-->
+                                                                    <div ng-message="min">Performance Fees must be Positive</div>
+                                                                </div>
+                                                            </div>*@
+
+                                                        <div class="field-wrap col-md-6">
+                                                            <label> Performance fees </label>
+                                                            <input required class="form-control" type="number" data-ng-model="UpdDetails.PerfFee" name="PerfFee">
+                                                            <div ng-messages="UsrDetailsForm.PerfMembers.$error" class="text-danger">
+                                                                <!--   <div ng-message="required">This field is required</div> -->
+                                                                <div ng-message="number">This field bust be number</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="field-wrap col-md-6">
+                                                            <label>Do not display fee on the site?</label>
+                                                            <input type="checkbox" class="form-control" data-ng-model="UpdDetails.Showfee" name="Showfee" />
+                                                            <div ng-messages="UsrDetailsForm.Showfee.$error" class="text-danger">
+                                                                <!--  <div ng-message="required">This field is required</div>-->
+                                                            </div>
+                                                        </div> <div class="clearfix"></div>
+
+                                                        <div class="field-wrap col-md-6">
+                                                            <label>
+                                                                Number of shows
+                                                            </label>
+                                                            <div class="form-group drpdwn gen">
+                                                                <div class="btn-group">
+                                                                    <button data-toggle="dropdown" id="noOfShowDropDown" class="btn dropdown-toggle" data-placeholder="Please select"><span>{{UpdDetails.NoOfShow}}</span> <span class="caret"></span></button>
+                                                                    <ul class="dropdown-menu" style="max-height:230px;">
+                                                                        <li>
+                                                                            <div class="radio radio1 radio-danger">
+                                                                                <input ng-checked="Noshw1Cheked" required type="radio" data-ng-model="UpdDetails.NoOfShow" name="NoOfShow" id="Noshw-15" value="50">
+                                                                                <label for="Noshw-15" class="noOfShow">
+                                                                                    50
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="radio radio-danger">
+                                                                                <input type="radio" ng-checked="Noshw2Cheked" required data-ng-model="UpdDetails.NoOfShow" name="NoOfShow" id="Noshw-9" value="100">
+                                                                                <label for="Noshw-9" class="noOfShow">
+                                                                                    100
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="radio radio-danger">
+                                                                                <input ng-checked="Noshw3Cheked" type="radio" required data-ng-model="UpdDetails.NoOfShow" name="NoOfShow" id="Noshw-11" value="200">
+                                                                                <label for="Noshw-11" class="noOfShow">
+                                                                                    200
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="radio radio-danger">
+                                                                                <input ng-checked="Noshw4Cheked" type="radio" required data-ng-model="UpdDetails.NoOfShow" name="NoOfShow" id="Noshw-5" value="500">
+                                                                                <label for="Noshw-5" class="noOfShow">
+                                                                                    500
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="radio radio-danger">
+                                                                                <input ng-checked="Noshw5Cheked" type="radio" required data-ng-model="UpdDetails.NoOfShow" name="NoOfShow" id="Noshw-1000" value="1000">
+                                                                                <label for="Noshw-1000" class="noOfShow">
+                                                                                    1000
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="radio radio-danger">
+                                                                                <input ng-checked="Noshw6Cheked" type="radio" required data-ng-model="UpdDetails.NoOfShow" name="NoOfShow" id="Noshw-2000" value="2000">
+                                                                                <label for="Noshw-2000" class="noOfShow">
+                                                                                    2000
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <!-- Other items -->
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-messages="UsrDetailsForm.NoOfShow.$error" class="text-danger">
+                                                                <!--    <div ng-message="required">This field is required</div>-->
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="field-wrap col-md-6">
+                                                            <label> Performance length (Mins) </label>
+                                                            <div class="form-group drpdwn gen">
+                                                                <div class="btn-group">
+                                                                    <button data-toggle="dropdown" id="perfLengthDropDown" class="btn dropdown-toggle" data-placeholder="Please select"><span>{{UpdDetails.PerfLength}}</span> <span class="caret"></span></button>
+                                                                    <ul class="dropdown-menu" style="max-height:230px;">
+                                                                        <li>
+                                                                            <div class="radio radio1 radio-danger">
+                                                                                <input ng-checked="PerfLength1Cheked" required type="radio" data-ng-model="UpdDetails.PerfLength" name="PerfLength" id="PerfLength-15" value="30">
+                                                                                <label for="PerfLength-15" class="perfLength">
+                                                                                    30
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="radio radio-danger">
+                                                                                <input type="radio" ng-checked="PerfLength2Cheked" required data-ng-model="UpdDetails.PerfLength" name="PerfLength" id="PerfLength-9" value="60">
+                                                                                <label for="PerfLength-9" class="perfLength">
+                                                                                    60
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="radio radio-danger">
+                                                                                <input ng-checked="PerfLength3Cheked" type="radio" required data-ng-model="UpdDetails.PerfLength" name="PerfLength" id="PerfLength-11" value="120">
+                                                                                <label for="PerfLength-11" class="perfLength">
+                                                                                    120
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <!-- Other items -->
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-messages="UsrDetailsForm.PerfLength.$error" class="text-danger">
+                                                                <div ng-message="required">This field is required</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="clearfix"></div>
+                                                        <div class="field-wrap col-md-6">
+                                                            <label>
+                                                                Performance language
+                                                            </label>
+                                                            <div class="form-group drpdwn gen">
+                                                                <div class="btn-group">
+                                                                    <button data-toggle="dropdown" id="prefLangDropDown" class="btn dropdown-toggle" data-placeholder="Please select"><span>{{UpdDetails.PerfLang}}</span> <span class="caret"></span></button>
+                                                                    <ul class="dropdown-menu" style="max-width:230px;">
+                                                                        <li>
+                                                                            <div class="radio radio-danger">
+                                                                                <input type="radio" ng-checked="PerfLang1Cheked" data-ng-model="UpdDetails.PerfLang" name="PerfLang" id="iiienput_vval16" value="English">
+                                                                                <label for="iiienput_vval16" class="perfLang">
+                                                                                    English
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="radio radio-danger">
+                                                                                <input type="radio" ng-checked="PerfLang2Cheked" data-ng-model="UpdDetails.PerfLang" name="PerfLang" id="iiinput_val16f" value="Hindi">
+                                                                                <label for="iiinput_val16f" class="perfLang">
+                                                                                    Hindi
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <div class="radio radio-danger">
+                                                                                <input type="radio" ng-checked="PerfLang3Cheked" data-ng-model="UpdDetails.PerfLang" name="PerfLang" id="iiinput_val17f" value="Multilingual">
+                                                                                <label for="iiinput_val17f" class="perfLang">
+                                                                                    Multilingual
+                                                                                </label>
+                                                                            </div>
+                                                                        </li>
+                                                                        <!-- Other items -->
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-messages="UsrDetailsForm.PerfLang.$error" class="text-danger">
+                                                                <div ng-message="required">This field is required</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="field-wrap col-md-6">
+                                                            <label>
+                                                                Performing members@*<span class="req"> </span>*@
+                                                            </label>
+                                                            <input required class="form-control" type="text" data-ng-model="UpdDetails.PerfMembers" name="PerfMembers">
+                                                            <div ng-messages="UsrDetailsForm.PerfMembers.$error" class="text-danger">
+                                                                <div ng-message="required">This field is required</div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="clearfix"></div>
+                                                        <h4 class="text-danger h4 center">Social Media Links</h4>
+                                                        <div class="clearfix"></div>
+                                                        <div class="field-wrap col-md-6">
+                                                            <label>
+                                                                Facebook
+                                                            </label>
+                                                            <input class="form-control" type="url" data-ng-model="UpdDetails.FbLink" name="FBPageLink">
+                                                            <div ng-messages="UsrDetailsForm.FBPageLink.$error" class="text-danger">
+                                                                <div ng-message="url">Invalid URL.Please make sure your URLs begin with "http://" and include your domain name.</div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="field-wrap col-md-6">
+                                                            <label>
+                                                                Twitter
+                                                            </label>
+                                                            <input class="form-control" type="url" data-ng-model="UpdDetails.TwtLink" name="TwiterPageLink">
+                                                            <div ng-messages="UsrDetailsForm.TwiterPageLink.$error" class="text-danger">
+                                                                <div ng-message="url">Invalid URL.Please make sure your URLs begin with "http://" and include your domain name.</div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                        <div class="field-wrap col-md-6">
+                                                            <label>
+                                                                Instagram
+                                                            </label>
+                                                            <input class="form-control" type="url" data-ng-model="UpdDetails.InstLink" name="IntgramPageLink">
+                                                            <div ng-messages="UsrDetailsForm.IntgramPageLink.$error" class="text-danger">
+                                                                <div ng-message="url">Invalid URL.Please make sure your URLs begin with "http://" and include your domain name.</div>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <p class="text-info">{{UpProfileMessage}}</p>
+                                                        <button type="submit" class="btnPopUp" ng-click="UpdateProfileDetails(UpdDetails)">Update</button>
+                                                    </div>
+                                                    <div data-ng-hide="ShowUpdateProfileModel">
+                                                        <p class="text-info">{{UpProfileMessage}}</p>
+                                                    </div>
+
+                                                    @*<button class="button button-block" type="button" ng-click="ChangeCoverImage()">Submit</button>*@
+                                                </fieldset>
+                                            </ng-form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="contactdialogIEE" class="modal fade" role="dialog" ng-controller="IndEntnJSController" data-ng-init="ChckLogin()">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header" style="height: 60px;">
+
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <div class="modal-title" data-ng-show="ShowCntIEFrm" style="text-align: center;">
+                                        <h3 style="font-size: 20px;color: white;margin-top: 0;">Contact Us</h3>
+                                    </div>
+                                    <div class="modal-title" data-ng-hide="ShowCntIEFrm" style="text-align: center;">
+                                        <h3 style="font-size: 20px;color: white;margin-top: 0;">Success</h3>
+                                    </div>
+
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form log-reg">
+                                        <div id="logindiv">
+                                            <div data-ng-show="ShowCntIEFrm">
+                                                <ng-form name="IEcontactform">
+                                                    <fieldset>
+                                                        <div data-ng-hide="UserLoggedInCTIE">
+                                                            <div class="field-wrap">
+                                                                <label>
+                                                                    Name
+                                                                </label>
+                                                                <input class="form-control" type="text" data-ng-model="IEMessage.Name" name="Name" ng-required="!UserLoggedInCTIE">
+                                                            </div>
+
+                                                            <div class="field-wrap">
+                                                                <label>
+                                                                    Email ID
+                                                                </label>
+                                                                <input class="form-control" type="email" data-ng-model="IEMessage.EmailID" name="EmailID" ng-required="!UserLoggedInCTIE">
+                                                                <div ng-messages="IEcontactform.EmailID.$error" class="text-danger">
+                                                                    <div ng-message="email">The Email ID entered is not a valid one</div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="field-wrap">
+                                                                <label>
+                                                                    Contact Number
+                                                                </label>
+                                                                <input class="form-control" type="number" data-ng-model="IEMessage.ContactNo" name="ContactNo" ng-required="!UserLoggedInCTIE">
+                                                                <div ng-messages="IEcontactform.ContactNo.$error" class="text-danger">
+                                                                    <div ng-message="maxlength">Mobile Number is not valid.</div>
+                                                                    <div ng-message="minlength">Mobile Number is not valid.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="field-wrap">
+                                                            <label>
+                                                                Message<span class="req"></span>
+                                                            </label>
+                                                            <textarea class="form-control" data-ng-model="IEMessage.Message" placeholder="Max 100 Characters" rows="3" id="Message" required></textarea>
+                                                        </div>
+                                                        <p class="text-info">{{cntfrmIEMessage}}</p>
+                                                        <button class="btnPopUp" id="login_frm" type="submit" data-ng-disabled="!IEcontactform.$valid" data-ng-click="SendMessagetoIE(IEMessage)" value="login" name="login">Submit</button>
+                                                    </fieldset>
+                                                </ng-form>
+                                            </div>
+                                            <div data-ng-hide="ShowCntIEFrm">
+                                                <p class="text-info">{{cntfrmIEMessage}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Profile ends -->
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery.shorten.1.0.js"></script>
+    <script src="~/Scripts/profile.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("body").addClass("detail-page");
+
+            $('article .prof_cntnt').shorten({
+                "showChars": 240,
+                "moreText": "Read More...",
+                "lessText": "Read Less...",
+            });
+            $("#bottom").css("display", "none");
+            $("footer").css("display", "none");
+        });
+
+        $("label.category").click(function () { $("#categoryDropDown").dropdown("toggle"); });
+        $("label.nationality").click(function () { $("#nationalityDropDown").dropdown("toggle"); });
+        $("label.gender").click(function () { $("#genderDropDown").dropdown("toggle"); });
+        $("label.noOfShow").click(function () { $("#noOfShowDropDown").dropdown("toggle"); });
+        $("label.perfLength").click(function () { $("#perfLengthDropDown").dropdown("toggle"); });
+        $("label.perfLang").click(function () { $("#prefLangDropDown").dropdown("toggle"); });
+    </script>
+}

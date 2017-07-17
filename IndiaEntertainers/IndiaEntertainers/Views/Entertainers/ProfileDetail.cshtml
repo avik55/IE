@@ -1,0 +1,366 @@
+﻿@model IndiaEntertainers.Models.tbl_Entertainer
+
+@{
+    ViewBag.Title = Model.FName ;
+    var photos = ViewBag.photos as List<IndiaEntertainers.Models.tbl_EntrImages>;
+    var videos = ViewBag.videos as List<IndiaEntertainers.Models.tbl_EntrVideos>;
+
+    var coverPhoto = photos.FirstOrDefault(d => d.IsCurCoverImg == true);
+    var profilePhoto = photos.FirstOrDefault(d => d.IsCurProfileImg == true);
+    var UsrPhotos = photos.Where(d => d.IsCurCoverImg != true && d.IsCurProfileImg != true).ToList();
+}
+
+<!-- breadcrumbs starts -->
+<section id="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <span class="url_lnk hme"><a href="@Url.Action("Index","Home",new { area =""})" class="hme" title="Home"><img src="~/images/home_brd.png" alt="home" /></a></span> <b>></b> <span class="url_lnk"><a href="javascript:;" title="Entertainers">Entertainers</a></span> <b>></b> <span class="url_lnk"><a href="@Url.Action("Index","Home",new { area =""})" title="Singers">Dancers</a></span> <b>></b> <span class="url_lnk">@Model.FName &nbsp; @Model.LName</span>
+        </div>
+    </div>
+</section>
+<!-- breadcrumbs ends -->
+<!-- Profile starts -->
+<section id="Profile" ng-app="IndEntnApp">
+    <div class="container" style="position:relative;">
+        <div class="row" ng-controller="IndEntnJSController">
+            <section class="left_side col-xs-12 col-sm-5 col-md-4" id="scrollingDiv">
+
+                <div class="trending_perf">
+                    <div class="trending-wrap">
+                        <div class="trend_img">
+                            <a href="javascript:;">
+                                <img src="~/images/UserImages/@coverPhoto.ImagePath" alt="@coverPhoto.Title" class="img-responsive">
+                                <!-- <span class="trend_view"><img src="../images/eye-white.png" alt="eyeimage" /> <span class="view_cnt">1000</span></span> -->
+                                <span class="trend_loc"><img src="~/images/address-white.png" alt="" /> &nbsp;<span class="view_cnt"> @IndiaEntertainers.HTMLHelper.CustomHelper.GetCityName(Model.CityId)</span></span>
+                                <div class="dtls">
+                                    <h3 class="trend_name">@ViewBag.Title</h3>
+                                    <h4 class="trend_shrtname"><img src="~/images/mic-white.png" alt="" /> &nbsp;<span>@IndiaEntertainers.HTMLHelper.CustomHelper.GetEntCatName(Model.EntrId)</span></h4>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="trend_dtl">
+                            <div class="dtl">
+                                <img src="~/images/UserImages/@profilePhoto.ImagePath" alt="@profilePhoto.Title">
+                                <div class="trend_state">@Model.ProfileTitle</div>
+
+                                <div class="trend_fees col-xs-12 col-sm-12">
+                                    <div>PERFORMANCE FEES <span class="pull-right"><b>&#x20B9; @Model.Performancefee </b> onwards</span></div>
+                                    <hr class="line-separtr" />
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="col-xs-4 col-sm-4 grid">
+                                        <p><b>@Model.Gender</b></p>
+                                        <p class="grid_sub">GENDER</p>
+                                    </div>
+
+                                    <div class="col-xs-4 col-sm-4 grid">
+                                        <p><b>@Model.Nationality</b></p>
+                                        <p class="grid_sub">NATIONALITY</p>
+                                    </div>
+
+                                    <div class="col-xs-4 col-sm-4 grid">
+                                        <p><b>@Model.NoofShow +</b></p>
+                                        <p class="grid_sub">NO. OF SHOWS</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="col-xs-4 col-sm-4 grid">
+                                        <p><b>@Model.PerfLanguage </b></p>
+                                        <p class="grid_sub">PERFORMANCE LANGUAGE</p>
+                                    </div>
+
+                                    <div class="col-xs-4 col-sm-4 grid">
+                                        <p><b>@Model.PerfLength </b></p>
+                                        <p class="grid_sub">PERFORMANCE LENGTH (Mins)</p>
+                                    </div>
+
+                                    <div class="col-xs-4 col-sm-4 grid">
+                                        <p><b>@Model.PERFORMINGMEMBERS </b></p>
+                                        <p class="grid_sub">PERFORMING MEMBERS</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12">
+                                    <ul class="social_sec">
+                                        <li><a href="@Model.FBPageLink" class="fb_icon"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                        <li><a href="@Model.TwiterPageLink" class="twt_icon"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                        <li><a href="@Model.IntgramPageLink" class="linkedin_icon"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                    </ul>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="trend_cnt"><a href="javascript:;" data-toggle="modal" ng-click='GetEntrnId(@Model.EntrId)' data-target="#contactdialog">CONTACT</a></div>
+
+                                    @*<div class="trend_cnt"><a href="javascript:;" data-toggle="modal" data-target="#contactdialog">CONTACT</a></div>*@
+                                    <div class="trend_rvw"><a href="javascript:;">Add Review</a></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+            @*left side end*@
+
+
+            <section class="right_side col-xs-12 col-sm-7 col-md-8">
+
+                <!-- Video slider starts -->
+                <div class="trending_perf_wrp vid_section prof_sec">
+                    <div class="prof_head"><b>VIDEOS</b> <span>(4)</span></div>
+                    <div class="swiper-container trending_perf">
+
+                        <div class="swiper-wrapper">
+
+                            @foreach (var v in videos)
+                            {
+
+                                <div class="swiper-slide">
+                                    <div class="trending-wrap">
+                                        <div class="trend_img">
+
+                                            <a class="video-pop-link vidlink" rel="media-gallery" href="@v.Videolink?autoplay=1&amp;rel=0&amp;html5=0" data-ytid="7zEpuj7JRAI">
+                                                <span class="video-icon"></span>
+                                                <img src="@IndiaEntertainers.HTMLHelper.CustomHelper.GetYouTubeVideoImage(v.Videolink)" class="img-responsive video-cover-img">
+                                                <!-- <span class="trend_view"><img src="../images/eye-white.png" /> <span class="view_cnt">1000</span></span> -->
+                                                <h3 class="trend_name"></h3>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+
+                        </div>
+
+                    </div>
+                    <!-- Add Arrows -->
+                    <div class="swiper-button-next3 swiper-button-next"></div>
+                    <div class="swiper-button-prev3 swiper-button-prev"></div>
+                </div>
+                <!-- Video slider ends -->
+                <!-- Video photos starts -->
+                <div class="trending_perf_wrp photo_section prof_sec">
+                    <div class="prof_head"><b>PHOTOS</b> <span>(8)</span></div>
+                    <div class="swiper-container trending_perf">
+
+                        <div class="swiper-wrapper lightbox">
+                            @foreach (var p in UsrPhotos)
+                            {
+                                <div class="swiper-slide">
+                                    <div class="trending-wrap">
+                                        <div class="trend_img">
+
+                                            <a class="video-pop-link imggal" href="~/images/UserImages/@p.ImagePath">
+                                                <img src="~/images/UserImages/@p.ImagePath" alt="@p.Title" class="img-responsive video-cover-img">
+                                                <!-- <span class="trend_view"><img src="../images/eye-white.png" /> <span class="view_cnt">1000</span></span> -->
+                                                <h3 class="trend_name">@p.Title</h3>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                    </div>
+                    <!-- Add Arrows -->
+                    <div class="swiper-button-next4 swiper-button-next"></div>
+                    <div class="swiper-button-prev5 swiper-button-prev"></div>
+                </div>
+                <!-- Video Photos ends -->
+                <!-- Profile starts -->
+                <div class="trending_perf_wrp profile_section prof_sec">
+                    <div class="prof_head"><b>PROFILE</b></div>
+                    <div class="trending_perf">
+                        <p class="prof_cntnt">
+                            @Html.DisplayFor(model => model.Profile)
+                        </p>
+                        <p class="less-more">
+                            <a onclick="lessmore($(this));" href="javascript:;" class="text_chng"><span>Read More...</span></a>
+                        </p>
+                    </div>
+
+                </div>
+                <!-- Profile ends -->
+                <!-- PROJECTOGRAPHY starts -->
+                @*<div class="trending_perf_wrp project_section prof_sec">
+                        <div class="prof_head"><b>PROJECTOGRAPHY</b></div>
+                        <div class="trending_perf">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                                latest projects
+                                                <i class="indicator glyphicon glyphicon-chevron-up pull-right"></i>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <!-- <div class="pad0 col-sm-7">
+                                    <div class="panel-img">
+                                        <img src="../images/img_1.jpg" class="img-responsive"/>
+                                        <span class="trend_view"><img src="../images/eye-white.png"> <span class="view_cnt">1000</span></span>
+                                    </div>
+                                    <div class="panel-txt">
+                                        <b>Time:</b>
+                                        <p>7pm to 11pm, July 29, 2017</p>
+                                        <b>Venue:</b>
+                                        <p>Near Union Bank, Swami Vivekanand Road, Krishna Colony</p>
+                                    </div>
+                                </div>
+                                <div class="pad0 col-sm-5">
+                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch.
+                                </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                                latest projects
+                                                <i class="indicator glyphicon glyphicon-chevron-down  pull-right"></i>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseTwo" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <!-- <div class="pad0 col-sm-7">
+                                    <div class="panel-img">
+                                        <img src="../images/img_2.jpg" class="img-responsive"/>
+                                        <span class="trend_view"><img src="../images/eye-white.png"> <span class="view_cnt">1000</span></span>
+                                    </div>
+                                    <div class="panel-txt">
+                                        <b>Time:</b>
+                                        <p>7pm to 11pm, July 29, 2017</p>
+                                        <b>Venue:</b>
+                                        <p>Near Union Bank, Swami Vivekanand Road, Krishna Colony</p>
+                                    </div>
+                                </div>
+                                <div class="pad0 col-sm-5">
+                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch.
+                                </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                                latest projects
+                                                <i class="indicator glyphicon glyphicon-chevron-down pull-right"></i>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseThree" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <!-- <div class="pad0 col-sm-7">
+                                    <div class="panel-img">
+                                        <img src="../images/img_3.jpg" class="img-responsive"/>
+                                        <span class="trend_view"><img src="../images/eye-white.png"> <span class="view_cnt">1000</span></span>
+                                    </div>
+                                    <div class="panel-txt">
+                                        <b>Time:</b>
+                                        <p>7pm to 11pm, July 29, 2017</p>
+                                        <b>Venue:</b>
+                                        <p>Near Union Bank, Swami Vivekanand Road, Krishna Colony</p>
+                                    </div>
+                                </div>
+                                <div class="pad0 col-sm-5">
+                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch.
+                                </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>*@
+            </section>
+
+            <div id="contactdialog" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form log-reg">
+                                <div id="logindiv">
+                                    <h1>Contact Us</h1>
+                                    <div data-ng-show="ShowCntFrm">
+                                        <ng-form name="contactform">
+                                            <fieldset>
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        Name<span class="req">* </span>
+                                                    </label>
+                                                    <input class="form-control" type="text" data-ng-model="EntnMessage.Name" name="Name" ng-required="cntfrmrqured">
+                                                </div>
+
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        Email ID<span class="req">*</span>
+                                                    </label>
+                                                    <input class="form-control" type="email" data-ng-model="EntnMessage.EmailID" name="EmailID" ng-required="cntfrmrqured">
+                                                </div>
+
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        Contact No.<span class="req">*</span>
+                                                    </label>
+                                                    <input class="form-control" type="text" data-ng-model="EntnMessage.ContactNo" name="ContactNo" ng-required="cntfrmrqured">
+                                                </div>
+
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        Message<span class="req">*</span>
+                                                    </label>
+                                                    <textarea class="form-control" data-ng-model="EntnMessage.Message" placeholder="Max 150 Characters" rows="3" id="Message" ng-maxlength="150" ng-minlength="10" ng-required="cntfrmrqured"></textarea>
+                                                </div>
+                                                <p class="text-info">{{cntfrmMessage}}</p>
+                                                <button class="button button-block" type="submit" data-ng-disabled="!contactform.$valid" data-ng-click="SendMessagetoEntrn(EntnMessage)">Submit</button>
+                                            </fieldset>
+                                        </ng-form>
+                                    </div>
+                                    <div data-ng-hide="ShowCntFrm">
+                                        <p class="text-info">{{cntfrmMessage}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- Profile ends -->
+
+@section scripts
+{
+    <script src="~/Scripts/profile.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("body").addClass("detail-page");
+        });
+    </script>
+
+    <script>
+    $().ready(function() {
+        var $scrollingDiv = $("#scrollingDiv");
+
+        $(window).scroll(function(){
+            $scrollingDiv
+                .stop()
+                .animate({"marginTop": ($(window).scrollTop() )}, "slow" );
+        });
+    });
+    </script>
+}

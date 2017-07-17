@@ -1,0 +1,355 @@
+﻿@{
+    ViewBag.Title = ViewBag.SearhBy;
+}
+
+
+<div ng-app="IndEntnApp">
+
+    @section pagetitle{
+        <section id="breadcrumbs">
+            <div class="container">
+                <div class="row">
+                    @if (@ViewBag.SearhBy != "Entertainers")
+                    {
+                        <span class="url_lnk hme"><a href="@Url.Action("Index","Home",new { area = "" })" title="Home" class="home_icon">Home</a></span> <b>&gt;</b> <span class="url_lnk"><a href="@Url.Action("Index","Entertainers",new { area = "", id = ""})" title="Entertainers">Entertainers</a></span> <b>&gt;</b> <span class="url_lnk"><a href="@Url.Action("Index","Entertainers",new { area = "", @q = @ViewBag.SearhBy})" title="@ViewBag.SearhBy">@ViewBag.SearhBy</a></span>
+                    }
+                    else
+                    {
+                        <span class="url_lnk hme"><a href="@Url.Action("Index","Home",new { area = "" })" title="Home" class="home_icon">Home</a></span> <b>&gt;</b> <span class="url_lnk"><a href="@Url.Action("Index","Entertainers",new { area = "", id = ""})" title="Entertainers">Entertainers</a></span>
+                    }
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <h1 class="page-title">@ViewBag.SearhBy <span class="page-sub">(@ViewBag.TotalRows)</span></h1>
+                </div>
+            </div>
+        </section>
+    }
+
+    <div ng-controller="IndEntnJSController">
+        @*Search Start*@
+        <div ng-controller="SrchFilterJsController" ng-init="AssignCatId(@ViewBag.CatId)">
+            <div class="filter-search-wrp" ng-cloak>
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-md-2 filter-srch-list">
+                            <div class="btn-group">
+                                <div class="dropdown">
+                                    <button class='btn btn-secondary dropdown-toggle' type='button' data-toggle='dropdown'>
+                                        Location <span class='caret'></span>
+                                    </button>
+                                    <div class='dropdown-menu'>
+                                        <div class='search-bar-drpdwn'>
+                                            <form class='navbar-form' role='search'>
+                                                <div class='input-group add-on'>
+                                                    <input class='form-control' autocomplete="off" data-ng-model="Qury" data-ng-keyup="GetCities(Qury)" placeholder='Type to Select City' type='text'>
+                                                    <div class='input-group-btn'>
+                                                        <button class='btn btn-default' data-ng-click="GetCities(Qury)" type='submit'><i class='glyphicon glyphicon-search'></i></button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <div class='scrollbar'>
+                                            <div class='top-cities city-lists' data-ng-hide="ShowCitiesFltrModel">
+                                                <div class='drpdwn-sec-title'>Selected Cities</div>
+                                                <ul data-ng-repeat="cttt in MyFlCity">
+                                                    <li><label for="cityy-{{cttt.Id}}"><input type="checkbox" ng-checked="true" id="cityy-{{cttt.Id}}" data-ng-click="InnerFilter(); deleteCity(cttt);" ng-true-value="{{cttt}}"> {{cttt.Name}}</label></li>
+                                                </ul>
+                                            </div>
+                                            <div class="top-cities lists" data-ng-show="ShowCitiesFltrModel">
+                                                <div class="drpdwn-sec-title">Search Cities</div>
+                                                <ul data-ng-repeat="cttt in FltrCities">
+                                                    <li><label for="cityy-{{cttt.Id}}"><input type="checkbox" id="cityy-{{cttt.Id}}" data-ng-click="InnerFilter(); addCity(cttt);"> {{cttt.Name}} </label></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 filter-srch-list">
+                            <div class="btn-group">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                        Category <span class="caret"></span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <div class="search-bar-drpdwn">
+                                            <form class="navbar-form" role="search">
+                                                <div class="input-group add-on">
+                                                    <input class="form-control" data-ng-model="Qury" data-ng-keyup="GetCategories(Qury)" autocomplete="off" placeholder="Type Name or Category of Entertainer" name="srch-term" id="srch-term" type="text">
+                                                    <div class="input-group-btn">
+                                                        <button class="btn btn-default" data-ng-click="GetCategories(Qury)" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="scrollbar">
+                                            <div class="top-cities lists">
+                                                <ul class="chkboxes" data-ng-hide="ShowCategoriesFltrModel">
+                                                    <li><label for="Catett-5"><input type="checkbox" id="Catett-5" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlCategory[1]" ng-true-value="15" ng-checked="Cat1checked"> Bands</label></li>
+                                                    <li><label for="Catett-15"><input type="checkbox" id="Catett-15" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlCategory[2]" ng-true-value="9" ng-checked="Cat2checked"> Dancers</label></li>
+                                                    <li><label for="Catett-9"><input type="checkbox" id="Catett-9" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlCategory[3]" ng-true-value="11" ng-checked="Cat3checked"> DJs</label></li>
+                                                    <li><label for="Catett-11"><input type="checkbox" id="Catett-11" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlCategory[0]" ng-true-value="5" ng-checked="Cat4checked"> Anchors</label></li>
+                                                    <li><label for="Catett-2"><input type="checkbox" id="Catett-2" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlCategory[4]" ng-true-value="2" ng-checked="Cat5checked"> Singers</label></li>
+                                                </ul>
+                                                <div data-ng-show="ShowCategoriesFltrModel">
+                                                    <ul class="chkboxes" data-ng-repeat="catttt in FltrCategories">
+                                                        <li><label for="Catett-{{catttt.Id}}"><input id="Catett-{{catttt.Id}}" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlCategory[$index]" type="checkbox" name="FrCategory" ng-true-value="{{catttt.Id}}"> {{catttt.Name}}</label></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 filter-srch-list">
+                            <div class="btn-group">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                        Gender <span class="caret"></span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <div class="lists">
+                                            <ul>
+                                                <li><label for="Gedd-1"><input type="checkbox" id="Gedd-1" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlGender[0]" ng-true-value='1'> Male</label></li>
+                                                <li><label for="Gedd-2"><input type="checkbox" id="Gedd-2" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlGender[1]" ng-true-value="2"> Female</label></li>
+                                                <li><label for="Gedd-3"><input type="checkbox" id="Gedd-3" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlGender[2]" ng-true-value="3"> All Male Groups</label></li>
+                                                <li><label for="Gedd-4"><input type="checkbox" id="Gedd-4" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlGender[3]" ng-true-value="4"> All Female Groups</label></li>
+                                                <li><label for="Gedd-5"><input type="checkbox" id="Gedd-5" data-ng-click="InnerFilter()" data-ng-model="FilterModel.FlGender[4]" ng-true-value="5"> Mixed Groups</label></li>
+                                                <!-- Other items -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 filter-srch-list">
+                            <div class="btn-group">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                        Nationality <span class="caret"></span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <div class="lists">
+                                            <ul>
+                                                <li><label for="Natn-1"><input type="checkbox" id="Natn-1" data-ng-click="InnerFilter(FilterModel)" data-ng-model="FilterModel.FlNationality[0]" name="FlNationality" ng-true-value="1"> Indian </label></li>
+                                                <li><label for="Natn-2"><input type="checkbox" id="Natn-2" data-ng-click="InnerFilter(FilterModel)" data-ng-model="FilterModel.FlNationality[1]" name="FlNationality" ng-true-value="2"> Non-Indian </label></li>
+                                                <!-- Other items -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 filter-srch-list">
+                            <div class="btn-group">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                        Performance Language <span class="caret"></span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <div class="lists">
+                                            <ul>
+                                                <li><label for="PerLang-1"><input id="PerLang-1" type="checkbox" data-ng-click="InnerFilter(FilterModel)" data-ng-model="FilterModel.FlPerfLanguage[0]" name="FlPerfLanguage" ng-true-value="1"> Hindi</label></li>
+                                                <li><label for="PerLang-2"><input id="PerLang-2" type="checkbox" data-ng-click="InnerFilter(FilterModel)" data-ng-model="FilterModel.FlPerfLanguage[1]" name="FlPerfLanguage" ng-true-value="2"> English</label></li>
+                                                <li><label for="PerLang-3"><input id="PerLang-3" type="checkbox" data-ng-click="InnerFilter(FilterModel)" data-ng-model="FilterModel.FlPerfLanguage[2]" name="FlPerfLanguage" ng-true-value="3"> Multilingual</label></li>
+                                                <!-- Other items -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 filter-srch-list">
+                            <div class="btn-group">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                        Budget <span class="caret"></span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <div class="search-bar-drpdwn">
+                                            <form class="navbar-form" role="search">
+                                                <div class="input-group add-on">
+                                                    <input class="form-control minbg pull-left" placeholder="Min Budget" data-ng-model="FilterModel.FlbudgetMin" type="number" id="FlbudgetMin" name="FlbudgetMin">
+                                                    <span class="line_dv"></span>
+                                                    <input class="form-control maxbg pull-right" placeholder="Max Budget" data-ng-model="FilterModel.FlbudgetMax" type="number" id="FlbudgetMax" name="FlbudgetMax">
+                                                </div>
+                                                <div class="rangeslider">
+                                                    <span id="ex18-label-2a" class="hidden">Example low value</span>
+                                                    <span id="ex18-label-2b" class="hidden">Example high value</span>
+                                                    <input id="slideValue" type="number" />
+                                                    <span class="pull-left">&#x20B9;0</span>
+                                                    <span class="pull-right">&#x20B9;2500000+</span>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <input type="button" name="Range" value="OK" data-ng-click="InnerFilter(FilterModel)" class="btn btn-danger btn-sm btn-block"/>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="reset_sec"><a href="javascript:;" data-ng-click="Resetfilters()" title="Reset Filter"> <i class="fa fa-refresh" aria-hidden="true"></i> </a> </div>
+                    </div>
+                </div>
+            </div>
+
+
+            @*Search End*@
+            <section id="trending" ng-cloak style="overflow-y:scroll;">
+                <div class="container">
+                    <div class="row">
+                        <div class="trending animated" data-ng-hide="ShowEntertainersFilter">
+                            @if (ViewBag.Msg != null)
+                            {
+<h2 class="text-center h2" style="color:red;">@ViewBag.Msg</h2>
+                            }
+                            @foreach (var item in ViewBag.Entertainer as List<IndiaEntertainers.ViewModel.TrendingViewModel>)
+                            {
+                                // A temporary variable to store the result of your decimal
+                                // decimal td;
+                                // Fixup your decimal as set it either to null or the appropriate decimal value
+                                // decimal? dd = Decimal.TryParse(item.PerformanceFees, out td) ? td : (decimal?)null;
+                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                    <div class="trending-wrap">
+                                        <div class="trend_img">
+                                            <a href="@Url.Action("ProfileDetail", "Entertainers", new { id = item.EntrId})">
+                                                <div class="trend_image" style="height:200px;">
+                                                    <img src="~/images/UserImages/@item.ProfilePhoto" alt="" class="img-responsive profile-image" />
+                                                </div>
+                                                <!-- <span class="trend_view"><img src="images/eye-white.png" /> <span class="view_cnt">1000</span></span> -->
+                                                <h3 class="trend_name">@item.FullName</h3>
+                                                <span class="overlay"></span>
+                                            </a>
+                                        </div>
+
+                                        <div class="trend_dtl">
+                                            <div class="dtl">
+                                                <span class="trend_singer"><img src="~/images/mic.png" /> @item.FullName</span>
+                                                <span class="trend_address"><img src="~/images/address.png" /> @IndiaEntertainers.HTMLHelper.CustomHelper.GetEntCatName</span>
+
+                                            </div>
+                                            <div class="trend_cnt"><a href="javascript:;" data-toggle="modal" ng-click='GetEntrnId(@item.EntrId)' data-target="#contactdialogEntertainer" data-backdrop="static" data-keyboard="false">CONTACT</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="trending animated" data-ng-show="ShowEntertainersFilter">
+                            <div data-ng-repeat="Entrtner in Entertainers">
+
+                                <div class="col-xs-12 col-sm-4 col-md-3">
+                                    <div class="trending-wrap">
+                                        <div class="trend_img">
+                                            <a href="{{Entrtner.URL}}">
+                                                <div class="trend_image" style="height:200px;">
+                                                    <img ng-src="{{Entrtner.imgurl}}" alt="" class="img-responsive profile-image" />
+                                                </div>
+                                                <!-- <span class="trend_view"><img src="images/eye-white.png" /> <span class="view_cnt">1000</span></span> -->
+                                                <h3 class="trend_name">{{Entrtner.Name}}</h3>
+                                                <span class="overlay"></span>
+                                            </a>
+                                        </div>
+
+                                        <div class="trend_dtl">
+                                            <div class="dtl">
+                                                <span class="trend_singer"><img src="~/images/mic.png" /> {{Entrtner.Category}}</span>
+                                                <span class="trend_address"><img src="~/images/address.png" /> {{Entrtner.City}}</span>
+
+
+                                            </div>
+                                            <div class="trend_cnt"><a href="javascript:;" data-toggle="modal" ng-click='GetEntrnId(Entrtner.EntrId)' data-target="#contactdialogEntertainer" data-backdrop="static" data-keyboard="false">CONTACT</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="trend_all"><a href="javascript:;">Load More Singers...</a></div>*@
+            </section>
+        </div>
+
+
+
+        <div id="contactdialogEntertainer" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form log-reg">
+                            <div id="logindiv">
+                                <div data-ng-show="ShowCntFrm">
+                                    <h1>Contact Entertainer</h1>
+                                    <ng-form name="contactform">
+                                        <fieldset>
+                                            <div data-ng-hide="UserLoggedIn">
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        Name
+                                                    </label>
+                                                    <input class="form-control" type="text" data-ng-model="EntnMessage.Name" name="Name" ng-required="cntfrmrqured">
+                                                </div>
+
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        Email ID
+                                                    </label>
+                                                    <input class="form-control" type="email" data-ng-model="EntnMessage.EmailID" name="EmailID" ng-required="cntfrmrqured">
+                                                </div>
+
+                                                <div class="field-wrap">
+                                                    <label>
+                                                        Contact No.
+                                                    </label>
+                                                    <input class="form-control" type="text" data-ng-model="EntnMessage.ContactNo" name="ContactNo" ng-required="cntfrmrqured">
+                                                </div>
+                                            </div>
+                                            <div class="field-wrap">
+                                                <label>
+                                                    Message
+                                                </label>
+                                                <textarea class="form-control" data-ng-model="EntnMessage.Message" placeholder="Max 150 Characters" rows="3" id="Message" ng-maxlength="150" ng-minlength="1" ng-required="cntfrmrqured"></textarea>
+                                            </div>
+                                            <p class="text-info text-center" style="white-space:pre-wrap;">{{cntfrmMessage}}</p>
+                                            <button class="btnPopUp" type="submit" data-ng-disabled="!contactform.$valid" data-ng-click="SendMessagetoEntrn(EntnMessage)">Submit</button>
+                                        </fieldset>
+                                    </ng-form>
+                                </div>
+                                <div data-ng-hide="ShowCntFrm" style="white-space:pre-wrap;">
+                                    <p class="text-info">{{cntfrmMessage}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("body").addClass("detail-page page search-pg");
+        });
+    </script>
+}

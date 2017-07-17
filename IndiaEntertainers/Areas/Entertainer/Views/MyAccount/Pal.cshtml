@@ -1,0 +1,460 @@
+﻿
+@{
+    ViewBag.Title = "Pal";
+}
+
+<h2>Pal</h2>
+
+<style>
+    select {
+        border:none !important;
+    appearance:none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari and Chrome */
+    border-bottom:solid 2px #ccc !important;
+    border-radius:0 !important;
+    margin-top:16px;
+
+        background: rgba(255, 255, 255, 0.97);
+
+    background-image:linear-gradient(45deg, transparent 50%, gray 50%),
+    linear-gradient(135deg, gray 50%, transparent 50%),
+    linear-gradient(to right, #ccc, #ccc);
+  background-position:    calc(100% - 20px) calc(1em + 2px),
+    calc(100% - 15px) calc(1em + 2px),
+    calc(100% - 2.5em) 0.5em;
+  background-size:    5px 5px,
+    5px 5px,
+    1px 1.5em;
+  background-repeat: no-repeat;
+}
+    select:focus {
+    outline: none !important;
+}
+</style>
+
+<section id="home-banner" class="home-banner register-frm-wrp">
+    <div class="container">
+        <p class="sub-title">REGISTERATON OF ARTIST</p>
+        <div class="stepwizard">
+            <div class="head_topic stp1">Step 1. Please share your basic Contact Details</div>
+            <div class="head_topic stp2 hidden">Step 2. Add upto 3 Categories of Entertainment</div>
+            <div class="head_topic stp3 hidden">Step 3. Enter Details about your performances</div>
+            <div class="head_topic stp4 hidden">Step 4. Enter Details about your performances</div>
+            <div class="stepwizard-row setup-panel">
+                <span class="bar_progress"></span>
+                <div class="stepwizard-step step-nav-1">
+                    <a href="#step-1" type="button" class="btn btn-primary btn-circle cr1"><i class="fa fa-address-book-o" aria-hidden="true"></i></a>
+                    <!-- <p>Step 1</p> -->
+                </div>
+                <div class="stepwizard-step step-nav-2">
+                    <a href="#step-2" type="button" class="btn btn-default btn-circle cr2" disabled="disabled"><img src="~/images/step2.png" alt="" /></a>
+                    <!-- <p>Step 2</p> -->
+                </div>
+                <div class="stepwizard-step step-nav-3">
+                    <a href="#step-3" type="button" class="btn btn-default btn-circle cr3" disabled="disabled"><img src="~/images/step3.png" alt="" /></a>
+                    <!-- <p>Step 3</p> -->
+                </div>
+                <div class="stepwizard-step step-nav-4">
+                    <a href="#step-4" type="button" class="btn btn-default btn-circle cr4" disabled="disabled"><img src="~/images/step4.png" alt="" /></a>
+                    <!-- <p>Step 4</p> -->
+                </div>
+            </div>
+        </div>
+
+
+        @using (Html.BeginForm("Register4Step", "MyAccount", FormMethod.Post, new { @id = "FourStepForm", @class="form-label form-css-label" }))
+        {
+            <div class="row setup-content step-form-1" id="step-1">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <input type="text" autocomplete="off" class="form-control chkinput" required value="sfds@dfasd.fg"/>
+                        <label class="control-label">Artist/Group Name</label>
+                    </div>
+                    <div class="form-group">
+                        <input maxlength="100" autocomplete="off" type="email" class="form-control chkinput"  required   value="sfds@dfasd.fg"/>
+                        <label class="control-label">Email Address</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" autocomplete="off" class="form-control chkinput"  required   value="23232"/>
+                        <label class="control-label">Mobile Number</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" autocomplete="off" class="form-control chkinput"  required  value="sfds@dfasd.fg"/>
+                        <label class="control-label">City</label>
+                    </div>
+
+                    <div class="btn-nxt-wrp"><a href="javascript:;" class="nextBtn">Next</a></div>
+                </div>
+            </div>
+            <!-- step 1 ends -->
+
+            <div class="row setup-content step-form-1 step-form-2" id="step-2">
+                <div class="col-md-12">
+                    <div class="section_clone" id="box_sec1">
+                        <div class="form-group">
+                            
+                            
+                            
+                            @*<div class="btn-group">
+                                <button data-toggle="dropdown" class="btn dropdown-toggle" data-placeholder="Please select"><span class="selected_val">Select Category Name</span> <span class="caret"></span></button>
+                                <ul class="dropdown-menu" style="max-height:250px;">
+                                    <li class="chkboxdiv">
+                                        <div class="checkbox checkbox-danger">
+                                            <input id="checkbox6" name="checkbox6" type="checkbox" required>
+                                            <label for="checkbox6">
+                                                Label comes here
+                                            </label>
+                                        </div>
+                                    </li>
+
+                                    <li class="chkboxdiv">
+                                        <div class="checkbox checkbox-danger">
+                                            <input id="checkbox4" name="checkbox4" type="checkbox">
+                                            <label for="checkbox4">
+                                                Label comes here
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li class="chkboxdiv">
+                                        <div class="checkbox checkbox-danger">
+                                            <input id="checkbox9" name="checkbox9" type="checkbox">
+                                            <label for="checkbox9">
+                                                Label comes here
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li class="chkboxdiv">
+                                        <div class="checkbox checkbox-danger">
+                                            <input id="checkbox10" name="checkbox10" type="checkbox">
+                                            <label for="checkbox10">
+                                                Label comes here
+                                            </label>
+                                        </div>
+                                    </li>*@
+
+
+                                    <!-- Other items -->
+                                @*</ul>
+                            </div>*@
+                            <label class="control-label">Category Pricing (in Rs.)</label>
+                            <select class="form-control">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+
+                            
+
+                        </div>
+                        <div class="form-group">
+                            <input autocomplete="off" type="text" class="form-control chkinput" required />
+                            <label class="control-label">Category Pricing (in Rs.)</label>
+                        </div>
+                    </div>
+
+                    <div class="clearfix cat_Sec_end"></div>
+
+                    <div class="btn-nxt-wrp"><span class="nextBtn1 reg">ADD ANOTHER CATEGORY</span></div>
+                    <div class="btn-nxt-wrp"><a href="javascript:;" class="nextBtn">Next</a></div>
+                </div>
+            </div>
+
+            <!-- step 2 ends -->
+
+            <div class="row setup-content step-form-1 step-form-3" id="step-3">
+                <div class="col-sm-12 padding0">
+                    <div class="col-sm-6 padding0">
+                        <div class="pull-left text-left">
+                            <p>Number of Performing Members:</p>
+                            <div class="radio radio-danger">
+                                <input type="radio" name="radiobtn" id="input_val4" value="option1">
+                                <label for="input_val4">
+                                    Individual
+                                </label>
+                            </div>
+                            <div class="radio radio-danger">
+                                <input type="radio" name="radiobtn" id="input_val5" value="option2">
+                                <label for="input_val5">
+                                    Duo
+                                </label>
+                            </div>
+                            <div class="radio radio-danger">
+                                <input type="radio" name="radiobtn" id="input_val6" value="option3">
+                                <label for="input_val6">
+                                    Group
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="pull-right radio-div text-left">
+                            <input type="text" autocomplete="off" class="form-control chkinput" />
+                            <label class="control-label">Specify</label>
+                            <br />
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-sm-12 pad0">
+                            <input type="text" autocomplete="off" class="form-control chkinput">
+                            <label class="control-label">Performance length (in minutes)</label>
+                        </div>
+
+                        <div class="pull-left text-left">
+                            <br /><br />
+                            <p>Number of years you have been performing:</p>
+                            <div class="radio radio-danger">
+                                <input type="radio" name="radiobtn1" id="radio1" value="option1">
+                                <label for="radio1">
+                                    0-1
+                                </label>
+                            </div>
+                            <div class="radio radio-danger">
+                                <input type="radio" name="radiobtn1" id="input_val7" value="option2">
+                                <label for="input_val7">
+                                    1-3
+                                </label>
+                            </div>
+                            <div class="radio radio-danger">
+                                <input type="radio" name="radiobtn1" id="input_val8" value="option3">
+                                <label for="input_val8">
+                                    3-5
+                                </label>
+                            </div>
+                            <div class="radio radio-danger">
+                                <input type="radio" name="radiobtn1" id="input_val9" value="option3">
+                                <label for="input_val9">
+                                    5-10
+                                </label>
+                            </div>
+                            <div class="radio radio-danger">
+                                <input type="radio" name="radiobtn1" id="input_val10" value="option3">
+                                <label for="input_val10">
+                                    10+
+                                </label>
+                            </div>
+                            <br />
+                        </div>
+
+                        <div class="pull-left text-left">
+                            <br />
+                            <p>Performance Language:</p>
+                            <div class="radio radio-danger">
+                                <input type="radio" name="radiobtn2" id="input_val11" value="option1">
+                                <label for="input_val11">
+                                    English
+                                </label>
+                            </div>
+                            <div class="radio radio-danger">
+                                <input type="radio" name="radiobtn2" id="input_val12" value="option2">
+                                <label for="input_val12">
+                                    Hindi
+                                </label>
+                            </div>
+                            <div class="radio radio-danger">
+                                <input type="radio" name="radiobtn2" id="input_val13" value="option3">
+                                <label for="input_val13">
+                                    Regional
+                                </label>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-sm-6  padding0">
+                        <div class="pull-left text-left">
+                            <p>Number of Performing Members:</p>
+                            <div class="radio radio-danger">
+                                <input type="radio" name="radiobtn3" id="input_val14" value="option1">
+                                <label for="input_val14">
+                                    Indian
+                                </label>
+                            </div>
+                            <div class="radio radio-danger">
+                                <input type="radio" name="radiobtn3" id="input_val5" value="option2">
+                                <label for="input_val15">
+                                    Non-Indian
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="pull-left radio-div text-left">
+                            <input type="text" autocomplete="off" class="form-control chkinput" />
+                            <label class="control-label">Specify</label>
+                            <br />
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div class="form-group drpdwn gen">
+                            <div class="btn-group">
+                                <button data-toggle="dropdown" class="btn dropdown-toggle" data-placeholder="Please select"><span class="selected_val">Select Category Name</span> <span class="caret"></span></button>
+                                <ul class="dropdown-menu" style="max-width:230px;">
+                                    <li>
+                                        <div class="radio radio-danger">
+                                            <input type="radio" name="radiobtn4" id="input_val16" value="radio1">
+                                            <label for="input_val16">
+                                                Male
+                                            </label>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div class="radio radio-danger">
+                                            <input type="radio" name="radiobtn4" id="input_val17" value="option2">
+                                            <label for="input_val17">
+                                                Female
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="radio radio-danger">
+                                            <input type="radio" name="radiobtn4" id="input_val18" value="option3">
+                                            <label for="input_val18">
+                                                All Male Group
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="radio radio-danger">
+                                            <input type="radio" name="radiobtn4" id="input_val19" value="option4">
+                                            <label for="input_val19">
+                                                All Female Group
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="radio radio-danger">
+                                            <input type="radio" name="radiobtn4" id="input_val20" value="option5">
+                                            <label for="input_val20">
+                                                Mixed Group
+                                            </label>
+                                        </div>
+                                    </li>
+
+                                    <!-- Other items -->
+                                </ul>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="btn-nxt-wrp"><a href="javascript:;" class="nextBtn">Next</a></div>
+
+                </div>
+            </div>
+
+
+
+            <!-- step 3 ends -->
+
+            <div class="row setup-content step-form-1 step-form-4" id="step-4">
+                <div class="col-md-12 padding0">
+                    <br />
+                    <p class="text-left">Tagline (Define your talent / act in the most attractive one-liner):</p>
+                    <textarea class="form-control" placeholder="Max 100 Characters" rows="3" id="comment"></textarea>
+                    <br /><br />
+                    <p class="text-left">Tagline (Define your talent / act in the most attractive one-liner):</p>
+                    <textarea class="form-control" placeholder="Max 1500 Characters" rows="3" id="comment"></textarea>
+                    <br /><br />
+
+                    <p class="text-left">Add Photos (Upto 8 Photos):</p>
+                    <div class="photo_sec">
+                        <div class="col-sm-3">
+                            <div class="photo_img">
+                                <img src="~/images/img_1.jpg" alt="" />
+                                <div class="photo_inp checkbox checkbox-danger">
+                                    <input id="checkb" type="checkbox">
+                                    <label for="checkb">
+                                        Make Profile Photo
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="photo_caption">
+                                <input type="text" placeholder="Enter Caption" class="chkinput" />
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="photo_img addmore">
+                                <img src="~/images/no_image.png" alt="" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <br class="hidden-xs" />
+                    <br class="hidden-xs" />
+                </div>
+
+                <br />
+                <div class="col-sm-12">
+                    <br /><br />
+
+                    <div class="text-left">Add Videos (Upto 8 Videos):</div>
+                    <div class="form-group videoupload">
+
+                        <input autocomplete="off" type="text" class="form-control chkinput">
+                        <label class="control-label">Add your videos</label>
+
+                    </div>
+                    <div class="uploadbtn text-left">
+                        <img src="~/images/addmore.png" alt="" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <input autocomplete="off" type="text" class="form-control chkinput">
+                        <label class="control-label">Attach your PDF file</label>
+
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="col-sm-12 web_inp checkbox checkbox-danger">
+
+                        <input id="checkb1" type="checkbox">
+                        <label for="checkb1">
+                            Add Web Presence (Optional)
+                        </label>
+                        <br />
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="col-sm-6 pad0">
+
+                        <div class="form-group">
+                            <input autocomplete="off" type="text" class="form-control chkinput">
+                            <label class="control-label">Website URL</label>
+                        </div>
+
+                        <div class="form-group">
+                            <input autocomplete="off" type="text" class="form-control chkinput">
+                            <label class="control-label">Facebook id</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 pad0">
+
+                        <div class="form-group">
+                            <input autocomplete="off" type="text" class="form-control chkinput">
+                            <label class="control-label">Linedin id</label>
+                        </div>
+
+                        <div class="form-group">
+                            <input autocomplete="off" type="text" class="form-control chkinput">
+                            <label class="control-label">Twitter id</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="btn-nxt-wrp"><button type="submit" class="nextBtn">SUBMIT</button></div>
+
+            </div>
+            <!-- step 4 ends -->
+        }
+    </div>
+</section>	

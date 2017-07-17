@@ -1,0 +1,71 @@
+﻿@model IndiaEntertainers.Models.tbl_TalentSeeker
+
+@{
+    ViewBag.Title = "MyPofile";
+}
+
+<div class="row">
+    <div class="container">
+        <h2 class="text-info h2 page-header">My Profile</h2>
+
+        <table class="table table-responsive table-striped">
+
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.CompanyName)
+                </td>
+
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.CompanyName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Name
+                </td>
+
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.FName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Mobile)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.Mobile)
+                </td>               
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(model => model.Email)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.Email)
+                </td>
+                @*<td>
+                    @Html.DisplayNameFor(model => model.Gender)
+                </td>
+
+                <td colspan="3">
+                    @Html.DisplayFor(model => model.Gender)
+                </td>*@
+
+                @*<td>
+                    @Html.DisplayNameFor(model => model.OfficeNo)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(model => model.OfficeNo)
+                </td>*@
+            </tr>
+
+        </table>
+        <div class="clearfix"></div><br /><hr />
+        <p class="col-md-2">
+            @Html.ActionLink("Edit", "Update", "Dashboard", new { area = "TalentSeeker" }, htmlAttributes: new { @class = "btn btn-primary" })
+        </p>
+    </div>
+</div>

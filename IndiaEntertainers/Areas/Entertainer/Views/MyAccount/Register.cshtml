@@ -1,0 +1,353 @@
+﻿@model IndiaEntertainers.ViewModel.RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<style>
+    select {
+        border: none !important;
+        appearance: none;
+        -moz-appearance: none; /* Firefox */
+        -webkit-appearance: none; /* Safari and Chrome */
+        border-bottom: solid 2px #ccc !important;
+        border-radius: 0 !important;
+        margin-top: 16px;
+        background: rgba(255, 255, 255, 0.97);
+        background-image: linear-gradient(45deg, transparent 50%, gray 50%), linear-gradient(135deg, gray 50%, transparent 50%), linear-gradient(to right, #ccc, #ccc);
+        background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
+        background-size: 5px 5px, 5px 5px, 1px 1.5em;
+        background-repeat: no-repeat;
+    }
+
+        select:focus {
+            outline: none !important;
+        }
+</style>
+
+<section id="home-banner" class="home-banner register-frm-wrp">
+    <div class="container">
+        <p class="sub-title">REGISTRATION OF ARTIST</p>
+        <div class="stepwizard">
+            <div class="head_topic stp1">Step 1. Please share your basic Contact Details</div>
+            <div class="head_topic stp2 hidden">Step 2. Add upto 3 Categories of Entertainment</div>
+            <div class="head_topic stp3 hidden">Step 3. Enter Details about your performances</div>
+            <div class="head_topic stp4 hidden">Step 4. Enter Details about your performances</div>
+            <div class="stepwizard-row setup-panel">
+                <span class="bar_progress"></span>
+                <div class="stepwizard-step step-nav-1">
+                    <a href="#step-1" type="button" class="btn btn-primary btn-circle cr1"><i class="fa fa-address-book-o" aria-hidden="true"></i></a>
+                    <!-- <p>Step 1</p> -->
+                </div>
+                <div class="stepwizard-step step-nav-2">
+                    <a href="#step-2" type="button" class="btn btn-default btn-circle cr2" disabled="disabled"><img src="~/images/step2.png" alt="" /></a>
+                    <!-- <p>Step 2</p> -->
+                </div>
+                <div class="stepwizard-step step-nav-3">
+                    <a href="#step-3" type="button" class="btn btn-default btn-circle cr3" disabled="disabled"><img src="~/images/step3.png" alt="" /></a>
+                    <!-- <p>Step 3</p> -->
+                </div>
+                <div class="stepwizard-step step-nav-4">
+                    <a href="#step-4" type="button" class="btn btn-default btn-circle cr4" disabled="disabled"><img src="~/images/step4.png" alt="" /></a>
+                    <!-- <p>Step 4</p> -->
+                </div>
+            </div>
+        </div>
+
+        @using (Html.BeginForm("Register", "MyAccount", FormMethod.Post, new { @id = "FourStepForm", @class = "form-label form-css-label", @enctype = "multipart/form-data" }))
+        {
+            <div class="row setup-content step-form-1" id="step-1">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.EditorFor(d => d.FName, new { htmlAttributes = new { @class = "form-control chkinput", @required = "required" } })
+                        @*<input type="text" autocomplete="off" class="form-control chkinput" name="FName" required />*@
+                        <label class="control-label">Artist/Group Name</label>
+                        @Html.ValidationMessageFor(model => model.FName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.EditorFor(d => d.Mobile, new { htmlAttributes = new { @class = "form-control chkinput", @required = "required" } })
+                        @*<input type="number" autocomplete="off" class="form-control chkinput" required name="Mobile" />*@
+                        <label class="control-label">Mobile Number</label>
+                        @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group drpdwn state">
+                        <div class="btn-group">
+                            @*<label class="control-label">State</label>*@
+                            @IndiaEntertainers.HTMLHelper.CustomHelper.StateDropDownList("StateId", "btn dropdown-toggle form-control", "StateId", @ViewBag.StateId)
+                            @Html.ValidationMessageFor(model => model.StateId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group drpdwn state">
+                        <div class="btn-group">
+                            @Html.DropDownListFor(model => model.CityId, new SelectList(@ViewBag.Cities, "Value", "Text"), "-- Select City --", htmlAttributes: new { @class = "btn dropdown-toggle form-control", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.CityId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="btn-nxt-wrp"><a href="javascript:;" class="nextBtn">Next</a></div>
+                </div>
+            </div>
+            <!-- step 1 ends -->
+
+            <div class="row setup-content step-form-1 step-form-2" id="step-2">
+                <div class="col-md-12">
+                    <div class="section_clone" id="box_sec1">
+                        <div class="form-group drpdwn catttt">
+                            <div class="btn-group">
+                                @IndiaEntertainers.HTMLHelper.CustomHelper.CategoryDropDownList("CatId", "btn dropdown-toggle form-control", "CatId", @ViewBag.CatId,false)
+                                @Html.ValidationMessageFor(model => model.CatId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.EditorFor(d => d.Performancefee, new { htmlAttributes = new { @class = "form-control chkinput", @required = "required" } })
+                            @*<input autocomplete="off" type="text" name="Performancefee" class="form-control chkinput" required />*@
+                            <label class="control-label">Category Pricing (in Rs.)</label>
+                            @Html.ValidationMessageFor(model => model.Performancefee, "", new { @class = "text-danger" })
+                        </div>
+                        @*<div class="clearfix"></div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Display Fee on the site </label>
+                                <input type="checkbox" class="col-md-3 checkbox checkbox-danger" data-ng-model="UpdDetails.Showfee" name="Showfee" />
+                            </div>*@
+                    </div>
+                    <div class="clearfix cat_Sec_end"></div>
+                    @*<div class="btn-nxt-wrp"><span class="nextBtn1 reg">ADD ANOTHER CATEGORY</span></div>*@
+                    <div class="btn-nxt-wrp"><a href="javascript:;" class="nextBtn">Next</a></div>
+                </div>
+            </div>
+            <!-- step 2 ends -->
+            <div class="row setup-content step-form-1 step-form-3" id="step-3">
+                <div class="col-sm-12">
+                    <div class="section_clone" id="box_sec1">
+                        <div class="form-group drpdwn catttt">
+                            <div class="btn-group">
+                                @IndiaEntertainers.HTMLHelper.CustomHelper.PerfLengthDropDownList("PerfLength", "btn dropdown-toggle form-control", "PerfLength", @ViewBag.PerfLength,false)
+                                @Html.ValidationMessageFor(model => model.PerfLength, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        @*<div class="form-group col-md-6">
+                            <input type="text" autocomplete="off" name="PerfLength" class="form-control chkinput" required>
+                            @Html.EditorFor(d => d.PerfLength, new { htmlAttributes = new { @class = "form-control chkinput", @required = "required" } })
+                            <label class="control-label">Performance length (in minutes)</label>
+                            @Html.ValidationMessageFor(model => model.PerfLength, "", new { @class = "text-danger" })
+                        </div>*@
+                        <div class="pull-left text-left col-md-6">
+                            <p>Nationality:</p>
+                            <div class="radio radio-danger">
+                                <input type="radio" name="IsItIndian" value="true" id="input_val14">
+                                <label for="input_val14">
+                                    Indian
+                                </label>
+                            </div>
+                            <div class="radio radio-danger">
+                                <input type="radio" name="IsItIndian" value="false" id="input_val5">
+                                <label for="input_val15">
+                                    World
+                                </label>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.IsItIndian, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="section_clone" id="box_sec1">
+                        <div class="form-group drpdwn catttt">
+                            <div class="btn-group">
+                                @IndiaEntertainers.HTMLHelper.CustomHelper.NYrPerformingDropDownList("YearsOfPerforming", "btn dropdown-toggle form-control", "YearsOfPerforming", @ViewBag.YearsOfPerforming,false)
+                                @Html.ValidationMessageFor(model => model.YearsOfPerforming, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.EditorFor(d => d.PerfMembers, new { htmlAttributes = new { @class = "form-control chkinput", @required = "required" } })
+                            @*<input required class="form-control" type="text" data-ng-model="UpdDetails.PerfMembers" name="PerfMembers">*@
+                            <label class="control-label">Performing Members</label>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="section_clone" id="box_sec1">
+                        <div class="form-group drpdwn catttt">
+                            <div class="btn-group">
+                                @IndiaEntertainers.HTMLHelper.CustomHelper.NoOfShowDropDownList("NoofShow", "btn dropdown-toggle form-control", "NoofShow", @ViewBag.NoofShow,false)
+                                @Html.ValidationMessageFor(model => model.YearsOfPerforming, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group drpdwn catttt">
+                            <div class="btn-group">
+                                @IndiaEntertainers.HTMLHelper.CustomHelper.PerformanceLanguageDropDownList("PerfLanguage", "btn dropdown-toggle form-control", "PerfLanguage", @ViewBag.PerfLanguage,false)
+                                @Html.ValidationMessageFor(model => model.PerfLanguage, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="section_clone col-md-12" id="box_sec1">
+                        <div class="form-group drpdwn catttt">
+                            <div class="btn-group">
+                                @IndiaEntertainers.HTMLHelper.CustomHelper.GenderDropDownList("Gender", "btn dropdown-toggle form-control", "Gender", @ViewBag.Gender,false)
+                                @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group drpdwn catttt">
+                            <div class="btn-group">
+                                @IndiaEntertainers.HTMLHelper.CustomHelper.PerformingMemDropDownList("Type", "btn dropdown-toggle form-control", "PerfMembers", @ViewBag.PerfMembers)
+                                @Html.ValidationMessageFor(model => model.PerfMembers, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="btn-nxt-wrp"><a href="javascript:;" class="nextBtn">Next</a></div>
+                </div>
+            </div>
+
+            <!-- step 3 ends -->
+            <div class="row setup-content step-form-1 step-form-4" id="step-4">
+                <div class="col-md-12 padding0">
+                    <br />
+                    <p class="text-left">Tagline (Define your talent / act in the most attractive one-liner):</p>
+                    @*<textarea class="form-control" name="ProfileTitle" placeholder="Max 100 Characters" rows="3" required id="comment"></textarea>*@
+                    @Html.TextAreaFor(model => model.ProfileTitle, 2, 40, htmlAttributes: new { @class = "form-control", @required = "required", @id = "comment" })
+                    @Html.ValidationMessageFor(model => model.ProfileTitle, "", new { @class = "text-danger" })
+                    <br /><br />
+                    <p class="text-left">Profile:</p>
+                    @Html.TextAreaFor(model => model.Profile, 4, 40, htmlAttributes: new { @class = "form-control", @required = "required", @id = "comment" })
+                    @*<textarea class="form-control" name="Profile" placeholder="Max 1500 Characters" rows="3" required id="comment"></textarea>*@
+                    @Html.ValidationMessageFor(model => model.Profile, "", new { @class = "text-danger" })
+                    <br /><br />
+                    <div class="clearfix"></div>
+                    <p class="text-left">Add Profile Photo:</p>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            @*<img src="" style="margin-top:-14px;" alt="" id="proimgprvw" height="200" width="200" />*@
+                            <input type="file" name="profileimg" class="form-control" required id="profileimg" onchange="showimagepreview(this)">
+                            @Html.ValidationMessage("profileimg", "", new { @class = "text-danger" })
+                        </div>
+                    </div><div class="clearfix"></div><br />
+                    <p class="text-left">Add Cover Photo:</p>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            @*<img src="" style="margin-top:-14px;" alt="" id="coverimgprvw" height="200" width="300" />*@
+                            <input type="file" name="coverimg" class="form-control" id="coverimg" onchange="showcoverimagepreview(this)">
+                            @Html.ValidationMessage("coverimg", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <br class="hidden-xs" />
+                    <br class="hidden-xs" />
+                    <br class="hidden-xs" />
+                    <br class="hidden-xs" />
+                </div>
+
+                <br />
+                <div class="col-sm-12">
+                    <br /><br />
+                    <div class="clearfix"></div>
+                    <div class="col-sm-12 web_inp checkbox-danger">
+                        <label for="checkb1">
+                            Add Web Presence (Optional)
+                        </label>
+                        <br />
+                    </div>
+                    <div class="clearfix"></div><br />
+                    <div class="col-sm-6 pad0">
+                        <div class="form-group">
+                            @Html.EditorFor(d => d.FBPageLink, new { htmlAttributes = new { @class = "form-control chkinput"} })
+                            @*<input autocomplete="off" type="text" name="FBPageLink" class="form-control chkinput">*@
+                            <label class="control-label"><i class="fa fa-facebook" aria-hidden="true"></i> @*Facebook id*@</label>
+                        </div>
+                        <div class="form-group">
+                            @Html.EditorFor(d => d.IntgramPageLink, new { htmlAttributes = new { @class = "form-control chkinput" } })
+                            @*<input autocomplete="off" type="text" name="IntgramPageLink" class="form-control chkinput">*@
+                            <label class="control-label"><i class="fa fa-instagram" aria-hidden="true"></i> @*Instagram id*@</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 pad0">
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            @Html.EditorFor(d => d.TwiterPageLink, new { htmlAttributes = new { @class = "form-control chkinput"} })
+                            @*<input autocomplete="off" type="text" name="TwiterPageLink" class="form-control chkinput">*@
+                            <label class="control-label"><i class="fa fa-twitter" aria-hidden="true"></i> @*Twitter id*@</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="btn-nxt-wrp"><button type="submit" class="nextBtn">SUBMIT</button></div>
+            </div>
+            <!-- step 4 ends -->
+        }
+    </div>
+</section>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("body").addClass("detail-page page");
+
+            $('.step-nav-1 a').click(function () {
+                Step1Validation();
+            });
+            $('.step-1 a.nextBtn').click(function () {
+                Step1Validation();
+            });
+
+            function Step1Validation() {
+                var form = $("#RegisterationForm");
+                form.validate({
+                    highlight: function (element) {
+                        $(element).closest('.form-group').addClass("has-error");
+                        $(element).closest('.form-group').closest('.control-label').addClass("hide");
+                    },
+                    unhighlight: function (element) {
+                        $(element).closest('.form-group').removeClass("has-error");
+                    },
+                    rules: {
+                        FName: { required: true, minlength: 6 },
+                        Mobile: { required: true, minlength: 10, maxlength: 10 },
+                        StateId: "required",
+                        CityId: "required"
+                    },
+                    messages: {
+                        FName: { required: " " },
+                        Mobile: { required: " " },
+                        StateId: { required: " " },
+                        CityId: { required: " " }
+                    }
+                });
+                if (form.valid() == true) {
+                    $('.stp1').removeClass('hidden');
+                    $('.stp2,.stp3,.stp4').addClass('hidden')
+                    $('.bar_progress').css('width', '18%');
+                }
+            }
+
+            $('.step-nav-2 a').on('click', function () {
+                $('.stp2').removeClass('hidden');
+                $('.stp1,.stp3,.stp4').addClass('hidden');
+                $('.bar_progress').css('width', '40%');
+            })
+            $('.step-nav-3 a').on('click', function () {
+                $('.stp3').removeClass('hidden');
+                $('.stp1,.stp2,.stp4').addClass('hidden');
+                $('.bar_progress').css('width', '60%');
+            })
+            $('.step-nav-4 a').on('click', function () {
+                $('.stp4').removeClass('hidden');
+                $('.stp1,.stp2,.stp3').addClass('hidden');
+                $('.bar_progress').css('width', '100%');
+            })
+            //Get Cities by StateId
+            $("#StateId").on("change", function () {
+                var sId = this.value;
+                var url = "/CustomHLPR/GetCities";
+                $.getJSON(url, { StateId: sId }, function (citieslist) {
+                    console.log(citieslist);
+                    var clist = $("#CityId");
+                    clist.empty();
+                    $(clist).append($("<option />", { value: "", text: "-- Select City --" }));
+                    $.each(citieslist, function (index, item) {
+                        $(clist).append($("<option />", { value: this.Value, text: this.Text }));
+                    });
+                });
+            });
+
+
+        });
+    </script>
+}
