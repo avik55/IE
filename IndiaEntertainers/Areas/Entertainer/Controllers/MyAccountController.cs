@@ -37,7 +37,42 @@ namespace IndiaEntertainers.Areas.Entertainer.Controllers
             var uid = User.Identity.GetUserId();
             var entertainer = db.tbl_Entertainer.FirstOrDefault(d => d.UserId == uid);
             if (entertainer == null)
-                return RedirectToAction("Register");
+            {                
+                tbl_Entertainer Entertainer = new tbl_Entertainer();
+                var Userr = db.AspNetUsers.Where(d => d.Id == uid).FirstOrDefault();
+                Entertainer.FName = "-";
+                Entertainer.UserId = uid;
+                Entertainer.YearsOfPerforming = "-";
+                Entertainer.Gender = "-";
+                Entertainer.Email = Userr.Email;
+                Entertainer.IntgramPageLink = "#";
+                Entertainer.Mobile = Userr.PhoneNumber;
+                Entertainer.StateId = 0;
+                Entertainer.CityId = 0;
+                Entertainer.RegDate = DateTime.Now.Date;
+                Entertainer.FBPageLink = "#";
+                Entertainer.Gender = "-";
+                Entertainer.IsActive = true;
+                Entertainer.IsPremium = false;
+                Entertainer.Nationality = "-";
+                Entertainer.NoofShow = 0;
+                Entertainer.PerfLanguage = "-";
+                Entertainer.PerfLength = 0;
+                Entertainer.Performancefee = 0;
+                Entertainer.PERFORMINGMEMBERS = "-";
+                Entertainer.Profile = "-";
+                Entertainer.ProfileTitle = "-";
+                Entertainer.TwiterPageLink = "#";
+                Entertainer.Type = "-";
+                Entertainer.IsProfileCompleted = false;
+
+                db.tbl_Entertainer.Add(Entertainer);
+                db.SaveChanges();
+
+                entertainer = db.tbl_Entertainer.FirstOrDefault(d => d.UserId == uid);
+                //return RedirectToAction("Register");
+            }
+
             ViewBag.photos = db.tbl_EntrImages.Where(d => d.EntrId == entertainer.EntrId).OrderByDescending(d => d.ImageId).ToList();
             var videos = db.tbl_EntrVideos.Where(d => d.EntrId == entertainer.EntrId).OrderByDescending(d => d.Vid).ToList();
 

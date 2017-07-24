@@ -93,9 +93,12 @@ namespace IndiaEntertainers.Controllers
                 }
                 else
                 {
-                    ViewBag.UserId = user.Id;
-                    var message = "Please Confirm Your Email Address.";
-                    return Json(message, JsonRequestBehavior.AllowGet);
+                    var token = UserManager.GenerateEmailConfirmationToken(user.Id);
+                    var confirmEmail = await UserManager.ConfirmEmailAsync(user.Id, token);
+                    result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+                    //ViewBag.UserId = user.Id;
+                    //var message = "Please Confirm Your Email Address.";
+                    //return Json(message, JsonRequestBehavior.AllowGet);
                 }
             }
             else
